@@ -8,8 +8,15 @@
     "start": "sirv public --no-clear"
   },
   "devDependencies": {
+    "@cloudflare/wrangler": "^1.19.8",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "cors": "^2.8.5",
+    "curl": "^0.1.4",
+    "express": "^4.17.3",
+    "graphql": "^16.3.0",
+    "pg": "^8.7.3",
+    "postgres": "^1.0.2",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
