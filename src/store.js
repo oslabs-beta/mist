@@ -7,6 +7,6 @@ export const workers = [
 ];
 
 export const user = writable({
-  email: '',
-  apiKey: '',
+  email: 'Email',
+  apiKey: 'API Key',
 });

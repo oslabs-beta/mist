@@ -1,13 +1,22 @@
 <script>
-  export let name;
+  import Login from './components/Login.svelte';
+  import Workers from './components/Workers.svelte';
+  import Worker from './components/Worker.svelte';
+
+  let isLoggedIn = false;
+
+  const login = () => {
+    isLoggedIn = !isLoggedIn;
+  };
 </script>
 
 <main>
-  <h1>Hello {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
+  {#if !isLoggedIn}
+    <Login on:click={login} />
+  {/if}
+  {#if isLoggedIn}
+    <Workers />
+  {/if}
 </main>
 
 <style>
