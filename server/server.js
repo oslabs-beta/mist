@@ -3,7 +3,8 @@ const app = express();
 const path = require('path');
 const PORT = 3000;
 const cors = require('cors');
-const router = import(path.join(__dirname, './routes/router'));
+const router = require('./routes/router.js');
+// const router = import(path.join(__dirname, './routes/router'));
 
 
 app.use(express.json());
