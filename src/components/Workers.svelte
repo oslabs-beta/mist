@@ -1,9 +1,5 @@
 <script>
-  // const workers = [
-  //   { id: 1, name: 'Worker 1' },
-  //   { id: 2, name: 'Worker 2' },
-  //   { id: 3, name: 'Worker 3' },
-  // ];
+  import { user } from '../store.js';
   import Worker from './Worker.svelte';
   import { workers } from '../store.js';
   let showWorker = false;
@@ -22,6 +18,8 @@
 
 {#if !showWorker}
   <h1>All Workers</h1>
+  <h3>Email: {user.email} API Key: {user.apiKey}</h3>
+  <h3>Here are your App level metrics</h3>
   {#each workers as worker (worker.id)}
     <div>
       <h1>{worker.name}</h1>
@@ -41,6 +39,12 @@
     color: #ff3e00;
     text-transform: uppercase;
     font-size: 4em;
+    font-weight: 100;
+  }
+  h3 {
+    color: #ff3e00;
+    text-transform: uppercase;
+    font-size: 2em;
     font-weight: 100;
   }
 </style>
