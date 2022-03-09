@@ -17,30 +17,33 @@ GQLController.getMockData = (req, res, next) => {
 
 //API KEY
 // 93bee872cd4aacfcae9fb5ca6e27a9d7021d2
+
+
+/* NOTE: GETTING PAST ACCOUNT PERMISSIONS BLOCK
+  1) Set accountTag to account Id, which can be found in Cloudflare dashboard
+  2) Accounts needs to have a filter option or it won't work
+  3) Set permissions in Cloudflare dashboard 
+    a) account --> account analytics --> read
+    b) zone --> logs --> read
+    c) zone --> analytics --> read
+*/
+
 GQLController.getGQLData = (req, res, next) => {
   const cloudflare_email = 'airbenderosp@gmail.com';
   const cloudflare_api_key = '93bee872cd4aacfcae9fb5ca6e27a9d7021d2'
   const cloudflare_api_token = 'j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W';
+  //NOTE: when abstracting away, this cloudflare_id needs to be used for the 'account tag' value
+  const cloudflare_id = "b3b6a9170e95e7d2694f728cfe832d2b";
   const payload = {
-    // "query" : `
-    //   query {
-    //     __schema {
-    //       types {
-    //         name {
-    //           viewer
-    //         }
-    //       }
-    //     }
-    //   }`,
     "query": 
       `query {
           viewer {
             accounts(filter: {accountTag: $accountTag}) {
-              workersInvocationsAdaptive(limit: 100, filter: {
-                scriptName: $scriptName,
-                datetime_geq: $datetimeStart,
-                datetime_leq: $datetimeEnd
-              }) {
+              workersInvocationsAdaptive(
+                limit: 100, filter: {
+                  datetime_geq: $datetimeStart,
+                  datetime_leq: $datetimeEnd
+                }) {
                 sum {
                   subrequests
                   requests
@@ -51,37 +54,10 @@ GQLController.getGQLData = (req, res, next) => {
           }
         }`,
 
-    // query: `query GetWorkersAnalytics($accountTag: string, $datetimeStart: string, $datetimeEnd: string, $scriptName: string) {
-    //     viewer {
-    //       accounts(filter: {accountTag: $accountTag}) {
-    //         workersInvocationsAdaptive(limit: 100, filter: {
-    //           scriptName: $scriptName,
-    //           datetime_geq: $datetimeStart,
-    //           datetime_leq: $datetimeEnd
-    //         }) {
-    //           sum {
-    //             subrequests
-    //             requests
-    //             errors
-    //           }
-    //           quantiles {
-    //             cpuTimeP50
-    //             cpuTimeP99
-    //           }
-    //           dimensions{
-    //             datetime
-    //             scriptName
-    //             status
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }`,
     "variables": {
-      "accountTag": cloudflare_api_token,
-      "datetimeStart": "2022-03-01T00:00:00.000Z",
-      "datetimeEnd": "2022-03-04T00:00:00.000Z",
-      "scriptName": "worker-subrequest-test-client"
+      "accountTag": cloudflare_id,
+      "datetimeStart": "2022-03-07T00:00:00.000Z",
+      "datetimeEnd": "2022-03-09T00:00:00.000Z",
     }
   }
 
@@ -121,3 +97,43 @@ module.exports = GQLController;
 //   "errors":[],
 //   "messages":[{"code":10000,"message":"This API Token is valid and active","type":null}
 // ]}%    
+
+
+    // "query" : `
+    //   query {
+    //     __schema {
+    //       types {
+    //         name {
+    //           viewer
+    //         }
+    //       }
+    //     }
+    //   }`,
+
+
+// query: `query GetWorkersAnalytics($accountTag: string, $datetimeStart: string, $datetimeEnd: string, $scriptName: string) {
+    //     viewer {
+    //       accounts(filter: {accountTag: $accountTag}) {
+    //         workersInvocationsAdaptive(limit: 100, filter: {
+    //           scriptName: $scriptName,
+    //           datetime_geq: $datetimeStart,
+    //           datetime_leq: $datetimeEnd
+    //         }) {
+    //           sum {
+    //             subrequests
+    //             requests
+    //             errors
+    //           }
+    //           quantiles {
+    //             cpuTimeP50
+    //             cpuTimeP99
+    //           }
+    //           dimensions{
+    //             datetime
+    //             scriptName
+    //             status
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }`,
