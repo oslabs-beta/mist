@@ -16,15 +16,20 @@ app.use(cors());
 // ROLE: This function works so and so
 // TEST: --> WORKS
 
+// NOTE: currently used for mock data
+app.use('/', router, (req, res) => {
+    res.json(res.locals.data)
+})
 
-app.use('/', router)
+// NOTE: temporary path for real data; change to '/'
+app.use('/realData', router)
 
 
 //----------------ERROR HANDLING--------------------------
-// catch-all route handler for requests made to unknown route
+//ROLE: catch-all route handler for requests made to unknown route
 app.use((req, res) => res.status(404).send('Request sent to unknown page'));
 
-//error handling (standard & global)
+//ROLE: error handling (standard & global)
 app.use((err, req, res, next) => {
     const defaultErr = {
         log: 'Express error handler caught unknown middleware error',

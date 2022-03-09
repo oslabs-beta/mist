@@ -2,8 +2,16 @@ const express = require('express');
 const curl = require('curl');
 const axios = require('axios');
 const { graphql, buildSchema } = require('graphql');
+const mockdb = require('../models/mockdb.js');
 
 const GQLController = {};
+
+GQLController.getMockData = (req, res, next) => {
+  //access data from mockdb
+  //serve back to front-end-- store in res.locals
+  res.locals.data = mockdb;
+  return next();
+}
 
 //j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W
 
@@ -77,7 +85,6 @@ GQLController.getGQLData = (req, res, next) => {
     }
   }
 
-
   //run in terminal "node server/server.js"
   //listening on port 3000
   //load http://localhost:3000/
@@ -104,13 +111,13 @@ GQLController.getGQLData = (req, res, next) => {
 }
 
 module.exports = GQLController;
-{"result":{
-  "id":"8575b81cfcc14b9faef43a176cb9a5ce",
-  "status":"active"
-  ,"not_before":"2022-03-07T00:00:00Z"
-  ,"expires_on":"2022-04-14T23:59:59Z"
-},
-  "success":true,
-  "errors":[],
-  "messages":[{"code":10000,"message":"This API Token is valid and active","type":null}
-]}%    
+// {"result":{
+//   "id":"8575b81cfcc14b9faef43a176cb9a5ce",
+//   "status":"active"
+//   ,"not_before":"2022-03-07T00:00:00Z"
+//   ,"expires_on":"2022-04-14T23:59:59Z"
+// },
+//   "success":true,
+//   "errors":[],
+//   "messages":[{"code":10000,"message":"This API Token is valid and active","type":null}
+// ]}%    
