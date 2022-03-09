@@ -11,6 +11,7 @@
     "@cloudflare/wrangler": "^1.19.8",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "chart.js": "^3.7.1",
     "cors": "^2.8.5",
     "curl": "^0.1.4",
     "express": "^4.17.3",
@@ -22,7 +23,9 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
+    "sass": "^1.49.9",
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.10.4"
   },
   "dependencies": {
     "axios": "^0.26.0",

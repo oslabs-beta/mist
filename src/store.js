@@ -10,3 +10,8 @@ export const user = writable({
   email: 'Email',
   apiKey: 'API Key',
 });
+
+export const timer = writable({
+  start: 0,
+  stop: 0,
+});
