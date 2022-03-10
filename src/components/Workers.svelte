@@ -32,6 +32,7 @@
   <Worker on:click={() => exitWorker()}>
     <h1>{currentWorker.name}</h1>
   </Worker>
+  <!-- bar chart here -->
 {/if}
 
 <style>

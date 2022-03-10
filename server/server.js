@@ -74,6 +74,9 @@ appMist.use((err, req, res, next) => {
     return res.status(errorObj.stats).json(errorObj.message);
 })
 
+app.listen(PORT, () => {
+  console.log(`listening on the port ${PORT}`);
+});
 
 //--------------------------ERROR HANDLING FLARE--------------------------------------
 appFlare.use((req, res) => res.status(404).send('Request sent to unknown page'));

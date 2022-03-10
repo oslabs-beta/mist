@@ -30,7 +30,7 @@ GQLController.getMockData = (req, res, next) => {
 
 GQLController.getGQLData = (req, res, next) => {
   const cloudflare_email = 'airbenderosp@gmail.com';
-  const cloudflare_api_key = '93bee872cd4aacfcae9fb5ca6e27a9d7021d2'
+  const cloudflare_api_key = '93bee872cd4aacfcae9fb5ca6e27a9d7021d2';
   const cloudflare_api_token = 'j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W';
   //NOTE: when abstracting away, this cloudflare_id needs to be used for the 'account tag' value
   const cloudflare_id = "b3b6a9170e95e7d2694f728cfe832d2b";
@@ -73,27 +73,28 @@ GQLController.getGQLData = (req, res, next) => {
   //run in terminal "node server/server.js"
   //listening on port 3000
   //load http://localhost:3000/
-  axios.post('https://api.cloudflare.com/client/v4/graphql/', payload, {
-    headers: {
-      "Content-Type": "application/json",
-      "X-Auth-Email": cloudflare_email,
-      // "X-Auth-key": cloudflare_api_key
-      "Authorization": "Bearer j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W"
-    }
-  })
-    .then(data => {
+  axios
+    .post('https://api.cloudflare.com/client/v4/graphql/', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Email': cloudflare_email,
+        // "X-Auth-key": cloudflare_api_key
+        Authorization: 'Bearer j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W',
+      },
+    })
+    .then((data) => {
       console.log(data.data);
       res.json(data.data);
     })
     //https://axios-http.com/docs/handling_errors
-    .catch(error => {
+    .catch((error) => {
       console.log(error.response.data);
       console.log(JSON.stringify(error.response.data));
       console.log(error.response.status);
       console.log(error.response.headers);
       throw new Error();
-    })
-}
+    });
+};
 
 module.exports = GQLController;
 // {"result":{

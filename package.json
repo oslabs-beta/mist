@@ -11,6 +11,7 @@
     "@cloudflare/wrangler": "^1.19.8",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "axios": "^0.26.0",
     "chart.js": "^3.7.1",
     "cors": "^2.8.5",
     "curl": "^0.1.4",
