@@ -1,32 +1,28 @@
-//yay! comments!
+//Mock Database to facilitate front-end set-up before queries are working
 
-export default mockdb = {
-    //number of requests w/ err, succ, cub
-    requests: {
-        sum: 5,
-        errors: 2,
-        successes: 3,
-        subrequests: 0
-    },
+const mockdb = {
     //logs
     logs: [
         {
-            status: 'ready',
-            trigger: 'GET',
-            URL: 'facebook.com',
-            time: '500ms'
+            status: 400,
+            URI: 'GET, /',
+            elapsedTime: '500ms',
+            requestTime: '2022-03-05T18:10:00+0000',
+            trigger: '500ms'
         },
         {
-            status: 'ready',
-            trigger: 'POST',
-            URL: 'instagram.com',
-            time: '1000ms'
+            status: 200,
+            URI: 'POST, /addUser',
+            elapsedTime: '1000ms',
+            requestTime: '2022-03-08T14:05:00+0000',
+            trigger: '200ms'
         },
         {
-            status: 'ready',
-            trigger: 'GET',
-            URL: 'pinterest.com',
-            time: '40ms'
+            status: 200,
+            URI: 'GET, /',
+            elapsedTime: '40ms',
+            requestTime: '2022-03-08T17:00:00+0000',
+            trigger: '300ms'
         }
     ],
     // median CPU time
@@ -37,3 +33,5 @@ export default mockdb = {
 
     // granularity
 }
+
+module.exports = mockdb;
