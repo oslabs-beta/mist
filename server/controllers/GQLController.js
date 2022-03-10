@@ -49,6 +49,15 @@ GQLController.getGQLData = (req, res, next) => {
                   requests
                   errors
                 }
+                quantiles {
+                  cpuTimeP50
+                  cpuTimeP99
+                }
+                dimensions{
+                  datetime
+                  scriptName
+                  status
+                }
               }
             }
           }
@@ -56,8 +65,8 @@ GQLController.getGQLData = (req, res, next) => {
 
     "variables": {
       "accountTag": cloudflare_id,
-      "datetimeStart": "2022-03-07T00:00:00.000Z",
-      "datetimeEnd": "2022-03-09T00:00:00.000Z",
+      "datetimeStart": "2022-03-09T10:05:00.000Z",
+      "datetimeEnd": "2022-03-09T23:00:00.000Z",
     }
   }
 
@@ -124,15 +133,15 @@ module.exports = GQLController;
     //             requests
     //             errors
     //           }
-    //           quantiles {
-    //             cpuTimeP50
-    //             cpuTimeP99
-    //           }
-    //           dimensions{
-    //             datetime
-    //             scriptName
-    //             status
-    //           }
+              // quantiles {
+              //   cpuTimeP50
+              //   cpuTimeP99
+              // }
+              // dimensions{
+              //   datetime
+              //   scriptName
+              //   status
+              // }
     //         }
     //       }
     //     }

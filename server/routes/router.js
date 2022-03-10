@@ -11,4 +11,5 @@ router.get('/realData', GQLController.getGQLData);
 router.get('/', GQLController.getMockData);
 
 
+
 module.exports = router;
