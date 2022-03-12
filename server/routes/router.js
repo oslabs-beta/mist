@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const GQLController = require('../controllers/GQLController.js');
+const miniFlareController = require('../controllers/miniFlareController.js');
+
+
+// When front-end hits "start", router.get is invoked every 1ms
+router.get('/miniFlare', miniFlareController.getRequests, (req, res) => {
+    console.log(`back in the router!`)
+    return res.json(res.locals.data);
+});
+
 
 // const GQLController = import(path.join(__dirname, '../controllers/GQLController'));
 
