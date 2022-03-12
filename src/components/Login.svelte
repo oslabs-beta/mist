@@ -12,9 +12,8 @@
 <button on:click>Login</button>
 
 <style type="text/scss">
-  $blue: rgb(55, 185, 250);
   h1 {
-    color: $blue;
+    color: #6194bc;
     text-transform: uppercase;
     font-size: 4em;
     font-weight: 100;
