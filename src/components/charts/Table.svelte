@@ -29,19 +29,23 @@
 <style>
   table {
     width: 100%;
-    border: 2px solid;
-    border-color: black;
+    border: 1px solid;
+    border-color: #f6f6f6;
   }
   tbody {
-    border: 2px solid;
-    border-color: black;
+    border: 1px solid;
+    border-color: #f6f6f6;
   }
   thead {
-    border: 2px solid;
-    border-color: black;
+    border: 1px solid;
+    border-color: #f6f6f6;
   }
   tr th {
-    border: 2px solid;
-    border-color: black;
+    border: 1px solid;
+    border-color: #f6f6f6;
+    color: #6194bc;
+  }
+  td {
+    color: #6194bc;
   }
 </style>

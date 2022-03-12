@@ -1,6 +1,11 @@
 import { writable } from 'svelte/store';
 import Chart from 'chart.js/auto';
 
+export let theme = writable('Misty');
+export let previousTheme = writable('Misty');
+export let chartFlag = writable(false);
+// no worky
+
 export const workers = [
   { id: 1, name: 'Worker 1' },
   { id: 2, name: 'Worker 2' },
@@ -39,3 +44,15 @@ export const succs = [0];
 export const errs = [0];
 export const subReqs = [0];
 export const pieData = [0, 0, 0];
+
+// cache
+export const labelsCache = [`${0}ms`];
+export const succsCache = [0];
+export const errsCache = [0];
+export const subReqsCache = [0];
+export const pieDataCache = [0, 0, 0];
+// labelsCache,
+// succsCache,
+// errsCache,
+// subReqsCache,
+// pieDataCache,
