@@ -6,25 +6,30 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const router = require('./routes/router.js');
-const axios = require('axios');
+// const axios = require('axios');
 const app = express();
 const PORT = 3000;
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+//NOTE: current path to process fetch request from miniflare server
+app.use('/allData', (req, res) => {
+    console.log(req.body);
+    res.json('hello from server 3000!');
+})
 
-app.use('/miniFlare', router);
+// app.use('/miniFlare', router);
+
+// NOTE: temporary path for real data; change to '/'
+app.use('/realData', router)
 
 // NOTE: currently used for mock data
 app.use('/', router, (req, res) => {
     res.json(res.locals.data)
 })
 
-// NOTE: temporary path for real data; change to '/'
-app.use('/realData', router)
 
 //--------------------------ERROR HANDLING MIST---------------------------------------
 //ROLE: catch-all route handler for requests made to unknown route

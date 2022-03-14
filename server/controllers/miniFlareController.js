@@ -11,7 +11,7 @@ miniFlareController.getRequests = (req,res,next) => {
     console.log('in Controller');
     axios.get('http://localhost:8787/')
     .then(({data})=>{
-        console.log(data);
+        console.log(`data from 8787:`, data);
         res.locals.data = data;
     });
     return next();
