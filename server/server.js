@@ -14,8 +14,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+
 //NOTE: current path to process fetch request from miniflare server
-app.use('/allData', (req, res) => {
+app.use('/allData', router, (req, res) => {
+    //NOTE: change once we've written out this route
     console.log(req.body);
     res.json('hello from server 3000!');
 })

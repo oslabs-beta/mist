@@ -26,6 +26,7 @@ mist
 sample-worker
 
 - localhost:8787 `miniflare index.js`
+  ... or possibly `npx miniflare` to run with node changes
 
 ## Metrics
 
