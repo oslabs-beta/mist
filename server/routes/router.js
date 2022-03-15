@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const GQLController = require('../controllers/GQLController.js');
 const miniFlareController = require('../controllers/miniFlareController.js');
-const metricsController = require('../controllers/metricsController.js')
+const metricsController = require('../controllers/metricsController.js');
 
 
 // When front-end hits "start", router.get is invoked every 1ms
@@ -11,9 +11,11 @@ router.get('/miniFlare', miniFlareController.getRequests, (req, res) => {
     return res.json(res.locals.data);
 });
 
-router.post('/allData', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
-    return res.json('hey!');
-})
+// router.use('/allData', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
+//     return res.json('hey!');
+// })
+
+
 
 
 // const GQLController = import(path.join(__dirname, '../controllers/GQLController'));

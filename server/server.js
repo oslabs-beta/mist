@@ -6,6 +6,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const router = require('./routes/router.js');
+const metricsController = require('./controllers/metricsController.js');
+
 // const axios = require('axios');
 const app = express();
 const PORT = 3000;
@@ -14,13 +16,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-
 //NOTE: current path to process fetch request from miniflare server
-app.use('/allData', router, (req, res) => {
+app.use('/allData', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
     //NOTE: change once we've written out this route
     console.log(req.body);
     res.json('hello from server 3000!');
-})
+});
 
 // app.use('/miniFlare', router);
 

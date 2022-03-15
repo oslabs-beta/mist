@@ -44,9 +44,7 @@ Like the real workers runtime, Miniflare limits you to 50 subrequests per reques
 
 How does the dev set-up their `.toml` file? Do some more digging!
 
-## Future To-Do
 
-- Modularize server, routing, controllers for Flare
 
 ## Database
 
@@ -87,3 +85,10 @@ responseTime
 .then(response => response.json())
 .then(data => console.log(data))
 .catch((error) => console.log('Error: ', error))
+
+
+## Future To-Do
+
+- Modularize server, routing, controllers for Flare
+- Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286) 
+- 
