@@ -16,12 +16,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-//NOTE: current path to process fetch request from miniflare server
-app.use('/allData', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
+// ROLE: current path to process fetch request from miniflare server and store sessions in db
+app.post('/allData', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
     //NOTE: change once we've written out this route
-    console.log(req.body);
+    //console.log(req.body);
     res.json('hello from server 3000!');
 });
+
+// NOTE: invoked when pressed "stop"
+app.get('/sessionLogs', metricsController.getSessionLogs, (req, res) => {
+    res.json('our get request is working!');
+})
+
+// NOTE: getting the sessionNum when dev presses "start".
+// Front-end needs to route their "start" to the route /sessionNum so that it gets invoked
+app.get('/sessionNum', metricsController.getSessionNum, (req, res) => {
+    res.json('sessionNum has been set!');
+})
 
 // app.use('/miniFlare', router);
 
