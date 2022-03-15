@@ -19,33 +19,33 @@ import {
 
 const grid = '#F6F6F6';
 
-export const testRequest = () => {
-  // NOT FUNCTIONAL YET //
-  workerTimer.requestStart = performance.now();
-  async () => {
-    try {
-      await axios.get('http://localhost:3000/');
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  workerTimer.requestComplete = performance.now();
-};
+// export const testRequest = () => {
+//   // NOT FUNCTIONAL YET //
+//   workerTimer.requestStart = performance.now();
+//   async () => {
+//     try {
+//       await axios.get('http://localhost:3000/');
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+//   workerTimer.requestComplete = performance.now();
+// };
 
-export const mockDBRequest = () => {
-  axios
-    .get('http://localhost:3000/')
-    .then((data) => {
-      data.json();
-    })
-    .then((result) => {
-      const logs = result.logs;
-      console.log(logs);
-      for (let i = 0; i < logs.length; i++) {
-        mockLogArray.push(logs[i]);
-      }
-    });
-};
+// export const mockDBRequest = () => {
+//   axios
+//     .get('http://localhost:3000/')
+//     .then((data) => {
+//       data.json();
+//     })
+//     .then((result) => {
+//       const logs = result.logs;
+//       console.log(logs);
+//       for (let i = 0; i < logs.length; i++) {
+//         mockLogArray.push(logs[i]);
+//       }
+//     });
+// };
 
 export const createData = (logs) => {
   // RESET CHARTING DATA
@@ -78,43 +78,44 @@ export const createData = (logs) => {
     }
   }
   // CREATING DUMMY REQUEST TIMES AND PLOTTING PIE DATA
-  const requestTimes = [];
-  console.log('these are the request times', requestTimes);
+  // const requestTimes = [];
+  // console.log('these are the request times', requestTimes);
   for (let i = 0; i < logs.length; i++) {
-    requestTimes.push(Math.trunc(Math.random() * duration));
+    // requestTimes.push(Math.trunc(Math.random() * duration));
     if (logs[i].status < 300 && logs[i].status !== 204) pieData[0] += 1;
     if (logs[i].status > 299 && logs[i].status < 500) pieData[1] += 1;
     if (logs[i].status === 204) pieData[2] += 1;
   }
 
   // SORTING DUMMY REQUEST TIMES AND PLOTTING SUCCS/ERRS/SUBREQS
-  console.log(requestTimes);
-  const sortedReqTimes = requestTimes.slice().sort((a, b) => a - b);
+  // console.log(requestTimes);
+  const sortedReqTimes = logs.slice().sort((a, b) => a.start - b.start);
   const logsSlice = logs.slice();
   console.log(`sorted Req Times: ${sortedReqTimes}`);
   for (let i = 0; i < labels.length; i++) {
     const label = labels[i];
     console.log('outer for loop hit');
 
-    for (let j = 0; j < logsSlice.length; j++) {
+    for (let j = 0; j < sortedReqTimes.length; j++) {
       console.log(sortedReqTimes[j]);
       console.log('hello');
-      if (Math.abs(sortedReqTimes[j] - label) <= 25) {
-        logsSlice[j].status >= 200 &&
-        logsSlice[j].status !== 204 &&
-        logsSlice[j].status < 300
+      const reqTime = Number(sortedReqTimes[j].start) - workerTimer.start;
+      if (Math.abs(reqTime - label) <= 25) {
+        sortedReqTimes[j].status >= 200 &&
+        sortedReqTimes[j].status !== 204 &&
+        sortedReqTimes[j].status < 300
           ? (succs[i] += 1)
-          : logsSlice[j].status >= 300
+          : sortedReqTimes[j] >= 300
           ? (errs[i] += 1)
           : (subReqs[i] += 1);
-        logsSlice.shift();
         sortedReqTimes.shift();
+       
       }
     }
   }
 
   console.log(`labels ${labels}`);
-  console.log(`req times ${requestTimes}`);
+  // console.log(`req times ${requestTimes}`);
   console.log(`successes ${succs}`);
   console.log(`errors ${errs}`);
 };
