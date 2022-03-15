@@ -1,30 +1,64 @@
 <script>
-	export let name;
+  import Login from './components/Login.svelte';
+  import Workers from './components/Workers.svelte';
+  import Worker from './components/Worker.svelte';
+  import DarkButton from './components/DarkButton.svelte';
+  import { theme, previousTheme } from './store';
+
+  $: console.log($theme, $previousTheme);
+
+  let isLoggedIn = false;
+
+  const login = () => {
+    isLoggedIn = !isLoggedIn;
+  };
+  function toggle() {
+    $previousTheme = $theme;
+    window.document.body.classList.toggle('dark-mode');
+    if ($theme === 'Misty') {
+      $theme = 'Dark and Stormy';
+    } else {
+      $theme = 'Misty';
+    }
+  }
 </script>
 
+<p>{$theme}</p>
+<DarkButton on:click={() => toggle()} />
+
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+  {#if !isLoggedIn}
+    <Login on:click={login} />
+  {/if}
+  {#if isLoggedIn}
+    <Workers />
+  {/if}
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+  p {
+    color: #6194bc;
+  }
+  main {
+    text-align: center;
+    padding: 1em;
+    max-width: 240px;
+    margin: 0 auto;
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+  @media (min-width: 640px) {
+    main {
+      max-width: none;
+    }
+  }
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  :global(body) {
+    background-color: #e0e0e0;
+    color: #0084f6;
+    transition: background-color 0.3s;
+  }
+  :global(body.dark-mode) {
+    background-color: #030620;
+    color: #bfc2c7;
+  }
 </style>

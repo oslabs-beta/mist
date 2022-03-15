@@ -1,0 +1,86 @@
+$myFont: Helvetica, sans-serif;
+$fontColor: #6194bc;
+$lightBackground: #e0e0e0;
+$darkBackground: #111758;
+$myFontSize: 18px;
+$myWidth: 680px;
+
+// charting colors
+$chart-dark-blue: #6194bc;
+$chart-orange: #ff9e01;
+$chart-lighter-blue: #d0eaff;
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  color: $chart-lighter-blue;
+  margin: 0;
+  padding: 8px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+a {
+  color: rgb(0, 100, 200);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: rgb(0, 80, 160);
+}
+
+label {
+  display: block;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-padding: 0.4em 0;
+  padding: 0.4em;
+  margin: 0 0 0.5em 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+input:disabled {
+  color: #ccc;
+}
+
+button {
+  color: #333;
+  background-color: #f6f6f6;
+  outline: none;
+}
+
+button:disabled {
+  color: #999;
+}
+
+button:not(:disabled):active {
+  background-color: #ddd;
+}
+
+button:focus {
+  border-color: #666;
+}
+
+:export {
+  chart-dark-blue: $chart-dark-blue;
+  chart-orange: $chart-orange;
+  chart-lighter-blue: $chart-lighter-blue;
+}
