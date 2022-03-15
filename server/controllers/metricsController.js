@@ -30,8 +30,23 @@ metricsController.getSessionNum = (req, res, next) => {
 metricsController.getSessionLogs = (req, res, next) => {
         // metricsController.incrSession = true;
         // const maxSession = db.query(`SELECT MAX(session_num) FROM metrics`);
-        // const query = `SELECT * FROM metrics WHERE session_num = `
-        return next();
+        console.log('getting session logs!');
+        const query = `SELECT * FROM metrics WHERE session_num = $1 LIMIT 500`
+        //db.query(query, [sessionNum])
+        db.query(query, [metricsController.sessionNum])
+                .then((data) => {
+                        //store something to send to the front-end here... i think it'll be in the res.rows
+                        console.log(`this is our data`, data.rows);
+                        res.locals.logs = data.rows; 
+                        console.log(`this is our res.locals.logs`, res.locals.logs)
+                        return next();
+                })
+                .catch((err) => {
+                        return next({
+                                log: `Cannot get session logs. ERROR: ${err}`,
+                                message: { err: 'Error occurred in metricsController' }
+                        });
+                })
 }
 
 // ROLE: adding requests from dev app to the database

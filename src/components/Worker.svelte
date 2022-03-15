@@ -13,11 +13,11 @@
     sessionNum,
   } from '../store.js';
   import {
-    testRequest,
+    // testRequest,
     createData,
     createLineGraph,
     createPieChart,
-    mockDBRequest,
+    // mockDBRequest,
   } from '../functions.js';
 
   $: console.log(workerTimer);
@@ -34,7 +34,7 @@
     // testRequest();
 
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
-    await fetch('http://localhost:3000//sessionNum', {
+    await fetch('http://localhost:3000/sessionNum', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -46,23 +46,23 @@
     // workerTimer.stop = performance.now();
     // mockDBRequest();
 
-    await fetch('http://localhost:3000/', {
+    await fetch('http://localhost:3000/sessionLogs', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
-        const logs = data.logs;
-        console.log(logs);
-        for (let i = 0; i < logs.length; i++) {
-          if (logs[i].session_num === $sessionNum) {
-            $mockLogArray.push(logs[i]);
-          }
+        // const logs = data;
+        // console.log(logs);
+        for (let i = 0; i < data.length; i++) {
+          // if (logs[i].session_num === $sessionNum) {
+            $mockLogArray.push(data[i]);
+          // }
         }
       });
 
-    console.log($mockLogArray);
+    console.log(`Mock Log Array: ${$mockLogArray}`);
   };
 
   const chart = () => {
@@ -71,10 +71,10 @@
       createData($mockLogArray);
       $chartFlag = true;
       setTimeout(() => {
-        createLineGraph();
-        createPieChart();
+      createLineGraph();
+      createPieChart();
       }, 2000);
-    }
+     }
     console.log($mockLogArray);
   };
 
