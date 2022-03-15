@@ -5,7 +5,7 @@ export let theme = writable('Misty');
 export let previousTheme = writable('Misty');
 export let chartFlag = writable(false);
 // no worky
-
+export let sessionNum = writable(1);
 export const workers = [
   { id: 1, name: 'Worker 1' },
   { id: 2, name: 'Worker 2' },
@@ -24,6 +24,7 @@ export const workerTimer = writable({
   requestComplete: 0,
 });
 
+export const mockLogArray = writable([]);
 export const logArray = writable([
   {
     status: 200,
@@ -39,7 +40,7 @@ export const logArray = writable([
   },
 ]);
 
-export const labels = [`${0}ms`];
+export const labels = [0];
 export const succs = [0];
 export const errs = [0];
 export const subReqs = [0];
