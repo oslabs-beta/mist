@@ -1,58 +1,90 @@
 <script>
+  import axios from 'axios';
   import LineGraph from './charts/LineGraph.svelte';
   import Table from './charts/Table.svelte';
   import PieChart from './charts/PieChart.svelte';
-  import { workerTimer, chartFlag, theme, previousTheme } from '../store.js';
+  import {
+    workerTimer,
+    chartFlag,
+    theme,
+    previousTheme,
+    logArray,
+    mockLogArray,
+    sessionNum,
+  } from '../store.js';
   import {
     testRequest,
     createData,
     createLineGraph,
     createPieChart,
+    mockDBRequest,
   } from '../functions.js';
 
   $: console.log(workerTimer);
   $: console.log(`here's the chart flag: ${chartFlag}`);
-  let uniqueKey = {};
-  // let chartFlag = false;
-  // $: {
-  //   console.log(`The new theme is ${theme}`);
-  //   uniqueKey = {};
-  //   createLineGraph();
-  //   createPieChart();
-  // }
+  $: console.log(logArray);
+  $: console.log(mockLogArray);
 
-  const start = () => {
-    workerTimer.start = performance.now();
-    testRequest();
+  let uniqueKey = {};
+
+  const start = async () => {
+    workerTimer.start = Date.now();
+    console.log(`Session Number: ${$sessionNum}`);
+    // workerTimer.start = performance.now();
+    // testRequest();
+
+    // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
+    await fetch('http://localhost:3000//sessionNum', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
-  const stop = () => {
-    workerTimer.stop = performance.now();
+  const stop = async () => {
+    workerTimer.stop = Date.now();
+    // workerTimer.stop = performance.now();
+    // mockDBRequest();
+
+    await fetch('http://localhost:3000/', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        const logs = data.logs;
+        console.log(logs);
+        for (let i = 0; i < logs.length; i++) {
+          if (logs[i].session_num === $sessionNum) {
+            $mockLogArray.push(logs[i]);
+          }
+        }
+      });
+
+    console.log($mockLogArray);
   };
 
   const chart = () => {
     if ($chartFlag) alert('Please reset metrics before generating new ones');
-    // if ($chartFlag && $theme !== $previousTheme) {
-    //   $previousTheme = $theme;
-    //   uniqueKey = {};
-    //   setTimeout(() => {
-    //     createLineGraphCache();
-    //     createPieChartCache();
-    //   }, 1000);
-    // }
     if (!$chartFlag) {
-      createData();
+      createData($mockLogArray);
       $chartFlag = true;
       setTimeout(() => {
         createLineGraph();
         createPieChart();
-      }, 1000);
+      }, 2000);
     }
+    console.log($mockLogArray);
   };
 
   const resetChart = () => {
     uniqueKey = {};
+    mockLogArray.set([]);
+    // TO INCREMENT SESSION NUMBER...
+    $sessionNum++;
     $chartFlag = false;
+    console.log($mockLogArray);
   };
 </script>
 

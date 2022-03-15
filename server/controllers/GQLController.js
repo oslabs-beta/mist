@@ -9,15 +9,15 @@ const GQLController = {};
 GQLController.getMockData = (req, res, next) => {
   //access data from mockdb
   //serve back to front-end-- store in res.locals
+  // console.log(JSON.parse(mockdb));
   res.locals.data = mockdb;
   return next();
-}
+};
 
 //j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W
 
 //API KEY
 // 93bee872cd4aacfcae9fb5ca6e27a9d7021d2
-
 
 /* NOTE: GETTING PAST ACCOUNT PERMISSIONS BLOCK
   1) Set accountTag to account Id, which can be found in Cloudflare dashboard
@@ -33,10 +33,9 @@ GQLController.getGQLData = (req, res, next) => {
   const cloudflare_api_key = '93bee872cd4aacfcae9fb5ca6e27a9d7021d2';
   const cloudflare_api_token = 'j9dhZHx0KsB5BAM1awwi_Hb7MXmkLegg2RdHuw-W';
   //NOTE: when abstracting away, this cloudflare_id needs to be used for the 'account tag' value
-  const cloudflare_id = "b3b6a9170e95e7d2694f728cfe832d2b";
+  const cloudflare_id = 'b3b6a9170e95e7d2694f728cfe832d2b';
   const payload = {
-    "query": 
-      `query {
+    query: `query {
           viewer {
             accounts(filter: {accountTag: $accountTag}) {
               workersInvocationsAdaptive(
@@ -63,12 +62,12 @@ GQLController.getGQLData = (req, res, next) => {
           }
         }`,
 
-    "variables": {
-      "accountTag": cloudflare_id,
-      "datetimeStart": "2022-03-09T10:05:00.000Z",
-      "datetimeEnd": "2022-03-09T23:00:00.000Z",
-    }
-  }
+    variables: {
+      accountTag: cloudflare_id,
+      datetimeStart: '2022-03-09T10:05:00.000Z',
+      datetimeEnd: '2022-03-09T23:00:00.000Z',
+    },
+  };
 
   //run in terminal "node server/server.js"
   //listening on port 3000
@@ -106,44 +105,42 @@ module.exports = GQLController;
 //   "success":true,
 //   "errors":[],
 //   "messages":[{"code":10000,"message":"This API Token is valid and active","type":null}
-// ]}%    
+// ]}%
 
-
-    // "query" : `
-    //   query {
-    //     __schema {
-    //       types {
-    //         name {
-    //           viewer
-    //         }
-    //       }
-    //     }
-    //   }`,
-
+// "query" : `
+//   query {
+//     __schema {
+//       types {
+//         name {
+//           viewer
+//         }
+//       }
+//     }
+//   }`,
 
 // query: `query GetWorkersAnalytics($accountTag: string, $datetimeStart: string, $datetimeEnd: string, $scriptName: string) {
-    //     viewer {
-    //       accounts(filter: {accountTag: $accountTag}) {
-    //         workersInvocationsAdaptive(limit: 100, filter: {
-    //           scriptName: $scriptName,
-    //           datetime_geq: $datetimeStart,
-    //           datetime_leq: $datetimeEnd
-    //         }) {
-    //           sum {
-    //             subrequests
-    //             requests
-    //             errors
-    //           }
-              // quantiles {
-              //   cpuTimeP50
-              //   cpuTimeP99
-              // }
-              // dimensions{
-              //   datetime
-              //   scriptName
-              //   status
-              // }
-    //         }
-    //       }
-    //     }
-    //   }`,
+//     viewer {
+//       accounts(filter: {accountTag: $accountTag}) {
+//         workersInvocationsAdaptive(limit: 100, filter: {
+//           scriptName: $scriptName,
+//           datetime_geq: $datetimeStart,
+//           datetime_leq: $datetimeEnd
+//         }) {
+//           sum {
+//             subrequests
+//             requests
+//             errors
+//           }
+// quantiles {
+//   cpuTimeP50
+//   cpuTimeP99
+// }
+// dimensions{
+//   datetime
+//   scriptName
+//   status
+// }
+//         }
+//       }
+//     }
+//   }`,

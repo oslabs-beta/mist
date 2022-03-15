@@ -2,6 +2,7 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 import {
   workerTimer,
+  mockLogArray,
   labels,
   succs,
   errs,
@@ -30,48 +31,92 @@ export const testRequest = () => {
   };
   workerTimer.requestComplete = performance.now();
 };
-export const createData = () => {
-  const duration = workerTimer.stop - workerTimer.start;
-  const randomizer = () => Math.trunc(Math.random() * 6 + 1);
-  for (let i = 100; i < duration; i += 100) {
-    labels.push(`${i}ms`);
-    labelsCache.push(`${i}ms`);
 
-    if (randomizer() > 3) {
-      const success = randomizer();
-      const errors = randomizer();
-      const subRequests = randomizer();
-      succs.push(success);
-      succsCache.push(success);
-      pieData[0] += success;
-      pieDataCache[0] += success;
-      errs.push(errors);
-      errsCache.push(errors);
-      pieData[1] += errors;
-      pieDataCache[1] += errors;
-      subReqs.push(subRequests);
-      subReqsCache.push(subRequests);
-      pieData[2] += subRequests;
-      pieDataCache[2] += subRequests;
-    } else {
+export const mockDBRequest = () => {
+  axios
+    .get('http://localhost:3000/')
+    .then((data) => {
+      data.json();
+    })
+    .then((result) => {
+      const logs = result.logs;
+      console.log(logs);
+      for (let i = 0; i < logs.length; i++) {
+        mockLogArray.push(logs[i]);
+      }
+    });
+};
+
+export const createData = (logs) => {
+  // RESET CHARTING DATA
+  if (labels.length > 1) {
+    labels.length = 0;
+    labels.push(0);
+    succs.length = 0;
+    succs.push(0);
+    errs.length = 0;
+    errs.push(0);
+    subReqs.length = 0;
+    subReqs.push(0);
+    pieData.length = 0;
+    pieData.push(0);
+    pieData.push(0);
+    pieData.push(0);
+  }
+  // GENERATE NEW CHARTING DATA
+  const duration = workerTimer.stop - workerTimer.start;
+  for (let i = 50; i < duration; i += 50) {
+    labels.push(i);
+    succs.push(0);
+    errs.push(0);
+    subReqs.push(0);
+    if (i + 50 >= duration) {
+      labels.push(i + 50);
       succs.push(0);
-      succsCache.push(0);
       errs.push(0);
-      errsCache.push(0);
       subReqs.push(0);
-      subReqsCache.push(0);
-    }
-    if (i + 100 > duration) {
-      labels.push(`${i + 100}ms`);
-      labelsCache.push(`${i + 100}ms`);
-      succs.push(0);
-      succsCache.push(0);
-      errs.push(0);
-      errsCache.push(0);
-      subReqs.push(0);
-      subReqsCache.push(0);
     }
   }
+  // CREATING DUMMY REQUEST TIMES AND PLOTTING PIE DATA
+  const requestTimes = [];
+  console.log('these are the request times', requestTimes);
+  for (let i = 0; i < logs.length; i++) {
+    requestTimes.push(Math.trunc(Math.random() * duration));
+    if (logs[i].status < 300 && logs[i].status !== 204) pieData[0] += 1;
+    if (logs[i].status > 299 && logs[i].status < 500) pieData[1] += 1;
+    if (logs[i].status === 204) pieData[2] += 1;
+  }
+
+  // SORTING DUMMY REQUEST TIMES AND PLOTTING SUCCS/ERRS/SUBREQS
+  console.log(requestTimes);
+  const sortedReqTimes = requestTimes.slice().sort((a, b) => a - b);
+  const logsSlice = logs.slice();
+  console.log(`sorted Req Times: ${sortedReqTimes}`);
+  for (let i = 0; i < labels.length; i++) {
+    const label = labels[i];
+    console.log('outer for loop hit');
+
+    for (let j = 0; j < logsSlice.length; j++) {
+      console.log(sortedReqTimes[j]);
+      console.log('hello');
+      if (Math.abs(sortedReqTimes[j] - label) <= 25) {
+        logsSlice[j].status >= 200 &&
+        logsSlice[j].status !== 204 &&
+        logsSlice[j].status < 300
+          ? (succs[i] += 1)
+          : logsSlice[j].status >= 300
+          ? (errs[i] += 1)
+          : (subReqs[i] += 1);
+        logsSlice.shift();
+        sortedReqTimes.shift();
+      }
+    }
+  }
+
+  console.log(`labels ${labels}`);
+  console.log(`req times ${requestTimes}`);
+  console.log(`successes ${succs}`);
+  console.log(`errors ${errs}`);
 };
 export const createLineGraph = () => {
   const data = {
@@ -108,6 +153,7 @@ export const createLineGraph = () => {
       maintainAspectRatio: false,
       scales: {
         x: {
+          min: 0,
           title: {
             display: true,
             align: 'center',
@@ -118,6 +164,7 @@ export const createLineGraph = () => {
           },
         },
         y: {
+          min: 0,
           title: {
             display: true,
             align: 'center',
@@ -201,6 +248,7 @@ export const createBarChart = () => {
     options: {
       scales: {
         x: {
+          min: 0,
           title: {
             diplay: true,
             color: grid,
@@ -216,6 +264,7 @@ export const createBarChart = () => {
           color: grid,
         },
         y: {
+          min: 0,
           title: {
             diplay: true,
             color: grid,
@@ -236,157 +285,3 @@ export const createBarChart = () => {
 
   const stackedBar = new Chart(document.getElementById('barChart'), config);
 };
-
-// export const createLineGraphCache = () => {
-//   const data = {
-//     labels: labelsCache,
-//     datasets: [
-//       {
-//         label: 'Successes',
-//         backgroundColor: 'rgb(255, 99, 255)', //pink
-//         borderColor: 'rgb(255, 99, 255)',
-//         data: succsCache,
-//       },
-
-//       {
-//         label: 'Errors',
-//         backgroundColor: 'rgb(255, 167, 99)', //orange
-//         borderColor: 'rgb(255, 167, 99)',
-//         data: errsCache,
-//       },
-
-//       {
-//         label: 'Sub-Requests',
-//         backgroundColor: 'rgb(96, 17, 166)', //purple
-//         borderColor: 'rgb(96, 17, 166)',
-//         data: subReqsCache,
-//       },
-//     ],
-//   };
-
-//   const config = {
-//     type: 'line',
-//     data: data,
-//     options: {
-//       responsive: true,
-//       maintainAspectRatio: false,
-//       scales: {
-//         x: {
-//           title: {
-//             display: true,
-//             align: 'center',
-//             text: 'Time in milliseconds',
-//           },
-//           grid: {
-//             color: grid,
-//           },
-//         },
-//         y: {
-//           title: {
-//             display: true,
-//             align: 'center',
-//             text: '# of Requests',
-//           },
-//           grid: {
-//             color: grid,
-//           },
-//         },
-//       },
-//     },
-//   };
-
-//   const myChart = new Chart(document.getElementById('myChart'), config);
-// };
-// export const createPieChartCache = () => {
-//   const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
-//   const data = {
-//     labels: pieLabels,
-//     datasets: [
-//       {
-//         label: 'Worker Activity',
-//         backgroundColor: [
-//           'rgb(255, 99, 255)',
-//           'rgb(255, 167, 99)',
-//           'rgb(96, 17, 166)',
-//         ],
-//         data: pieDataCache,
-//         hoverOffset: 4,
-//       },
-//     ],
-//   };
-
-//   const config = {
-//     type: 'doughnut',
-//     data: data,
-//     options: {
-//       responsive: true,
-//       maintainAspectRatio: true,
-//       legend: {
-//         display: true,
-//         labels: {
-//           fontSize: 30,
-//         },
-//       },
-//     },
-//   };
-
-//   const doughnutChart = new Chart(
-//     document.getElementById('doughnutChart'),
-//     config
-//   );
-// };
-
-// export const createBarChartCache = () => {
-//   const barLabels = ['Day 1', 'Day 2', 'Day 3'];
-
-//   const data = {
-//     labels: barLabels,
-//     datasets: [
-//       {
-//         label: 'Worker 1',
-//         backgroundColor: ['rgb(255, 99, 255)'], //pink
-//         data: [10, 20, 30],
-//         borderWidth: 1,
-//       },
-//       {
-//         label: 'Worker 2',
-//         backgroundColor: ['rgb(255, 167, 99)'], //orange
-//         data: [3, 6, 9],
-//         borderWidth: 1,
-//       },
-//       {
-//         label: 'Worker 3',
-//         backgroundColor: ['rgb(96, 17, 166)'], //purple
-//         data: [7, 2, 49],
-//         borderWidth: 1,
-//       },
-//     ],
-//   };
-
-//   const config = {
-//     type: 'bar',
-//     data: data,
-//     options: {
-//       scales: {
-//         x: {
-//           beginAtZero: true,
-//           stacked: true,
-//           grid: {
-//             color: grid,
-//             display: true,
-//           },
-//         },
-//         y: {
-//           beginAtZero: true,
-//           stacked: true,
-//           grid: {
-//             color: grid,
-//             display: true,
-//           },
-//         },
-//       },
-//     },
-//   };
-
-//   const stackedBar = new Chart(document.getElementById('barChart'), config);
-// };
