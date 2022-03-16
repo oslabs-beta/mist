@@ -41,16 +41,16 @@ export const logArray = writable([
 ]);
 
 export const labels = [0];
-export const succs = [0];
-export const errs = [0];
-export const subReqs = [0];
+export const succs = [];
+export const errs = [];
+export const subReqs = [];
 export const pieData = [0, 0, 0];
 
 // cache
 export const labelsCache = [`${0}ms`];
-export const succsCache = [0];
-export const errsCache = [0];
-export const subReqsCache = [0];
+export const testSuccs = [];
+export const testErrs = [];
+export const testSubReqs = [];
 export const pieDataCache = [0, 0, 0];
 // labelsCache,
 // succsCache,

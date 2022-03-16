@@ -10,54 +10,62 @@ import {
   pieData,
   theme,
   labelsCache,
-  succsCache,
-  errsCache,
-  subReqsCache,
+  testSuccs,
+  testErrs,
+  testSubReqs,
   pieDataCache,
 } from './store';
-//import colors from '../public/global.scss';
 
 const grid = '#F6F6F6';
 
-// export const testRequest = () => {
-//   // NOT FUNCTIONAL YET //
-//   workerTimer.requestStart = performance.now();
-//   async () => {
-//     try {
-//       await axios.get('http://localhost:3000/');
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-//   workerTimer.requestComplete = performance.now();
-// };
-
-// export const mockDBRequest = () => {
-//   axios
-//     .get('http://localhost:3000/')
-//     .then((data) => {
-//       data.json();
-//     })
-//     .then((result) => {
-//       const logs = result.logs;
-//       console.log(logs);
-//       for (let i = 0; i < logs.length; i++) {
-//         mockLogArray.push(logs[i]);
-//       }
-//     });
-// };
-
-export const createData = (logs) => {
+///////////// logs COMMENTED OUT FOR TESTING
+export const createData = (/*logs*/) => {
+  /// mock Logs for testing
+  const logs = [
+    {
+      _id: 1,
+      method: 'POST',
+      url: 'http://localhost:8080/penguins',
+      status: 200,
+      response_time_ms: 1.74,
+      session_num: 1,
+      start: 950,
+    },
+    {
+      _id: 2,
+      method: 'GET',
+      url: 'http://localhost:8080/',
+      status: 400,
+      response_time_ms: 2.56,
+      session_num: 1,
+      start: 725,
+    },
+    {
+      _id: 3,
+      method: 'POST',
+      url: 'http://localhost:8080/realData',
+      status: 200,
+      response_time_ms: 2.71,
+      session_num: 1,
+      start: 455,
+    },
+    {
+      _id: 4,
+      method: 'GET',
+      url: 'http://localhost:8080/',
+      status: 200,
+      response_time_ms: 3.56,
+      session_num: 2,
+      start: 950,
+    },
+  ];
   // RESET CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
-    succs.length = 0;
-    succs.push(0);
-    errs.length = 0;
-    errs.push(0);
-    subReqs.length = 0;
-    subReqs.push(0);
+    testSuccs.length = 0;
+    testErrs.length = 0;
+    testSubReqs.length = 0;
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
@@ -65,59 +73,32 @@ export const createData = (logs) => {
   }
   // GENERATE NEW CHARTING DATA
   const duration = workerTimer.stop - workerTimer.start;
-  for (let i = 50; i < duration; i += 50) {
+  for (let i = 0; i < duration; i += 50) {
     labels.push(i);
-    succs.push(0);
-    errs.push(0);
-    subReqs.push(0);
     if (i + 50 >= duration) {
       labels.push(i + 50);
-      succs.push(0);
-      errs.push(0);
-      subReqs.push(0);
     }
   }
-  // CREATING DUMMY REQUEST TIMES AND PLOTTING PIE DATA
-  // const requestTimes = [];
-  // console.log('these are the request times', requestTimes);
+
   for (let i = 0; i < logs.length; i++) {
-    // requestTimes.push(Math.trunc(Math.random() * duration));
-    if (logs[i].status < 300 && logs[i].status !== 204) pieData[0] += 1;
-    if (logs[i].status > 299 && logs[i].status < 500) pieData[1] += 1;
-    if (logs[i].status === 204) pieData[2] += 1;
-  }
-
-  // SORTING DUMMY REQUEST TIMES AND PLOTTING SUCCS/ERRS/SUBREQS
-  // console.log(requestTimes);
-  const sortedReqTimes = logs.slice().sort((a, b) => a.start - b.start);
-  const logsSlice = logs.slice();
-  console.log(`sorted Req Times: ${sortedReqTimes}`);
-  for (let i = 0; i < labels.length; i++) {
-    const label = labels[i];
-    console.log('outer for loop hit');
-
-    for (let j = 0; j < sortedReqTimes.length; j++) {
-      console.log(sortedReqTimes[j]);
-      console.log('hello');
-      const reqTime = Number(sortedReqTimes[j].start) - workerTimer.start;
-      if (Math.abs(reqTime - label) <= 25) {
-        sortedReqTimes[j].status >= 200 &&
-        sortedReqTimes[j].status !== 204 &&
-        sortedReqTimes[j].status < 300
-          ? (succs[i] += 1)
-          : sortedReqTimes[j] >= 300
-          ? (errs[i] += 1)
-          : (subReqs[i] += 1);
-        sortedReqTimes.shift();
-       
-      }
+    if (logs[i].status < 300 && logs[i].status !== 204) {
+      pieData[0] += 1;
+      succs.push({ x: logs[i].start, y: logs[i].response_time_ms });
+    }
+    if (logs[i].status > 299 && logs[i].status < 500) {
+      pieData[1] += 1;
+      errs.push({ x: logs[i].start, y: logs[i].response_time_ms });
+    }
+    if (logs[i].status === 204) {
+      pieData[2] += 1;
+      subReqs.push({ x: logs[i].start, y: logs[i].response_time_ms });
     }
   }
 
   console.log(`labels ${labels}`);
   // console.log(`req times ${requestTimes}`);
-  console.log(`successes ${succs}`);
-  console.log(`errors ${errs}`);
+  // console.log(`successes ${succs}`);
+  // console.log(`errors ${errs}`);
 };
 export const createLineGraph = () => {
   const data = {
@@ -128,6 +109,8 @@ export const createLineGraph = () => {
         backgroundColor: '#6194BC', //darker blue
         borderColor: '#6194BC',
         data: succs,
+        showLine: false,
+        pointRadius: 5,
       },
 
       {
@@ -135,6 +118,8 @@ export const createLineGraph = () => {
         backgroundColor: '#FF9E01', //orange
         borderColor: '#FF9E01',
         data: errs,
+        showLine: false,
+        pointRadius: 5,
       },
 
       {
@@ -142,14 +127,25 @@ export const createLineGraph = () => {
         backgroundColor: '#D0EAFF', //lighter blue
         borderColor: '#D0EAFF',
         data: subReqs,
+        showLine: false,
+        pointRadius: 5,
       },
     ],
   };
 
   const config = {
-    type: 'line',
+    type: 'scatter',
     data: data,
     options: {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return `start time: ${context.parsed.x}ms | duration: ${context.parsed.y}ms`;
+            },
+          },
+        },
+      },
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -158,7 +154,7 @@ export const createLineGraph = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Time in milliseconds',
+            text: 'Time in Milliseconds',
           },
           grid: {
             color: grid /*'rgb(18, 16, 16)'*/,
@@ -169,7 +165,7 @@ export const createLineGraph = () => {
           title: {
             display: true,
             align: 'center',
-            text: '# of Requests',
+            text: 'Duration of Requests in Milliseconds',
           },
           grid: {
             color: grid /*'rgb(18, 16, 16)'*/,
@@ -179,7 +175,12 @@ export const createLineGraph = () => {
     },
   };
 
-  const myChart = new Chart(document.getElementById('myChart'), config);
+  const myChart = new Chart(
+    document.getElementById('myChart').getContext('2d'),
+    config
+  );
+  console.log(testSuccs);
+  console.log(testErrs);
 };
 export const createPieChart = () => {
   const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
