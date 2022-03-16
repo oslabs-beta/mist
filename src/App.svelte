@@ -7,11 +7,11 @@
 
   $: console.log($theme, $previousTheme);
 
-  let isLoggedIn = false;
+  // let isLoggedIn = false;
 
-  const login = () => {
-    isLoggedIn = !isLoggedIn;
-  };
+  // const login = () => {
+  //   isLoggedIn = !isLoggedIn;
+  // };
   function toggle() {
     $previousTheme = $theme;
     window.document.body.classList.toggle('dark-mode');
@@ -27,12 +27,12 @@
 <DarkButton on:click={() => toggle()} />
 
 <main>
-  {#if !isLoggedIn}
+  <!-- {#if !isLoggedIn}
     <Login on:click={login} />
   {/if}
-  {#if isLoggedIn}
+  {#if isLoggedIn} -->
     <Workers />
-  {/if}
+  <!-- {/if} -->
 </main>
 
 <style>

@@ -33,6 +33,7 @@
     // workerTimer.start = performance.now();
     // testRequest();
 
+    //////// COMMENTED OUT FOR TESTING
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
     await fetch('http://localhost:3000/sessionNum', {
       method: 'GET',
@@ -46,6 +47,7 @@
     // workerTimer.stop = performance.now();
     // mockDBRequest();
 
+    //////// COMMENTED OUT FOR TESTING
     await fetch('http://localhost:3000/sessionLogs', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -57,7 +59,7 @@
         // console.log(logs);
         for (let i = 0; i < data.length; i++) {
           // if (logs[i].session_num === $sessionNum) {
-            $mockLogArray.push(data[i]);
+          $mockLogArray.push(data[i]);
           // }
         }
       });
@@ -68,13 +70,15 @@
   const chart = () => {
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
+      ////////// COMMENTED OUT FOR TESTING
       createData($mockLogArray);
+      // createData();
       $chartFlag = true;
       setTimeout(() => {
-      createLineGraph();
-      createPieChart();
+        createLineGraph();
+        createPieChart();
       }, 2000);
-     }
+    }
     console.log($mockLogArray);
   };
 
@@ -114,7 +118,7 @@
 
   <!-- <PieChart /> -->
   <!-- <PieChart /> -->
-  <button on:click>Back to workers</button>
+  <button on:click>Back to main page</button>
 </div>
 
 <style>
