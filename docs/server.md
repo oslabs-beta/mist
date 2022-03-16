@@ -6,7 +6,7 @@ Our port is set to localhost:3000.
 
 ## `app.post('/allData', metricsController.siftMetrics,metricsController.addMetrics,)`
 
-After editing the **_miniflare_** npm file, data from any requests sent to the **_miniflare_** server will be sent in the body of a POST request to this route on the **_mist_** server. The request is directed to the metricsController where the siftMetrics method converts the data into the proper format for the database, and the addMetrics method posts the data to the user's SQL database.
+After editing the **_Miniflare_** npm file, data from any requests sent to the **_Miniflare_** server will be sent in the body of a POST request to this route on the **_mist_** server. The request is directed to the metricsController where the siftMetrics method converts the data into the proper format for the database, and the addMetrics method posts the data to the user's SQL database.
 
 ## `app.get('/sessionNum', metricsController.getSessionNum)`
 
