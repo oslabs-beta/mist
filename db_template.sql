@@ -11,8 +11,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 
-/*  */
---FIX: CHANGE RESPONSE TIME TO FLOAT
 
 CREATE TABLE public.metrics (
     "_id" serial PRIMARY KEY,
