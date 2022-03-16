@@ -5,13 +5,13 @@
   import BarChart from './charts/BarChart.svelte';
 
   let showWorker = false;
-  let currentWorker;
-  const toggleWorker = (id) => {
-    currentWorker = workers.filter((worker) => worker.id === id)[0];
+  // let currentWorker;
+  const toggleWorker = (/*id*/) => {
+    // currentWorker = workers.filter((worker) => worker.id === id)[0];
     showWorker = true;
   };
   const exitWorker = () => {
-    currentWorker = undefined;
+    // currentWorker = undefined;
     showWorker = false;
     $chartFlag = false;
   };
@@ -20,24 +20,27 @@
 <!-- html goes here -->
 
 {#if !showWorker}
-  <h1>All Workers</h1>
-  <h3>Email: {user.email} API Key: {user.apiKey}</h3>
-  <h3>Here are your App level metrics</h3>
+  <h1>Worker Summary</h1>
+  <!-- <h3>Email: {user.email} API Key: {user.apiKey}</h3> -->
+  <!-- <h3>Here are your App level metrics</h3> -->
   <div class="barChart">
     <BarChart />
   </div>
 
-  {#each workers as worker (worker.id)}
-    <div>
-      <h1>{worker.name}</h1>
-      <button on:click={() => toggleWorker(worker.id)}>Show Worker</button>
-    </div>
-  {/each}
+  <!-- {#each workers as worker (worker.id)} -->
+  <div>
+    <!-- <h1>{worker.name}</h1> -->
+    <!-- <h1>Worker</h1> -->
+    <!-- <button on:click={() => toggleWorker(worker.id)}>Show Worker</button> -->
+    <button on:click={() => toggleWorker()}>Show Worker</button>
+  </div>
+  <!-- {/each} -->
 {/if}
 
 {#if showWorker}
   <Worker on:click={() => exitWorker()}>
-    <h1>{currentWorker.name}</h1>
+    <!-- <h1>{currentWorker.name}</h1> -->
+    <h1>Worker</h1>
   </Worker>
   <!-- bar chart here -->
 {/if}
