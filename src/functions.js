@@ -19,46 +19,46 @@ import {
 const grid = '#F6F6F6';
 
 ///////////// logs COMMENTED OUT FOR TESTING
-export const createData = (/*logs*/) => {
+export const createData = (logs) => {
   /// mock Logs for testing
-  const logs = [
-    {
-      _id: 1,
-      method: 'POST',
-      url: 'http://localhost:8080/penguins',
-      status: 200,
-      response_time_ms: 1.74,
-      session_num: 1,
-      start: 950,
-    },
-    {
-      _id: 2,
-      method: 'GET',
-      url: 'http://localhost:8080/',
-      status: 400,
-      response_time_ms: 2.56,
-      session_num: 1,
-      start: 725,
-    },
-    {
-      _id: 3,
-      method: 'POST',
-      url: 'http://localhost:8080/realData',
-      status: 200,
-      response_time_ms: 2.71,
-      session_num: 1,
-      start: 455,
-    },
-    {
-      _id: 4,
-      method: 'GET',
-      url: 'http://localhost:8080/',
-      status: 200,
-      response_time_ms: 3.56,
-      session_num: 2,
-      start: 950,
-    },
-  ];
+  // const logs = [
+  //   {
+  //     _id: 1,
+  //     method: 'POST',
+  //     url: 'http://localhost:8080/penguins',
+  //     status: 200,
+  //     response_time_ms: 1.74,
+  //     session_num: 1,
+  //     start: 950,
+  //   },
+  //   {
+  //     _id: 2,
+  //     method: 'GET',
+  //     url: 'http://localhost:8080/',
+  //     status: 400,
+  //     response_time_ms: 2.56,
+  //     session_num: 1,
+  //     start: 725,
+  //   },
+  //   {
+  //     _id: 3,
+  //     method: 'POST',
+  //     url: 'http://localhost:8080/realData',
+  //     status: 200,
+  //     response_time_ms: 2.71,
+  //     session_num: 1,
+  //     start: 455,
+  //   },
+  //   {
+  //     _id: 4,
+  //     method: 'GET',
+  //     url: 'http://localhost:8080/',
+  //     status: 200,
+  //     response_time_ms: 3.56,
+  //     session_num: 2,
+  //     start: 950,
+  //   },
+  // ];
   // RESET CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
@@ -83,15 +83,15 @@ export const createData = (/*logs*/) => {
   for (let i = 0; i < logs.length; i++) {
     if (logs[i].status < 300 && logs[i].status !== 204) {
       pieData[0] += 1;
-      succs.push({ x: logs[i].start, y: logs[i].response_time_ms });
+      succs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
     }
     if (logs[i].status > 299 && logs[i].status < 500) {
       pieData[1] += 1;
-      errs.push({ x: logs[i].start, y: logs[i].response_time_ms });
+      errs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
     }
     if (logs[i].status === 204) {
       pieData[2] += 1;
-      subReqs.push({ x: logs[i].start, y: logs[i].response_time_ms });
+      subReqs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
     }
   }
 

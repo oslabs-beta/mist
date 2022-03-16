@@ -35,10 +35,10 @@
 
     //////// COMMENTED OUT FOR TESTING
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
-    // await fetch('http://localhost:3000/sessionNum', {
-    //   method: 'GET',
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
+    await fetch('http://localhost:3000/sessionNum', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
     // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
@@ -48,31 +48,31 @@
     // mockDBRequest();
 
     //////// COMMENTED OUT FOR TESTING
-    // await fetch('http://localhost:3000/sessionLogs', {
-    //   method: 'GET',
-    //   headers: { 'Content-Type': 'application/json' },
-    // })
-    //   .then((data) => data.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     // const logs = data;
-    //     // console.log(logs);
-    //     for (let i = 0; i < data.length; i++) {
-    //       // if (logs[i].session_num === $sessionNum) {
-    //       $mockLogArray.push(data[i]);
-    //       // }
-    //     }
-    //   });
+    await fetch('http://localhost:3000/sessionLogs', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        // const logs = data;
+        // console.log(logs);
+        for (let i = 0; i < data.length; i++) {
+          // if (logs[i].session_num === $sessionNum) {
+          $mockLogArray.push(data[i]);
+          // }
+        }
+      });
 
-    // console.log(`Mock Log Array: ${$mockLogArray}`);
+    console.log(`Mock Log Array: ${$mockLogArray}`);
   };
 
   const chart = () => {
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       ////////// COMMENTED OUT FOR TESTING
-      // createData($mockLogArray);
-      createData();
+      createData($mockLogArray);
+      // createData();
       $chartFlag = true;
       setTimeout(() => {
         createLineGraph();

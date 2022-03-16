@@ -75,6 +75,7 @@ metricsController.addMetrics = (req, res, next) => {
   //set up a SQL query to our db that adds all of these data points! Use those $
   const query = `INSERT INTO metrics (method, url, status, response_time_ms, session_num, start) VALUES ($1, $2, $3, $4, $5, $6)`;
   //call db.query(queryName, [array of metrics in order])
+  console.log(`these are our metrics`, res.locals.metrics)
   db.query(query, [method, url, status, responseTime, sessionNum, start])
     .then((res) => {
       return next();
