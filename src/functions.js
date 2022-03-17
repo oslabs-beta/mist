@@ -63,9 +63,9 @@ export const createData = (logs) => {
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
-    testSuccs.length = 0;
-    testErrs.length = 0;
-    testSubReqs.length = 0;
+    succs.length = 0;
+    errs.length = 0;
+    subReqs.length = 0;
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
