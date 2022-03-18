@@ -83,15 +83,25 @@ export const createData = (logs) => {
   for (let i = 0; i < logs.length; i++) {
     if (logs[i].status < 300 && logs[i].status !== 204) {
       pieData[0] += 1;
-      succs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
+      succs.push({
+        x: logs[i].start - workerTimer.start,
+        y: logs[i].response_time_ms,
+      });
     }
-    if (logs[i].status > 299 && logs[i].status < 500) {
+    // Cloudflare's highest error status is 530
+    if (logs[i].status > 299 && logs[i].status <= 530) {
       pieData[1] += 1;
-      errs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
+      errs.push({
+        x: logs[i].start - workerTimer.start,
+        y: logs[i].response_time_ms,
+      });
     }
     if (logs[i].status === 204) {
       pieData[2] += 1;
-      subReqs.push({ x: logs[i].start - workerTimer.start, y: logs[i].response_time_ms });
+      subReqs.push({
+        x: logs[i].start - workerTimer.start,
+        y: logs[i].response_time_ms,
+      });
     }
   }
 

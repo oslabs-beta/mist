@@ -54,8 +54,16 @@
   <tbody>
     {#each $mockLogArray as row}
       <tr>
-        {#each Object.values(row) as cell}
-          <td>{cell}</td>
+        {#each Object.entries(row) as [key, cell]}
+          <!-- {#each Object.values(row) as cell} -->
+
+          {#if key === 'start'}
+            <!-- LOGIC -->
+            <!-- {console.log(`this is our cell`, cell)} -->
+            <td>{new Date(Number(cell)).toLocaleTimeString()}</td>
+          {:else}
+            <td>{cell}</td>
+          {/if}
         {/each}
       </tr>
     {/each}
