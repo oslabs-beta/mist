@@ -23,7 +23,9 @@ metricsController.getSessionNum = (req, res, next) => {
 
 // ROLE: Selects metrics from the database for the current sessionNum and stores them in res.locals.logs
 metricsController.getSessionLogs = (req, res, next) => {
-  const query = `SELECT * FROM metrics WHERE session_num = $1 LIMIT 500`;
+  const { worker } = req.params;
+  //const query = `SELECT * FROM metrics WHERE session_num = (SELECT MAX(session_num) FROM metrics WHERE worker = $1)`;
+  const query = `SELECT * FROM metrics WHERE session_num = $1`
   db.query(query, [metricsController.sessionNum])
     .then((data) => {
       res.locals.logs = data.rows;
@@ -40,12 +42,13 @@ metricsController.getSessionLogs = (req, res, next) => {
 // ROLE: adding requests from dev app to the *metrics* table in database
 metricsController.siftMetrics = async (req, res, next) => {
   try {
-    const { method, url, status, responseTime } = req.body;
+    const { method, url, status, responseTime, workerName } = req.body;
     // ROLE: save those data points in our own object in the correct format
     const metrics = {
       method,
       url,
       status,
+      workerName
     };
     // ROLE: convert response time to a float w/o ms
     metrics.responseTime = Number(responseTime.replace(/[A-Za-z]/g, ''));
@@ -70,13 +73,12 @@ metricsController.siftMetrics = async (req, res, next) => {
 metricsController.addMetrics = (req, res, next) => {
   console.log('in add metrics controller');
   //destructure res.locals.metrics to get our metrics data
-  const { method, url, status, responseTime, sessionNum, start } =
-    res.locals.metrics;
+  const { method, url, status, responseTime, sessionNum, start, workerName } = res.locals.metrics;
   //set up a SQL query to our db that adds all of these data points! Use those $
-  const query = `INSERT INTO metrics (method, url, status, response_time_ms, session_num, start) VALUES ($1, $2, $3, $4, $5, $6)`;
+  const query = `INSERT INTO metrics (method, url, status, response_time_ms, session_num, start, worker) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
   //call db.query(queryName, [array of metrics in order])
   console.log(`these are our metrics`, res.locals.metrics)
-  db.query(query, [method, url, status, responseTime, sessionNum, start])
+  db.query(query, [method, url, status, responseTime, sessionNum, start, workerName])
     .then((res) => {
       return next();
     })
