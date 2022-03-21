@@ -31,12 +31,16 @@
     <Login on:click={login} />
   {/if}
   {#if isLoggedIn} -->
-    <Workers />
+  <h1>M I S T</h1>
+  <Worker />
   <!-- {/if} -->
 </main>
 
 <style>
   p {
+    color: #6194bc;
+  }
+  h1 {
     color: #6194bc;
   }
   main {

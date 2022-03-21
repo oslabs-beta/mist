@@ -23,9 +23,9 @@
   <h1>Worker Summary</h1>
   <!-- <h3>Email: {user.email} API Key: {user.apiKey}</h3> -->
   <!-- <h3>Here are your App level metrics</h3> -->
-  <div class="barChart">
+  <!-- <div class="barChart">
     <BarChart />
-  </div>
+  </div> -->
 
   <!-- {#each workers as worker (worker.id)} -->
   <div>

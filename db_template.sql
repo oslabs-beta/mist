@@ -19,7 +19,8 @@ CREATE TABLE public.metrics (
     "status" INTEGER,
     "response_time_ms" FLOAT,
     "session_num" INTEGER,
-    "start" BIGINT
+    "start" BIGINT,
+    "worker" VARCHAR(100)
 );
 
 -- postgres://xolvdajb:gGvN3x4pC06M_KKhW_BvjtY6IY_POA-s@ziggy.db.elephantsql.com/xolvdajb
