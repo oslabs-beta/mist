@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { createBarChart } from '../../functions.js';
-  onMount(createBarChart);
+  // onMount(createBarChart);
 </script>
 
 <canvas id="barChart" />

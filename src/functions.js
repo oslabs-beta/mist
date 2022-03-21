@@ -8,18 +8,21 @@ import {
   errs,
   subReqs,
   pieData,
-  theme,
-  labelsCache,
-  testSuccs,
-  testErrs,
-  testSubReqs,
-  pieDataCache,
+  // theme,
+  // labelsCache,
+  // testSuccs,
+  // testErrs,
+  // testSubReqs,
+  // pieDataCache,
+  currentWorker,
+  sessAvgs,
+  sessNums,
 } from './store';
 
 const grid = '#F6F6F6';
 
 ///////////// logs COMMENTED OUT FOR TESTING
-export const createData = (logs) => {
+export const createData = (logs, avgLogs) => {
   /// mock Logs for testing
   // const logs = [
   //   {
@@ -70,8 +73,12 @@ export const createData = (logs) => {
     pieData.push(0);
     pieData.push(0);
     pieData.push(0);
+    sessAvgs.length = 0;
+    sessNums.length = 0;
+    currentWorker.length = 0;
   }
   // GENERATE NEW CHARTING DATA
+  currentWorker.push(logs[0].worker);
   const duration = workerTimer.stop - workerTimer.start;
   for (let i = 0; i < duration; i += 50) {
     labels.push(i);
@@ -106,9 +113,29 @@ export const createData = (logs) => {
   }
 
   console.log(`labels ${labels}`);
-  // console.log(`req times ${requestTimes}`);
-  // console.log(`successes ${succs}`);
-  // console.log(`errors ${errs}`);
+
+  let curSess = 0;
+  // const sessNums = [];
+  const sessions = [[], [], [], [], []];
+  // const sessAvgs = [];
+  for (let i = 0; i < avgLogs.length; i++) {
+    if (i === 0) sessNums.push(avgLogs[i].session_num);
+    if (avgLogs[i].session_num !== sessNums[curSess]) {
+      ++curSess;
+      sessNums.push(avgLogs[i].session_num);
+    }
+    sessions[curSess].push(avgLogs[i].response_time_ms);
+  }
+  console.log(sessions);
+  sessions.forEach((session) => {
+    let total = 0;
+    for (let i = 0; i < session.length; i++) {
+      total += session[i];
+    }
+    sessAvgs.push(total / session.length);
+  });
+  console.log(`Session number: ${sessNums}`);
+  console.log(`Session Averages: ${sessAvgs}`);
 };
 export const createLineGraph = () => {
   const data = {
@@ -189,8 +216,8 @@ export const createLineGraph = () => {
     document.getElementById('myChart').getContext('2d'),
     config
   );
-  console.log(testSuccs);
-  console.log(testErrs);
+  // console.log(testSuccs);
+  // console.log(testErrs);
 };
 export const createPieChart = () => {
   const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
@@ -296,4 +323,55 @@ export const createBarChart = () => {
   };
 
   const stackedBar = new Chart(document.getElementById('barChart'), config);
+};
+
+export const createWorkerChart = () => {
+  const data = {
+    labels: sessNums,
+    datasets: [
+      {
+        label: [
+          `${sessNums[0]}`,
+          `${sessNums[1]}`,
+          `${sessNums[2]}`,
+          `${sessNums[3]}`,
+          `${sessNums[4]}`,
+        ],
+        backgroundColor: ['#6194BC'],
+        data: sessAvgs,
+        borderWidth: 1,
+      },
+    ],
+  };
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        x: {
+          min: 0,
+          title: {
+            diplay: true,
+            color: grid,
+            label: `Previous Sessions for Worker ${currentWorker[0]}`,
+            align: 'center',
+          },
+          beginAtZero: true,
+          color: grid,
+        },
+        y: {
+          min: 0,
+          title: {
+            diplay: true,
+            color: grid,
+            label: 'Avg Response Time in Milliseconds',
+            align: 'center',
+          },
+          beginAtZero: true,
+          color: grid,
+        },
+      },
+    },
+  };
+  const workerChart = new Chart(document.getElementById('barChart'), config);
 };
