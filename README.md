@@ -36,22 +36,24 @@ ADDED ON LINE 979:
 NEED SOME ERROR HANDLING FOR OUR FETCH THAT DOESN'T DISRUPT MINIFLARE WHEN NOT USING MIST
 
 ```js
-const response = await fetch('http://localhost:3000/allData', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    start,
-    method,
-    url,
-    status,
-    responseTime
+  const workerName = 'YOUR WORKER NAME HERE'
+  const response = await fetch('http://localhost:3000/allData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }, 
+    body: JSON.stringify({
+      start,
+      method,
+      url,
+      status,
+      responseTime,
+      workerName
+    })
   })
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch((error) => console.log('Error: ', error))
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => console.log('Error: ', error))
 ```
 
 ## PART 2 - Interpreting Metrics
