@@ -9,6 +9,6 @@
 <style>
   #barChart {
     /* width: 75% !important; */
-    height: 550px !important;
+    height: 700px !important;
   }
 </style>

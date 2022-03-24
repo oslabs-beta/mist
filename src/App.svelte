@@ -1,6 +1,4 @@
 <script>
-  import Login from './components/Login.svelte';
-  import Workers from './components/Workers.svelte';
   import Worker from './components/Worker.svelte';
   import DarkButton from './components/DarkButton.svelte';
   import { theme, previousTheme } from './store';

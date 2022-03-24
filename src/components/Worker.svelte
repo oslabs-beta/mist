@@ -86,8 +86,8 @@
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       ////////// COMMENTED OUT FOR TESTING
-      createData($mockLogArray, $mockAvgsArray);
-      // createData();
+      // createData($mockLogArray, $mockAvgsArray);
+      createData();
       $chartFlag = true;
       setTimeout(() => {
         createLineGraph();
@@ -139,12 +139,14 @@
 
   <!-- <PieChart /> -->
   <!-- <PieChart /> -->
-  <button on:click>Back to main page</button>
+  <!-- <button on:click>Back to main page</button> -->
 </div>
 
 <style>
   .pieChart {
     margin: auto;
     width: 25%;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 </style>

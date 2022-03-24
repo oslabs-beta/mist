@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection';
 import {
   workerTimer,
   mockLogArray,
@@ -22,46 +23,132 @@ import {
 const grid = '#F6F6F6';
 
 ///////////// logs COMMENTED OUT FOR TESTING
-export const createData = (logs, avgLogs) => {
+export const createData = (/*logs, avgLogs*/) => {
   /// mock Logs for testing
-  // const logs = [
-  //   {
-  //     _id: 1,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/penguins',
-  //     status: 200,
-  //     response_time_ms: 1.74,
-  //     session_num: 1,
-  //     start: 950,
-  //   },
-  //   {
-  //     _id: 2,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 400,
-  //     response_time_ms: 2.56,
-  //     session_num: 1,
-  //     start: 725,
-  //   },
-  //   {
-  //     _id: 3,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/realData',
-  //     status: 200,
-  //     response_time_ms: 2.71,
-  //     session_num: 1,
-  //     start: 455,
-  //   },
-  //   {
-  //     _id: 4,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 200,
-  //     response_time_ms: 3.56,
-  //     session_num: 2,
-  //     start: 950,
-  //   },
-  // ];
+  const logs = [
+    {
+      _id: 193,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 4.3,
+      session_num: 30,
+      start: '1647906546879',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 194,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 2.36,
+      session_num: 30,
+      start: '1647906547045',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 195,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.47,
+      session_num: 30,
+      start: '1647906547104',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 196,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.53,
+      session_num: 30,
+      start: '1647906547178',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 197,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.74,
+      session_num: 30,
+      start: '1647906547533',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 198,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.23,
+      session_num: 30,
+      start: '1647906547572',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 199,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.72,
+      session_num: 30,
+      start: '1647906548039',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 200,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.63,
+      session_num: 30,
+      start: '1647906548087',
+      worker: 'sample-worker-2',
+    },
+  ];
+  //// mock avgLogs
+  const avgLogs = [
+    { response_time_ms: 4.18, session_num: 26 },
+    { response_time_ms: 0.68, session_num: 26 },
+    { response_time_ms: 1.26, session_num: 26 },
+    { response_time_ms: 1.4, session_num: 26 },
+    { response_time_ms: 2.49, session_num: 26 },
+    { response_time_ms: 0.81, session_num: 26 },
+    { response_time_ms: 14.69, session_num: 27 },
+    { response_time_ms: 0.83, session_num: 27 },
+    { response_time_ms: 1.22, session_num: 27 },
+    { response_time_ms: 1.4, session_num: 27 },
+    { response_time_ms: 2.76, session_num: 27 },
+    { response_time_ms: 1.63, session_num: 27 },
+    { response_time_ms: 1.57, session_num: 27 },
+    { response_time_ms: 0.75, session_num: 27 },
+    { response_time_ms: 10.85, session_num: 28 },
+    { response_time_ms: 1.14, session_num: 28 },
+    { response_time_ms: 1.34, session_num: 28 },
+    { response_time_ms: 2.54, session_num: 28 },
+    { response_time_ms: 1.46, session_num: 28 },
+    { response_time_ms: 2.52, session_num: 28 },
+    { response_time_ms: 9.21, session_num: 29 },
+    { response_time_ms: 0.79, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.13, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.11, session_num: 29 },
+    { response_time_ms: 1.03, session_num: 29 },
+    { response_time_ms: 0.69, session_num: 29 },
+    { response_time_ms: 1.5, session_num: 29 },
+    { response_time_ms: 1.18, session_num: 29 },
+    { response_time_ms: 4.3, session_num: 30 },
+    { response_time_ms: 2.36, session_num: 30 },
+    { response_time_ms: 1.47, session_num: 30 },
+    { response_time_ms: 1.53, session_num: 30 },
+    { response_time_ms: 1.74, session_num: 30 },
+    { response_time_ms: 1.23, session_num: 30 },
+    { response_time_ms: 1.72, session_num: 30 },
+    { response_time_ms: 1.63, session_num: 30 },
+  ];
+
   // RESET CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
@@ -262,19 +349,19 @@ export const createBarChart = () => {
     datasets: [
       {
         label: 'Worker 1',
-        backgroundColor: ['#6194BC'], //pink
+        backgroundColor: ['#6194BC'],
         data: [10, 20, 30],
         borderWidth: 1,
       },
       {
         label: 'Worker 2',
-        backgroundColor: ['#FF9E01'], //orange
+        backgroundColor: ['#FF9E01'],
         data: [3, 6, 9],
         borderWidth: 1,
       },
       {
         label: 'Worker 3',
-        backgroundColor: ['#D0EAFF'], //purple
+        backgroundColor: ['#D0EAFF'],
         data: [7, 2, 49],
         borderWidth: 1,
       },
@@ -327,9 +414,16 @@ export const createBarChart = () => {
 
 export const createWorkerChart = () => {
   const data = {
-    labels: sessNums,
+    labels: [
+      `Session ${sessNums[0]}`,
+      `Session ${sessNums[1]}`,
+      `Session ${sessNums[2]}`,
+      `Session ${sessNums[3]}`,
+      `Session ${sessNums[4]}`,
+    ],
     datasets: [
       {
+        /*'Sessions',*/
         label: [
           `${sessNums[0]}`,
           `${sessNums[1]}`,
@@ -337,40 +431,82 @@ export const createWorkerChart = () => {
           `${sessNums[3]}`,
           `${sessNums[4]}`,
         ],
-        backgroundColor: ['#6194BC'],
+        backgroundColor: [
+          '#3a5971',
+          '#446884',
+          '#4e7696',
+          '#5785a9',
+          '#6194BC',
+        ],
         data: sessAvgs,
         borderWidth: 1,
       },
     ],
   };
+  // const plugin = {
+  //   tooltips: {
+  //     enabled: false,
+  //   },
+  // };
   const config = {
     type: 'bar',
     data: data,
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
       scales: {
         x: {
-          min: 0,
           title: {
             diplay: true,
-            color: grid,
-            label: `Previous Sessions for Worker ${currentWorker[0]}`,
-            align: 'center',
+            // align: 'center',
+            // color: grid,
+            text: `Previous Sessions for Worker ${currentWorker[0]}`,
           },
-          beginAtZero: true,
+
+          // beginAtZero: true,
+          min: 0,
           color: grid,
         },
         y: {
-          min: 0,
           title: {
             diplay: true,
-            color: grid,
-            label: 'Avg Response Time in Milliseconds',
-            align: 'center',
+            // align: 'center',
+            // color: grid,
+            text: 'Avg Response Time in Milliseconds',
           },
-          beginAtZero: true,
+
+          // beginAtZero: true,
+          min: 0,
           color: grid,
         },
       },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Sessions',
+          // font: {
+          //   weight: 'normal',
+          // },
+        },
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          enabled: false,
+        },
+      },
+
+      // plugins: {
+      //   legend: {
+      //     labels: {
+      //       // This more specific font property overrides the global property
+      //       font: {
+      //         size: 20,
+      //       },
+      //     },
+      //   },
+      // },
     },
   };
   const workerChart = new Chart(document.getElementById('barChart'), config);
