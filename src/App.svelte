@@ -1,5 +1,5 @@
 <script>
-  import Login from './components/Login.svelte';
+  //import Login from './components/Login.svelte';
   import Workers from './components/Workers.svelte';
   import Worker from './components/Worker.svelte';
   import DarkButton from './components/DarkButton.svelte';
@@ -31,7 +31,7 @@
     <Login on:click={login} />
   {/if}
   {#if isLoggedIn} -->
-    <Workers />
+  <Worker />
   <!-- {/if} -->
 </main>
 
