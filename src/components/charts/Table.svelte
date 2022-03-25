@@ -49,6 +49,7 @@
       <th>RESPONSE TIME /MS</th>
       <th>SESSION NUMBER</th>
       <th>START TIME</th>
+      <th>WORKER NAME</th>
     </tr>
   </thead>
   <tbody>
