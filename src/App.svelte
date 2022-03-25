@@ -1,17 +1,11 @@
 <script>
-  import Login from './components/Login.svelte';
-  import Workers from './components/Workers.svelte';
   import Worker from './components/Worker.svelte';
   import DarkButton from './components/DarkButton.svelte';
   import { theme, previousTheme } from './store';
 
   $: console.log($theme, $previousTheme);
 
-  // let isLoggedIn = false;
-
-  // const login = () => {
-  //   isLoggedIn = !isLoggedIn;
-  // };
+  // toggle() triggers light/dark mode
   function toggle() {
     $previousTheme = $theme;
     window.document.body.classList.toggle('dark-mode');
@@ -27,21 +21,20 @@
 <DarkButton on:click={() => toggle()} />
 
 <main>
-  <!-- {#if !isLoggedIn}
-    <Login on:click={login} />
-  {/if}
-  {#if isLoggedIn} -->
   <h1>M I S T</h1>
   <Worker />
-  <!-- {/if} -->
 </main>
 
 <style>
   p {
     color: #6194bc;
+    opacity: 50%;
+    font-weight: 300;
   }
   h1 {
     color: #6194bc;
+    opacity: 50%;
+    font-weight: lighter;
   }
   main {
     text-align: center;

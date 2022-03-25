@@ -1,4 +1,4 @@
-<script>
+<!-- <script> //////////////// NO LONGER REQUIRED
   function toggle() {
     window.document.body.classList.toggle('dark-mode');
   }
@@ -21,4 +21,4 @@
     background-color: #0084f6;
     color: white;
   }
-</style>
+</style> -->

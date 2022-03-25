@@ -1,43 +1,34 @@
 <script>
-  import axios from 'axios';
-  import LineGraph from './charts/LineGraph.svelte';
+  import ScatterChart from './charts/ScatterChart.svelte';
   import Table from './charts/Table.svelte';
   import PieChart from './charts/PieChart.svelte';
-  import BarChart from './charts/BarChart.svelte';
+  import BarGraph from './charts/BarGraph.svelte';
   import {
     workerTimer,
     workerName,
     chartFlag,
-    theme,
-    previousTheme,
-    logArray,
     mockLogArray,
     mockAvgsArray,
     sessionNum,
   } from '../store.js';
   import {
-    // testRequest,
     createData,
-    createLineGraph,
+    createScatterChart,
     createPieChart,
-    createWorkerChart,
-    // mockDBRequest,
+    createBarGraph,
   } from '../functions.js';
 
   $: console.log(workerTimer);
   $: console.log(`here's the chart flag: ${chartFlag}`);
-  $: console.log(logArray);
   $: console.log(mockLogArray);
 
   let uniqueKey = {};
 
+  // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
   const start = async () => {
     workerTimer.start = Date.now();
     console.log(`Session Number: ${$sessionNum}`);
-    // workerTimer.start = performance.now();
-    // testRequest();
 
-    //////// COMMENTED OUT FOR TESTING
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
     await fetch('http://localhost:3000/sessionNum', {
       method: 'GET',
@@ -46,12 +37,10 @@
     // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
+  // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
   const stop = async () => {
     workerTimer.stop = Date.now();
-    // workerTimer.stop = performance.now();
-    // mockDBRequest();
 
-    //////// COMMENTED OUT FOR TESTING
     await fetch('http://localhost:3000/sessionLogs', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -82,23 +71,27 @@
     console.log(`Mock Log Array: ${$mockLogArray}`);
   };
 
+  // chart() generates metrics data from fetched session logs and initiates charting functions
   const chart = () => {
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
-      ////////// COMMENTED OUT FOR TESTING
-      createData($mockLogArray, $mockAvgsArray);
-      // createData();
+      ///////////////// COMMENTED OUT FOR TESTING //////////////////
+      // createData($mockLogArray, $mockAvgsArray);
+      // LIVE createData() ⤴️
+      // TEST createData() ⤵️
+      createData();
       $chartFlag = true;
       setTimeout(() => {
-        createLineGraph();
+        createScatterChart();
         createPieChart();
-        createWorkerChart();
+        createBarGraph();
       }, 2000);
     }
     console.log($mockAvgsArray);
     console.log($mockLogArray);
   };
 
+  // resetChart() resets the graph components (via uniqueKey) as well as the store, readying the app for the next recording session
   const resetChart = () => {
     uniqueKey = {};
     mockLogArray.set([]);
@@ -114,7 +107,7 @@
 
 <div class="backdrop">
   <slot />
-  <button on:click={start}>Start</button>
+  <button class="startBtn" on:click={start}>Start</button>
   <button on:click={stop}>Stop</button>
   <div>
     <button on:click={chart}>Generate Metrics</button>
@@ -127,24 +120,27 @@
       </div>
     {/if}
     <div class="lineGraph">
-      <LineGraph />
+      <ScatterChart />
     </div>
     <div class="pieChart">
       <PieChart />
     </div>
     <div class="barChart">
-      <BarChart />
+      <div class="innerBarChart">
+        <BarGraph />
+      </div>
     </div>
   {/key}
-
-  <!-- <PieChart /> -->
-  <!-- <PieChart /> -->
-  <button on:click>Back to main page</button>
 </div>
 
 <style>
+  .startBtn:focus {
+    background-color: #868686;
+  }
   .pieChart {
     margin: auto;
     width: 25%;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 </style>
