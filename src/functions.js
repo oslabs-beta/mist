@@ -18,7 +18,7 @@ const grid = '#F6F6F6';
 
 ///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
 export const createData = (/*logs, avgLogs*/) => {
-  /// mock Logs -> (for testing purposes)
+  /// dummy logs -> for testing purposes -> (coment out when live)
   const logs = [
     {
       _id: 193,
@@ -101,7 +101,7 @@ export const createData = (/*logs, avgLogs*/) => {
       worker: 'sample-worker-2',
     },
   ];
-  //// mock avgLogs -> (for testing purposes)
+  //// dummy avgLogs -> for testing purposes -> (coment out when live)
   const avgLogs = [
     { response_time_ms: 4.18, session_num: 26 },
     { response_time_ms: 0.68, session_num: 26 },
@@ -143,7 +143,7 @@ export const createData = (/*logs, avgLogs*/) => {
     { response_time_ms: 1.63, session_num: 30 },
   ];
 
-  // RESET CHARTING DATA
+  // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
@@ -158,7 +158,7 @@ export const createData = (/*logs, avgLogs*/) => {
     sessNums.length = 0;
     currentWorker.length = 0;
   }
-  // GENERATE NEW CHARTING DATA
+  // GENERATES NEW CHARTING DATA
   currentWorker.push(logs[0].worker);
   const duration = workerTimer.stop - workerTimer.start;
   for (let i = 0; i < duration; i += 50) {
@@ -196,9 +196,9 @@ export const createData = (/*logs, avgLogs*/) => {
   console.log(`labels ${labels}`);
 
   let curSess = 0;
-  // const sessNums = []; DELETE -> (imported from store)
+  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = []; DELETE -> (imported from store)
+  // const sessAvgs = []; // DELETE -> (imported from store)
   for (let i = 0; i < avgLogs.length; i++) {
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     if (avgLogs[i].session_num !== sessNums[curSess]) {
