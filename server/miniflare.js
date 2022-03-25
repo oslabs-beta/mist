@@ -1,7 +1,14 @@
-const express = require('express');
-const cors = require('cors');
 const { Miniflare, Log, LogLevel } = require('miniflare');
 const path = require('path');
+const {
+  HTTPPlugin,
+  convertNodeRequest,
+  createServer,
+  startServer,
+} = require('@miniflare/http-server');
+const { Log, LogLevel } = require('@miniflare/shared');
+const { MemoryStorage } = require('@miniflare/storage-memory');
+const http = require('http');
 
 const mistMiniflare = new Miniflare({
   // here we want to import and possibly decompile a client's
@@ -15,36 +22,33 @@ const mistMiniflare = new Miniflare({
   //could we add a method to this log object that is the fetch request to 3000???
 });
 
-// mistMiniflare.log.newMethod = () => console.log(this.start);
-// mistMiniflare.globals();
-//mistMiniflare.log.logWithLevel(2, 'log with level method is working');
-// console.log(mistMiniflare.log);
-
-// mistMiniflare.log.prototype.testing = function () {
-//   console.log('hey');
-// };
-
 // THIS WORKS
 async function serverCreator() {
-  const server = await mistMiniflare.startServer();
-  console.log('Listening on :8788');
-  return server;
+  const server = await mistMiniflare.createServer();
+  const plugins = await mistMiniflare.getPlugins();
+  const { httpsEnabled, host, port = DEFAULT_PORT } = plugins.HTTPPlugin;
+  return new Promise((resolve) => {
+    server.listen(port, host, () => {
+      // const log = (`this is our mistMiniflare log`, mistMiniflare.log);
+      // const protocol = httpsEnabled ? 'https' : 'http';
+      // log.info(`Listening on ${host ?? ''}:${port}`);
+      console.log(`here is a message!`);
+      console.log(`this is my port`, port);
+      console.log(`this is my host`, host);
+
+      resolve(server);
+    });
+  });
 }
 
-const server = serverCreator();
-
-// listen for the req / res objects passing through
-// server.listen('/', () => {
-//   // when request comes in
-//   console.log('listening on 8788');
-// });
+serverCreator();
 
 // fetching localhost:8788 once
-mistMiniflare.dispatchFetch('http://localhost:8788/').then((data) => {
-  //console.log(`this is our data`, data)
-  for (let key in data) {
-    console.log(key, ':', data[key]);
-  }
-});
+// mistMiniflare.dispatchFetch('http://localhost:8788/').then((data) => {
+//   //console.log(`this is our data`, data)
+//   for (let key in data) {
+//     console.log(key, ':', data[key]);
+//   }
+// });
 
 module.exports = mistMiniflare;
