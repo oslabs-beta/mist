@@ -1,6 +1,5 @@
-import axios from 'axios';
 import Chart from 'chart.js/auto';
-import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection';
+//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
   mockLogArray,
@@ -9,22 +8,17 @@ import {
   errs,
   subReqs,
   pieData,
-  // theme,
-  // labelsCache,
-  // testSuccs,
-  // testErrs,
-  // testSubReqs,
-  // pieDataCache,
   currentWorker,
   sessAvgs,
   sessNums,
 } from './store';
 
+// (couldn't figure out how to process scss in svelte/rollup)
 const grid = '#F6F6F6';
 
-///////////// logs COMMENTED OUT FOR TESTING
+///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
 export const createData = (/*logs, avgLogs*/) => {
-  /// mock Logs for testing
+  /// mock Logs -> (for testing purposes)
   const logs = [
     {
       _id: 193,
@@ -107,7 +101,7 @@ export const createData = (/*logs, avgLogs*/) => {
       worker: 'sample-worker-2',
     },
   ];
-  //// mock avgLogs
+  //// mock avgLogs -> (for testing purposes)
   const avgLogs = [
     { response_time_ms: 4.18, session_num: 26 },
     { response_time_ms: 0.68, session_num: 26 },
@@ -202,9 +196,9 @@ export const createData = (/*logs, avgLogs*/) => {
   console.log(`labels ${labels}`);
 
   let curSess = 0;
-  // const sessNums = [];
+  // const sessNums = []; DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = [];
+  // const sessAvgs = []; DELETE -> (imported from store)
   for (let i = 0; i < avgLogs.length; i++) {
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     if (avgLogs[i].session_num !== sessNums[curSess]) {
@@ -224,7 +218,7 @@ export const createData = (/*logs, avgLogs*/) => {
   console.log(`Session number: ${sessNums}`);
   console.log(`Session Averages: ${sessAvgs}`);
 };
-export const createLineGraph = () => {
+export const createScatterChart = () => {
   const data = {
     labels: labels,
     datasets: [
@@ -281,7 +275,7 @@ export const createLineGraph = () => {
             text: 'Time in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
         y: {
@@ -292,20 +286,20 @@ export const createLineGraph = () => {
             text: 'Duration of Requests in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
       },
     },
   };
 
-  const myChart = new Chart(
-    document.getElementById('myChart').getContext('2d'),
+  const scatterChart = new Chart(
+    document.getElementById('scatterChart').getContext('2d'),
     config
   );
-  // console.log(testSuccs);
-  // console.log(testErrs);
 };
+
+// attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
   const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
   const data = {
@@ -315,7 +309,6 @@ export const createPieChart = () => {
         label: 'Worker Activity',
         backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
         data: pieData,
-        hoverOffset: 4,
       },
     ],
   };
@@ -341,78 +334,8 @@ export const createPieChart = () => {
   );
 };
 
-export const createBarChart = () => {
-  const barLabels = ['Day 1', 'Day 2', 'Day 3'];
-
-  const data = {
-    labels: barLabels,
-    datasets: [
-      {
-        label: 'Worker 1',
-        backgroundColor: ['#6194BC'],
-        data: [10, 20, 30],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 2',
-        backgroundColor: ['#FF9E01'],
-        data: [3, 6, 9],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 3',
-        backgroundColor: ['#D0EAFF'],
-        data: [7, 2, 49],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const config = {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        x: {
-          min: 0,
-          title: {
-            diplay: true,
-            color: grid,
-            text: 'Session',
-            align: 'center',
-          },
-          beginAtZero: true,
-          stacked: true,
-          grid: {
-            display: true,
-            color: grid,
-          },
-          color: grid,
-        },
-        y: {
-          min: 0,
-          title: {
-            diplay: true,
-            color: grid,
-            text: '# of Requests per Worker',
-            align: 'center',
-          },
-          beginAtZero: true,
-          stacked: true,
-          grid: {
-            display: true,
-            color: grid,
-          },
-          color: grid,
-        },
-      },
-    },
-  };
-
-  const stackedBar = new Chart(document.getElementById('barChart'), config);
-};
-
-export const createWorkerChart = () => {
+// attaches Bar Graph to BarChart.svelte
+export const createBarGraph = () => {
   const data = {
     labels: [
       `Session ${sessNums[0]}`,
@@ -423,14 +346,7 @@ export const createWorkerChart = () => {
     ],
     datasets: [
       {
-        /*'Sessions',*/
-        label: [
-          `${sessNums[0]}`,
-          `${sessNums[1]}`,
-          `${sessNums[2]}`,
-          `${sessNums[3]}`,
-          `${sessNums[4]}`,
-        ],
+        label: 'Past Sessions Average Response Time',
         backgroundColor: [
           '#3a5971',
           '#446884',
@@ -443,71 +359,54 @@ export const createWorkerChart = () => {
       },
     ],
   };
-  // const plugin = {
-  //   tooltips: {
-  //     enabled: false,
-  //   },
-  // };
   const config = {
     type: 'bar',
     data: data,
     options: {
       responsive: true,
       maintainAspectRatio: false,
-
+      events: [],
       scales: {
         x: {
+          display: true,
           title: {
             diplay: true,
-            // align: 'center',
-            // color: grid,
             text: `Previous Sessions for Worker ${currentWorker[0]}`,
           },
-
-          // beginAtZero: true,
           min: 0,
+          grid: {
+            display: true,
+            color: grid,
+          },
           color: grid,
         },
         y: {
+          display: true,
+          beginAtZero: true,
+          ticks: {
+            callback: function (value, index, ticks) {
+              return value + 'ms';
+            },
+          },
           title: {
             diplay: true,
-            // align: 'center',
-            // color: grid,
             text: 'Avg Response Time in Milliseconds',
           },
-
-          // beginAtZero: true,
-          min: 0,
+          grid: {
+            display: true,
+            color: grid,
+          },
           color: grid,
         },
       },
       plugins: {
-        title: {
-          display: true,
-          text: 'Sessions',
-          // font: {
-          //   weight: 'normal',
-          // },
-        },
         legend: {
-          display: false,
-        },
-        tooltips: {
-          enabled: false,
+          labels: {
+            boxWidth: 0,
+          },
         },
       },
-
-      // plugins: {
-      //   legend: {
-      //     labels: {
-      //       // This more specific font property overrides the global property
-      //       font: {
-      //         size: 20,
-      //       },
-      //     },
-      //   },
-      // },
     },
   };
-  const workerChart = new Chart(document.getElementById('barChart'), config);
+  const barGraph = new Chart(document.getElementById('barGraph'), config);
 };

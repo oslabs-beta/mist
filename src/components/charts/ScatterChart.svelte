@@ -1,7 +1,7 @@
 <script>
 </script>
 
-<canvas id="myChart" />
+<canvas id="scatterChart" />
 
 <style>
   canvas {
