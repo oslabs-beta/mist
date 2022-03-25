@@ -31,6 +31,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
+    "miniflare": "^2.3.0",
     "sirv-cli": "^2.0.0",
     "websocket": "^1.0.34",
     "ws": "^8.5.0"
