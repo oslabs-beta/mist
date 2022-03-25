@@ -4,7 +4,7 @@
   import { theme, previousTheme } from './store';
 
   $: console.log($theme, $previousTheme);
-  
+
   // toggle() triggers light/dark mode
   function toggle() {
     $previousTheme = $theme;
