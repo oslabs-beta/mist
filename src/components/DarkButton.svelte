@@ -1,15 +1,7 @@
 <script>
-  // function toggle() {
-  //   window.document.body.classList.toggle('dark-mode');
-  // }
-  import { theme } from '../store';
-  // function toggle() {
-  //   window.document.body.classList.toggle('dark-mode');
-  //   $theme === 'light' ? 'dark' : 'light';
-  // }
 </script>
 
-<div>
+<div class="darkmodeBtn">
   <label class="switch">
     <input type="checkbox" on:click />
     <span class="slider round" />
@@ -17,6 +9,9 @@
 </div>
 
 <style>
+  .darkmodeBtn {
+    opacity: 75%;
+  }
   .switch {
     position: relative;
     display: inline-block;
@@ -62,16 +57,5 @@
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  button {
-    background-color: #0d47a1;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem;
-  }
-  :global(body.dark-mode) button {
-    background-color: #0084f6;
-    color: white;
   }
 </style>

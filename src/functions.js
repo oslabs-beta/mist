@@ -1,5 +1,5 @@
-import axios from 'axios';
 import Chart from 'chart.js/auto';
+//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
   mockLogArray,
@@ -8,61 +8,142 @@ import {
   errs,
   subReqs,
   pieData,
-  // theme,
-  // labelsCache,
-  // testSuccs,
-  // testErrs,
-  // testSubReqs,
-  // pieDataCache,
   currentWorker,
   sessAvgs,
   sessNums,
 } from './store';
 
+// (couldn't figure out how to process scss in svelte/rollup)
 const grid = '#F6F6F6';
 
-///////////// logs COMMENTED OUT FOR TESTING
-export const createData = (logs, avgLogs) => {
-  /// mock Logs for testing
-  // const logs = [
-  //   {
-  //     _id: 1,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/penguins',
-  //     status: 200,
-  //     response_time_ms: 1.74,
-  //     session_num: 1,
-  //     start: 950,
-  //   },
-  //   {
-  //     _id: 2,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 400,
-  //     response_time_ms: 2.56,
-  //     session_num: 1,
-  //     start: 725,
-  //   },
-  //   {
-  //     _id: 3,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/realData',
-  //     status: 200,
-  //     response_time_ms: 2.71,
-  //     session_num: 1,
-  //     start: 455,
-  //   },
-  //   {
-  //     _id: 4,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 200,
-  //     response_time_ms: 3.56,
-  //     session_num: 2,
-  //     start: 950,
-  //   },
-  // ];
-  // RESET CHARTING DATA
+///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
+export const createData = (/*logs, avgLogs*/) => {
+  /// dummy logs -> for testing purposes -> (coment out when live)
+  const logs = [
+    {
+      _id: 193,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 4.3,
+      session_num: 30,
+      start: '1647906546879',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 194,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 2.36,
+      session_num: 30,
+      start: '1647906547045',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 195,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.47,
+      session_num: 30,
+      start: '1647906547104',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 196,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.53,
+      session_num: 30,
+      start: '1647906547178',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 197,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.74,
+      session_num: 30,
+      start: '1647906547533',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 198,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.23,
+      session_num: 30,
+      start: '1647906547572',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 199,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.72,
+      session_num: 30,
+      start: '1647906548039',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 200,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.63,
+      session_num: 30,
+      start: '1647906548087',
+      worker: 'sample-worker-2',
+    },
+  ];
+  //// dummy avgLogs -> for testing purposes -> (coment out when live)
+  const avgLogs = [
+    { response_time_ms: 4.18, session_num: 26 },
+    { response_time_ms: 0.68, session_num: 26 },
+    { response_time_ms: 1.26, session_num: 26 },
+    { response_time_ms: 1.4, session_num: 26 },
+    { response_time_ms: 2.49, session_num: 26 },
+    { response_time_ms: 0.81, session_num: 26 },
+    { response_time_ms: 14.69, session_num: 27 },
+    { response_time_ms: 0.83, session_num: 27 },
+    { response_time_ms: 1.22, session_num: 27 },
+    { response_time_ms: 1.4, session_num: 27 },
+    { response_time_ms: 2.76, session_num: 27 },
+    { response_time_ms: 1.63, session_num: 27 },
+    { response_time_ms: 1.57, session_num: 27 },
+    { response_time_ms: 0.75, session_num: 27 },
+    { response_time_ms: 10.85, session_num: 28 },
+    { response_time_ms: 1.14, session_num: 28 },
+    { response_time_ms: 1.34, session_num: 28 },
+    { response_time_ms: 2.54, session_num: 28 },
+    { response_time_ms: 1.46, session_num: 28 },
+    { response_time_ms: 2.52, session_num: 28 },
+    { response_time_ms: 9.21, session_num: 29 },
+    { response_time_ms: 0.79, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.13, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.11, session_num: 29 },
+    { response_time_ms: 1.03, session_num: 29 },
+    { response_time_ms: 0.69, session_num: 29 },
+    { response_time_ms: 1.5, session_num: 29 },
+    { response_time_ms: 1.18, session_num: 29 },
+    { response_time_ms: 4.3, session_num: 30 },
+    { response_time_ms: 2.36, session_num: 30 },
+    { response_time_ms: 1.47, session_num: 30 },
+    { response_time_ms: 1.53, session_num: 30 },
+    { response_time_ms: 1.74, session_num: 30 },
+    { response_time_ms: 1.23, session_num: 30 },
+    { response_time_ms: 1.72, session_num: 30 },
+    { response_time_ms: 1.63, session_num: 30 },
+  ];
+
+  // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
@@ -77,7 +158,7 @@ export const createData = (logs, avgLogs) => {
     sessNums.length = 0;
     currentWorker.length = 0;
   }
-  // GENERATE NEW CHARTING DATA
+  // GENERATES NEW CHARTING DATA
   currentWorker.push(logs[0].worker);
   const duration = workerTimer.stop - workerTimer.start;
   for (let i = 0; i < duration; i += 50) {
@@ -115,9 +196,9 @@ export const createData = (logs, avgLogs) => {
   console.log(`labels ${labels}`);
 
   let curSess = 0;
-  // const sessNums = [];
+  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = [];
+  // const sessAvgs = []; // DELETE -> (imported from store)
   for (let i = 0; i < avgLogs.length; i++) {
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     if (avgLogs[i].session_num !== sessNums[curSess]) {
@@ -137,7 +218,7 @@ export const createData = (logs, avgLogs) => {
   console.log(`Session number: ${sessNums}`);
   console.log(`Session Averages: ${sessAvgs}`);
 };
-export const createLineGraph = () => {
+export const createScatterChart = () => {
   const data = {
     labels: labels,
     datasets: [
@@ -194,7 +275,7 @@ export const createLineGraph = () => {
             text: 'Time in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
         y: {
@@ -205,20 +286,20 @@ export const createLineGraph = () => {
             text: 'Duration of Requests in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
       },
     },
   };
 
-  const myChart = new Chart(
-    document.getElementById('myChart').getContext('2d'),
+  const scatterChart = new Chart(
+    document.getElementById('scatterChart').getContext('2d'),
     config
   );
-  // console.log(testSuccs);
-  // console.log(testErrs);
 };
+
+// attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
   const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
   const data = {
@@ -228,7 +309,6 @@ export const createPieChart = () => {
         label: 'Worker Activity',
         backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
         data: pieData,
-        hoverOffset: 4,
       },
     ],
   };
@@ -254,90 +334,26 @@ export const createPieChart = () => {
   );
 };
 
-export const createBarChart = () => {
-  const barLabels = ['Day 1', 'Day 2', 'Day 3'];
-
+// attaches Bar Graph to BarChart.svelte
+export const createBarGraph = () => {
   const data = {
-    labels: barLabels,
-    datasets: [
-      {
-        label: 'Worker 1',
-        backgroundColor: ['#6194BC'], //pink
-        data: [10, 20, 30],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 2',
-        backgroundColor: ['#FF9E01'], //orange
-        data: [3, 6, 9],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 3',
-        backgroundColor: ['#D0EAFF'], //purple
-        data: [7, 2, 49],
-        borderWidth: 1,
-      },
+    labels: [
+      `Session ${sessNums[0]}`,
+      `Session ${sessNums[1]}`,
+      `Session ${sessNums[2]}`,
+      `Session ${sessNums[3]}`,
+      `Session ${sessNums[4]}`,
     ],
-  };
-
-  const config = {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        x: {
-          min: 0,
-          title: {
-            diplay: true,
-            color: grid,
-            text: 'Session',
-            align: 'center',
-          },
-          beginAtZero: true,
-          stacked: true,
-          grid: {
-            display: true,
-            color: grid,
-          },
-          color: grid,
-        },
-        y: {
-          min: 0,
-          title: {
-            diplay: true,
-            color: grid,
-            text: '# of Requests per Worker',
-            align: 'center',
-          },
-          beginAtZero: true,
-          stacked: true,
-          grid: {
-            display: true,
-            color: grid,
-          },
-          color: grid,
-        },
-      },
-    },
-  };
-
-  const stackedBar = new Chart(document.getElementById('barChart'), config);
-};
-
-export const createWorkerChart = () => {
-  const data = {
-    labels: sessNums,
     datasets: [
       {
-        label: [
-          `${sessNums[0]}`,
-          `${sessNums[1]}`,
-          `${sessNums[2]}`,
-          `${sessNums[3]}`,
-          `${sessNums[4]}`,
+        label: 'Past Sessions Average Response Time',
+        backgroundColor: [
+          '#3a5971',
+          '#446884',
+          '#4e7696',
+          '#5785a9',
+          '#6194BC',
         ],
-        backgroundColor: ['#6194BC'],
         data: sessAvgs,
         borderWidth: 1,
       },
@@ -347,31 +363,50 @@ export const createWorkerChart = () => {
     type: 'bar',
     data: data,
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      events: [],
       scales: {
         x: {
-          min: 0,
+          display: true,
           title: {
             diplay: true,
-            color: grid,
-            label: `Previous Sessions for Worker ${currentWorker[0]}`,
-            align: 'center',
+            text: `Previous Sessions for Worker ${currentWorker[0]}`,
           },
-          beginAtZero: true,
+          min: 0,
+          grid: {
+            display: true,
+            color: grid,
+          },
           color: grid,
         },
         y: {
-          min: 0,
+          display: true,
+          beginAtZero: true,
+          ticks: {
+            callback: function (value, index, ticks) {
+              return value + 'ms';
+            },
+          },
           title: {
             diplay: true,
-            color: grid,
-            label: 'Avg Response Time in Milliseconds',
-            align: 'center',
+            text: 'Avg Response Time in Milliseconds',
           },
-          beginAtZero: true,
+          grid: {
+            display: true,
+            color: grid,
+          },
           color: grid,
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            boxWidth: 0,
+          },
         },
       },
     },
   };
-  const workerChart = new Chart(document.getElementById('barChart'), config);
+  const barGraph = new Chart(document.getElementById('barGraph'), config);
 };
