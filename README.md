@@ -1,6 +1,7 @@
 # Notes
 
 In server, every time we run the mistMiniflare.startServer(), it install node modules.
+Running the tracer: node --require ‘./server/tracing.js’ server/miniflare
 
 # mist
 

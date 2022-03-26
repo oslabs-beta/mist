@@ -9,6 +9,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+app.use('/v1/traces', (req, res) => {
+  console.log('made it to the server 3000 from traces!');
+  console.log(`this is our req.body`, req.body);
+  res.json('hi from 3000!');
+});
+
 // ROLE: processes fetch request from miniflare server and store sessions in db
 app.post(
   '/allData',

@@ -30,6 +30,12 @@
     "svelte-preprocess": "^4.10.4"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.0.4",
+    "@opentelemetry/auto-instrumentations-node": "^0.28.0",
+    "@opentelemetry/exporter-jaeger": "^1.1.1",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.27.0",
+    "@opentelemetry/sdk-node": "^0.27.0",
+    "@opentelemetry/tracing": "^0.24.0",
     "axios": "^0.26.0",
     "dd-trace": "^2.4.0",
     "dotenv": "^16.0.0",
