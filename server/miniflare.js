@@ -1,15 +1,9 @@
-const { Miniflare, Log, LogLevel } = require('miniflare');
+const tracer = require('./tracer');
+const { Miniflare, CorePlugin, MiniflareCore } = require('miniflare');
 const path = require('path');
-const {
-  HTTPPlugin,
-  convertNodeRequest,
-  createServer,
-  startServer,
-} = require('@miniflare/http-server');
 const { Log, LogLevel } = require('@miniflare/shared');
-const { MemoryStorage } = require('@miniflare/storage-memory');
-const http = require('http');
 
+// THIS WORKS
 const mistMiniflare = new Miniflare({
   // here we want to import and possibly decompile a client's
   //../../sample-worker-3/index.js
@@ -28,13 +22,14 @@ async function serverCreator() {
   const plugins = await mistMiniflare.getPlugins();
   const { httpsEnabled, host, port = DEFAULT_PORT } = plugins.HTTPPlugin;
   return new Promise((resolve) => {
-    server.listen(port, host, () => {
+    server.listen(port, res, () => {
       // const log = (`this is our mistMiniflare log`, mistMiniflare.log);
       // const protocol = httpsEnabled ? 'https' : 'http';
       // log.info(`Listening on ${host ?? ''}:${port}`);
       console.log(`here is a message!`);
       console.log(`this is my port`, port);
       console.log(`this is my host`, host);
+      console.log(`response object`, res);
 
       resolve(server);
     });
@@ -51,4 +46,4 @@ serverCreator();
 //   }
 // });
 
-module.exports = mistMiniflare;
+// module.exports = mistMiniflare;
