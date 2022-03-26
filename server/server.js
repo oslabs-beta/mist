@@ -12,6 +12,21 @@ app.use(cors());
 app.use('/v1/traces', (req, res) => {
   console.log('made it to the server 3000 from traces!');
   console.log(`this is our req.body`, req.body);
+  for (let prop in req.body.resourceSpans[0].resource) {
+    console.log(
+      `this is the resource`,
+      prop,
+      ':',
+      req.body.resourceSpans[0].resource[prop]
+    );
+  }
+  for (
+    let i = 0;
+    i < req.body.resourceSpans[0].instrumentationLibrarySpans;
+    i++
+  ) {
+    console.log(`this is the instrumentationLibrarySpans`, prop);
+  }
   res.json('hi from 3000!');
 });
 
