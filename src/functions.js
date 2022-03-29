@@ -14,7 +14,8 @@ import {
 const grid = '#F6F6F6';
 
 ///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
-export const createData = (/*logs, avgLogs*/) => {
+export const createData = (logs, avgLogs) => {
+  /*
   /// dummy logs -> for testing purposes -> (comment out when live)
   const logs = [
     {
@@ -139,7 +140,7 @@ export const createData = (/*logs, avgLogs*/) => {
     { response_time_ms: 1.72, session_num: 30 },
     { response_time_ms: 1.63, session_num: 30 },
   ];
-
+*/
   // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
@@ -159,6 +160,7 @@ export const createData = (/*logs, avgLogs*/) => {
   currentWorker.push(logs[0].worker);
   // creates x-axis for scatter chart (duration of recording session, x-ticks every 50ms)
   const duration = workerTimer.stop - workerTimer.start;
+  console.log(`duration: ${duration}`);
   for (let i = 0; i < duration; i += 50) {
     labels.push(i);
     if (i + 50 >= duration) {

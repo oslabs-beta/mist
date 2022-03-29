@@ -75,10 +75,10 @@
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       ///////////////// COMMENTED OUT FOR TESTING //////////////////
-      // createData($mockLogArray, $mockAvgsArray);
+      createData($mockLogArray, $mockAvgsArray);
       // LIVE createData(param1, param2) ⤴️
       // TEST createData() ⤵️
-      createData();
+      // createData();
       $chartFlag = true;
       setTimeout(() => {
         createScatterChart();
