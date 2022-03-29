@@ -1,7 +1,6 @@
 const { Pool } = require('pg');
 
-const myURI =
-  'postgres://mowjiius:ZP2R2gX5BXNqh7CWJJQRWs_Gs4s_Vr2M@salt.db.elephantsql.com/mowjiius';
+const myURI = URI;
 
 // process.env.MY_URI;
 
