@@ -1,12 +1,9 @@
 import Chart from 'chart.js/auto';
-//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
-  mockLogArray,
   labels,
   succs,
   errs,
-  subReqs,
   pieData,
   currentWorker,
   sessAvgs,
@@ -18,7 +15,7 @@ const grid = '#F6F6F6';
 
 ///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
 export const createData = (/*logs, avgLogs*/) => {
-  /// dummy logs -> for testing purposes -> (coment out when live)
+  /// dummy logs -> for testing purposes -> (comment out when live)
   const logs = [
     {
       _id: 193,
@@ -94,14 +91,14 @@ export const createData = (/*logs, avgLogs*/) => {
       _id: 200,
       method: 'GET',
       url: '/favicon.ico',
-      status: 200,
+      status: 404,
       response_time_ms: 1.63,
       session_num: 30,
       start: '1647906548087',
       worker: 'sample-worker-2',
     },
   ];
-  //// dummy avgLogs -> for testing purposes -> (coment out when live)
+  //// dummy avgLogs -> for testing purposes -> (comment out when live)
   const avgLogs = [
     { response_time_ms: 4.18, session_num: 26 },
     { response_time_ms: 0.68, session_num: 26 },
@@ -149,17 +146,18 @@ export const createData = (/*logs, avgLogs*/) => {
     labels.push(0);
     succs.length = 0;
     errs.length = 0;
-    subReqs.length = 0;
+
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
-    pieData.push(0);
+
     sessAvgs.length = 0;
     sessNums.length = 0;
     currentWorker.length = 0;
   }
   // GENERATES NEW CHARTING DATA
   currentWorker.push(logs[0].worker);
+  // creates x-axis for scatter chart (duration of recording session, x-ticks every 50ms)
   const duration = workerTimer.stop - workerTimer.start;
   for (let i = 0; i < duration; i += 50) {
     labels.push(i);
@@ -167,38 +165,32 @@ export const createData = (/*logs, avgLogs*/) => {
       labels.push(i + 50);
     }
   }
-
+  // generates plot points for scatter chart successes and errors
   for (let i = 0; i < logs.length; i++) {
-    if (logs[i].status < 300 && logs[i].status !== 204) {
+    // generates success data for charts
+    if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
     }
-    // Cloudflare's highest error status is 530
-    if (logs[i].status > 299 && logs[i].status <= 530) {
+    // generates error data for charts
+    if (logs[i].status > 299) {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
     }
-    if (logs[i].status === 204) {
-      pieData[2] += 1;
-      subReqs.push({
-        x: logs[i].start - workerTimer.start,
-        y: logs[i].response_time_ms,
-      });
-    }
   }
 
-  console.log(`labels ${labels}`);
+  // console.log(`labels ${labels}`);
 
+  // curSess indexes sessions array to get avgs for last 5 sessions, where index 0 will be oldest session and index 4 will be current session
   let curSess = 0;
-  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = []; // DELETE -> (imported from store)
+
   for (let i = 0; i < avgLogs.length; i++) {
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     if (avgLogs[i].session_num !== sessNums[curSess]) {
@@ -207,7 +199,9 @@ export const createData = (/*logs, avgLogs*/) => {
     }
     sessions[curSess].push(avgLogs[i].response_time_ms);
   }
-  console.log(sessions);
+  // console.log(sessions);
+
+  // this forEach loop reduces session sub-arrays into avg time in ms
   sessions.forEach((session) => {
     let total = 0;
     for (let i = 0; i < session.length; i++) {
@@ -215,9 +209,10 @@ export const createData = (/*logs, avgLogs*/) => {
     }
     sessAvgs.push(total / session.length);
   });
-  console.log(`Session number: ${sessNums}`);
-  console.log(`Session Averages: ${sessAvgs}`);
+  // console.log(`Session number: ${sessNums}`);
+  // console.log(`Session Averages: ${sessAvgs}`);
 };
+// attaches Scatter Chart to ScatterChart.svelte
 export const createScatterChart = () => {
   const data = {
     labels: labels,
@@ -236,15 +231,6 @@ export const createScatterChart = () => {
         backgroundColor: '#FF9E01', //orange
         borderColor: '#FF9E01',
         data: errs,
-        showLine: false,
-        pointRadius: 5,
-      },
-
-      {
-        label: 'Sub-Requests',
-        backgroundColor: '#D0EAFF', //lighter blue
-        borderColor: '#D0EAFF',
-        data: subReqs,
         showLine: false,
         pointRadius: 5,
       },
@@ -301,13 +287,13 @@ export const createScatterChart = () => {
 
 // attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
-  const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
+  const pieLabels = ['Success', 'Errors'];
   const data = {
     labels: pieLabels,
     datasets: [
       {
         label: 'Worker Activity',
-        backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
+        backgroundColor: ['#6194BC', '#FF9E01'],
         data: pieData,
       },
     ],
