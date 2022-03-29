@@ -3,43 +3,38 @@
   import LineGraph from './charts/LineGraph.svelte';
   import Table from './charts/Table.svelte';
   import PieChart from './charts/PieChart.svelte';
+  import BarGraph from './charts/BarGraph.svelte';
   import {
     workerTimer,
+    workerName,
     chartFlag,
-    theme,
-    previousTheme,
-    logArray,
     mockLogArray,
+    mockAvgsArray,
     sessionNum,
   } from '../store.js';
   import {
-    // testRequest,
     createData,
     createLineGraph,
     createPieChart,
-    // mockDBRequest,
+    createBarGraph,
   } from '../functions.js';
 
   $: console.log(workerTimer);
   $: console.log(`here's the chart flag: ${chartFlag}`);
-  $: console.log(logArray);
   $: console.log(mockLogArray);
 
   let uniqueKey = {};
 
+  // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
   const start = async () => {
     workerTimer.start = Date.now();
     console.log(`Session Number: ${$sessionNum}`);
-    // workerTimer.start = performance.now();
-    // testRequest();
 
-    //////// COMMENTED OUT FOR TESTING
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
     await fetch('http://localhost:3000/sessionNum', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
   const stop = async () => {
@@ -55,6 +50,8 @@
       .then((data) => data.json())
       .then((data) => {
         console.log(data);
+        $workerName = data[0].worker;
+        console.log(`workerName = ${$workerName}`);
         // const logs = data;
         // console.log(logs);
         for (let i = 0; i < data.length; i++) {
@@ -113,6 +110,11 @@
     </div>
     <div class="pieChart">
       <PieChart />
+    </div>
+    <div class="barChart">
+      <div class="innerBarChart">
+        <BarGraph />
+      </div>
     </div>
   {/key}
 

@@ -2,78 +2,167 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 import {
   workerTimer,
-  mockLogArray,
   labels,
   succs,
   errs,
   subReqs,
   pieData,
-  theme,
-  labelsCache,
+  currentWorker,
+  sessAvgs,
+  sessNums,
   testSuccs,
   testErrs,
-  testSubReqs,
-  pieDataCache,
 } from './store';
 
 const grid = '#F6F6F6';
 
 ///////////// logs COMMENTED OUT FOR TESTING
-export const createData = (logs) => {
-  /// mock Logs for testing
-  // const logs = [
-  //   {
-  //     _id: 1,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/penguins',
-  //     status: 200,
-  //     response_time_ms: 1.74,
-  //     session_num: 1,
-  //     start: 950,
-  //   },
-  //   {
-  //     _id: 2,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 400,
-  //     response_time_ms: 2.56,
-  //     session_num: 1,
-  //     start: 725,
-  //   },
-  //   {
-  //     _id: 3,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/realData',
-  //     status: 200,
-  //     response_time_ms: 2.71,
-  //     session_num: 1,
-  //     start: 455,
-  //   },
-  //   {
-  //     _id: 4,
-  //     method: 'GET',
-  //     url: 'http://localhost:8080/',
-  //     status: 200,
-  //     response_time_ms: 3.56,
-  //     session_num: 2,
-  //     start: 950,
-  //   },
-  // ];
-  // RESET CHARTING DATA
+export const createData = (logs /*, avgLogs*/) => {
+  /*
+  /// dummy logs -> for testing purposes -> (comment out when live)
+  const logs = [
+    {
+      _id: 193,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 4.3,
+      session_num: 30,
+      start: '1647906546879',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 194,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 2.36,
+      session_num: 30,
+      start: '1647906547045',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 195,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.47,
+      session_num: 30,
+      start: '1647906547104',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 196,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.53,
+      session_num: 30,
+      start: '1647906547178',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 197,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.74,
+      session_num: 30,
+      start: '1647906547533',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 198,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 200,
+      response_time_ms: 1.23,
+      session_num: 30,
+      start: '1647906547572',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 199,
+      method: 'GET',
+      url: '/',
+      status: 200,
+      response_time_ms: 1.72,
+      session_num: 30,
+      start: '1647906548039',
+      worker: 'sample-worker-2',
+    },
+    {
+      _id: 200,
+      method: 'GET',
+      url: '/favicon.ico',
+      status: 404,
+      response_time_ms: 1.63,
+      session_num: 30,
+      start: '1647906548087',
+      worker: 'sample-worker-2',
+    },
+  ];
+  //// dummy avgLogs -> for testing purposes -> (comment out when live)
+  const avgLogs = [
+    { response_time_ms: 4.18, session_num: 26 },
+    { response_time_ms: 0.68, session_num: 26 },
+    { response_time_ms: 1.26, session_num: 26 },
+    { response_time_ms: 1.4, session_num: 26 },
+    { response_time_ms: 2.49, session_num: 26 },
+    { response_time_ms: 0.81, session_num: 26 },
+    { response_time_ms: 14.69, session_num: 27 },
+    { response_time_ms: 0.83, session_num: 27 },
+    { response_time_ms: 1.22, session_num: 27 },
+    { response_time_ms: 1.4, session_num: 27 },
+    { response_time_ms: 2.76, session_num: 27 },
+    { response_time_ms: 1.63, session_num: 27 },
+    { response_time_ms: 1.57, session_num: 27 },
+    { response_time_ms: 0.75, session_num: 27 },
+    { response_time_ms: 10.85, session_num: 28 },
+    { response_time_ms: 1.14, session_num: 28 },
+    { response_time_ms: 1.34, session_num: 28 },
+    { response_time_ms: 2.54, session_num: 28 },
+    { response_time_ms: 1.46, session_num: 28 },
+    { response_time_ms: 2.52, session_num: 28 },
+    { response_time_ms: 9.21, session_num: 29 },
+    { response_time_ms: 0.79, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.13, session_num: 29 },
+    { response_time_ms: 1.62, session_num: 29 },
+    { response_time_ms: 1.11, session_num: 29 },
+    { response_time_ms: 1.03, session_num: 29 },
+    { response_time_ms: 0.69, session_num: 29 },
+    { response_time_ms: 1.5, session_num: 29 },
+    { response_time_ms: 1.18, session_num: 29 },
+    { response_time_ms: 4.3, session_num: 30 },
+    { response_time_ms: 2.36, session_num: 30 },
+    { response_time_ms: 1.47, session_num: 30 },
+    { response_time_ms: 1.53, session_num: 30 },
+    { response_time_ms: 1.74, session_num: 30 },
+    { response_time_ms: 1.23, session_num: 30 },
+    { response_time_ms: 1.72, session_num: 30 },
+    { response_time_ms: 1.63, session_num: 30 },
+  ];
+*/
+  // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
     succs.length = 0;
     errs.length = 0;
-    subReqs.length = 0;
+
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
-    pieData.push(0);
+
+    sessAvgs.length = 0;
+    sessNums.length = 0;
+    currentWorker.length = 0;
   }
+  // currentWorker.push(logs[0].workerName);
   // GENERATE NEW CHARTING DATA
   const duration = workerTimer.stop - workerTimer.start;
-  for (let i = 0; i < duration; i += 50) {
+  for (let i = 50; i < duration; i += 50) {
     labels.push(i);
     if (i + 50 >= duration) {
       labels.push(i + 50);
@@ -81,7 +170,7 @@ export const createData = (logs) => {
   }
 
   for (let i = 0; i < logs.length; i++) {
-    if (logs[i].status < 300 && logs[i].status !== 204) {
+    if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,
@@ -89,26 +178,26 @@ export const createData = (logs) => {
       });
     }
     // Cloudflare's highest error status is 530
-    if (logs[i].status > 299 && logs[i].status <= 530) {
+    else {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
     }
-    if (logs[i].status === 204) {
-      pieData[2] += 1;
-      subReqs.push({
-        x: logs[i].start - workerTimer.start,
-        y: logs[i].response_time_ms,
-      });
-    }
   }
+  // curSess indexes sessions array to get avgs for last 5 sessions, where index 0 will be oldest session and index 4 will be current session
+  let curSess = 0;
+  const sessions = [[], [], [], [], []];
 
-  console.log(`labels ${labels}`);
-  // console.log(`req times ${requestTimes}`);
-  // console.log(`successes ${succs}`);
-  // console.log(`errors ${errs}`);
+  for (let i = 0; i < avgLogs.length; i++) {
+    if (i === 0) sessNums.push(avgLogs[i].session_num);
+    if (avgLogs[i].session_num !== sessNums[curSess]) {
+      ++curSess;
+      sessNums.push(avgLogs[i].session_num);
+    }
+    sessions[curSess].push(avgLogs[i].response_time_ms);
+  }
 };
 export const createLineGraph = () => {
   const data = {
@@ -128,15 +217,6 @@ export const createLineGraph = () => {
         backgroundColor: '#FF9E01', //orange
         borderColor: '#FF9E01',
         data: errs,
-        showLine: false,
-        pointRadius: 5,
-      },
-
-      {
-        label: 'Sub-Requests',
-        backgroundColor: '#D0EAFF', //lighter blue
-        borderColor: '#D0EAFF',
-        data: subReqs,
         showLine: false,
         pointRadius: 5,
       },
@@ -167,7 +247,7 @@ export const createLineGraph = () => {
             text: 'Time in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
         y: {
@@ -178,7 +258,7 @@ export const createLineGraph = () => {
             text: 'Duration of Requests in Milliseconds',
           },
           grid: {
-            color: grid /*'rgb(18, 16, 16)'*/,
+            color: grid,
           },
         },
       },
@@ -189,19 +269,16 @@ export const createLineGraph = () => {
     document.getElementById('myChart').getContext('2d'),
     config
   );
-  console.log(testSuccs);
-  console.log(testErrs);
 };
 export const createPieChart = () => {
-  const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
+  const pieLabels = ['Success', 'Errors'];
   const data = {
     labels: pieLabels,
     datasets: [
       {
         label: 'Worker Activity',
-        backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
+        backgroundColor: ['#6194BC', '#FF9E01'],
         data: pieData,
-        hoverOffset: 4,
       },
     ],
   };
@@ -227,48 +304,46 @@ export const createPieChart = () => {
   );
 };
 
-export const createBarChart = () => {
-  const barLabels = ['Day 1', 'Day 2', 'Day 3'];
-
+// attaches Bar Graph to BarChart.svelte
+export const createBarGraph = () => {
   const data = {
-    labels: barLabels,
+    labels: [
+      `Session ${sessNums[0]}`,
+      `Session ${sessNums[1]}`,
+      `Session ${sessNums[2]}`,
+      `Session ${sessNums[3]}`,
+      `Session ${sessNums[4]}`,
+    ],
     datasets: [
       {
-        label: 'Worker 1',
-        backgroundColor: ['#6194BC'], //pink
-        data: [10, 20, 30],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 2',
-        backgroundColor: ['#FF9E01'], //orange
-        data: [3, 6, 9],
-        borderWidth: 1,
-      },
-      {
-        label: 'Worker 3',
-        backgroundColor: ['#D0EAFF'], //purple
-        data: [7, 2, 49],
+        label: 'Past Sessions Average Response Time',
+        backgroundColor: [
+          '#3a5971',
+          '#446884',
+          '#4e7696',
+          '#5785a9',
+          '#6194BC',
+        ],
+        data: sessAvgs,
         borderWidth: 1,
       },
     ],
   };
-
   const config = {
     type: 'bar',
     data: data,
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      events: [],
       scales: {
         x: {
-          min: 0,
+          display: true,
           title: {
             diplay: true,
-            color: grid,
-            text: 'Session',
-            align: 'center',
+            text: `Previous Sessions for Worker ${currentWorker[0]}`,
           },
-          beginAtZero: true,
-          stacked: true,
+          min: 0,
           grid: {
             display: true,
             color: grid,
@@ -276,15 +351,17 @@ export const createBarChart = () => {
           color: grid,
         },
         y: {
-          min: 0,
+          display: true,
+          beginAtZero: true,
+          ticks: {
+            callback: function (value, index, ticks) {
+              return value + 'ms';
+            },
+          },
           title: {
             diplay: true,
-            color: grid,
-            text: '# of Requests per Worker',
-            align: 'center',
+            text: 'Avg Response Time in Milliseconds',
           },
-          beginAtZero: true,
-          stacked: true,
           grid: {
             display: true,
             color: grid,
@@ -292,8 +369,14 @@ export const createBarChart = () => {
           color: grid,
         },
       },
+      plugins: {
+        legend: {
+          labels: {
+            boxWidth: 0,
+          },
+        },
+      },
     },
   };
-
-  const stackedBar = new Chart(document.getElementById('barChart'), config);
+  const barGraph = new Chart(document.getElementById('barGraph'), config);
 };
