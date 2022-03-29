@@ -34,6 +34,7 @@
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
+    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
   // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
@@ -75,10 +76,10 @@
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       ///////////////// COMMENTED OUT FOR TESTING //////////////////
-      createData($mockLogArray, $mockAvgsArray);
-      // LIVE createData(param1, param2) ⤴️
+      // createData($mockLogArray, $mockAvgsArray);
+      // LIVE createData() ⤴️
       // TEST createData() ⤵️
-      // createData();
+      createData();
       $chartFlag = true;
       setTimeout(() => {
         createScatterChart();
@@ -101,6 +102,8 @@
     console.log($mockLogArray);
   };
 </script>
+
+<!-- html goes here -->
 
 <div class="backdrop">
   <slot />
