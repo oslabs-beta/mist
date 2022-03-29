@@ -1,44 +1,8 @@
 <script>
   import { mockLogArray } from '../../store';
-  console.log(`table component mockLogArray: ${$mockLogArray}`);
-  for (let i = 0; i < $mockLogArray.length; i++) {
-    console.log($mockLogArray[i]);
-  }
-  // {
-  //     _id: 1,
-  //     method: 'POST',
-  //     url: 'http://localhost:8080/penguins',
-  //     status: 200,
-  //     response_time_ms: 1.74,
-  //     session_num: 1,
-  //     start: '2022-03-08T17:00:00+0000',
-  //   },
+  // creates table displaying recorded session log
 </script>
 
-<!-- <table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>METHOD</th>
-      <th>URL</th>
-      <th>STATUS</th>
-      <th>RESPONSE TIME /MS</th>
-      <th>SESSION NUMBER</th>
-      <th>START TIME</th>
-    </tr>
-  </thead>
-  <tbody>
-    {#each $mockLogArray as row}
-      <tr>
-        {#each Object.values(row) as cell}
-          <td>{cell}</td>
-        {/each}
-      </tr>
-    {/each}
-  </tbody>
-</table> -->
-
-<!-- Styled version -->
 <table class="styled-table">
   <thead>
     <tr>
@@ -49,17 +13,14 @@
       <th>RESPONSE TIME /MS</th>
       <th>SESSION NUMBER</th>
       <th>START TIME</th>
+      <th>WORKER NAME</th>
     </tr>
   </thead>
   <tbody>
     {#each $mockLogArray as row}
       <tr>
         {#each Object.entries(row) as [key, cell]}
-          <!-- {#each Object.values(row) as cell} -->
-
           {#if key === 'start'}
-            <!-- LOGIC -->
-            <!-- {console.log(`this is our cell`, cell)} -->
             <td>{new Date(Number(cell)).toLocaleTimeString()}</td>
           {:else}
             <td>{cell}</td>
@@ -71,35 +32,6 @@
 </table>
 
 <style>
-  /* ORIGINAL TABLE STYLE */
-
-  /* table {
-    width: 100%;
-    border: 1px solid;
-    border-color: #f6f6f6;
-  }
-  tbody {
-    border: 1px solid;
-    border-color: #f6f6f6;
-  }
-  thead {
-    border: 1px solid;
-    border-color: #f6f6f6;
-  }
-  tr th {
-    border: 1px solid;
-    border-color: #f6f6f6;
-    color: #6194bc;
-  }
-  td {
-    color: #6194bc;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #f6f6f6;
-  } */
-
-  /* UPDATED STYLING */
-
   .styled-table {
     border-collapse: collapse;
     margin: auto;
@@ -123,13 +55,4 @@
   .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
   }
-
-  /* .styled-table tbody tr:nth-of-type(even) {
-    background-color: #c4c4c4;
-    /* alternating light blue row background */
-  /* } */
-
-  /* .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #6194bc;
-  } */
 </style>

@@ -2,7 +2,7 @@
   import { user } from '../store.js';
   import Worker from './Worker.svelte';
   import { workers, chartFlag } from '../store.js';
-  import BarChart from './charts/BarChart.svelte';
+  import BarChart from './charts/BarGraph.svelte';
 
   let showWorker = false;
   // let currentWorker;

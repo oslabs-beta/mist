@@ -25,7 +25,7 @@ metricsController.getSessionNum = (req, res, next) => {
 metricsController.getSessionLogs = (req, res, next) => {
   const { worker } = req.params;
   //const query = `SELECT * FROM metrics WHERE session_num = (SELECT MAX(session_num) FROM metrics WHERE worker = $1)`;
-  const query = `SELECT * FROM metrics WHERE session_num = $1`
+  const query = `SELECT * FROM metrics WHERE session_num = $1`;
   db.query(query, [metricsController.sessionNum])
     .then((data) => {
       res.locals.logs = data.rows;
@@ -48,7 +48,7 @@ metricsController.siftMetrics = async (req, res, next) => {
       method,
       url,
       status,
-      workerName
+      workerName,
     };
     // ROLE: convert response time to a float w/o ms
     metrics.responseTime = Number(responseTime.replace(/[A-Za-z]/g, ''));
@@ -70,15 +70,25 @@ metricsController.siftMetrics = async (req, res, next) => {
   }
 };
 
+//ROLE: Add metrics into the database once they are in the proper format
 metricsController.addMetrics = (req, res, next) => {
   console.log('in add metrics controller');
   //destructure res.locals.metrics to get our metrics data
-  const { method, url, status, responseTime, sessionNum, start, workerName } = res.locals.metrics;
+  const { method, url, status, responseTime, sessionNum, start, workerName } =
+    res.locals.metrics;
   //set up a SQL query to our db that adds all of these data points! Use those $
   const query = `INSERT INTO metrics (method, url, status, response_time_ms, session_num, start, worker) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
   //call db.query(queryName, [array of metrics in order])
-  console.log(`these are our metrics`, res.locals.metrics)
-  db.query(query, [method, url, status, responseTime, sessionNum, start, workerName])
+  console.log(`these are our metrics`, res.locals.metrics);
+  db.query(query, [
+    method,
+    url,
+    status,
+    responseTime,
+    sessionNum,
+    start,
+    workerName,
+  ])
     .then((res) => {
       return next();
     })
@@ -87,6 +97,26 @@ metricsController.addMetrics = (req, res, next) => {
       return next({
         log: `Cannot add to table. ERROR: ${err}`,
         message: { err: 'Error occurred in metricsController.addMetrics' },
+      });
+    });
+};
+
+//ROLE: Get the average response times of the last 5 sessions for a particular worker
+metricsController.getAverageData = (req, res, next) => {
+  const { workerName } = req.params;
+  const query = `SELECT response_time_ms, session_num FROM metrics 
+  WHERE worker = $1 
+  AND session_num >
+  (SELECT MAX(session_num) FROM metrics WHERE worker = $1) - 5`;
+  db.query(query, [workerName])
+    .then((data) => {
+      res.locals.averages = data.rows;
+      return next();
+    })
+    .catch((err) => {
+      return next({
+        log: `Cannot get averages. ERROR: ${err}`,
+        message: { err: 'Error occurred in metricsController.getAverageData' },
       });
     });
 };

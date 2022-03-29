@@ -30,6 +30,16 @@ app.get('/sessionLogs', metricsController.getSessionLogs, (req, res) => {
   res.json(res.locals.logs);
 });
 
+// ROLE: retrieve average response times for the previous few sessions with that worker
+app.get(
+  '/averageData/:workerName',
+  metricsController.getAverageData,
+  (req, res) => {
+    console.log(res.locals.averages);
+    res.json(res.locals.averages);
+  }
+);
+
 //--------------------------ERROR HANDLING---------------------------------------
 //ROLE: catch-all route handler for requests made to unknown route
 app.use('/*', (req, res) =>
