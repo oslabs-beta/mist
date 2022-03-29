@@ -90,3 +90,4 @@ Like the real workers runtime, Miniflare limits you to 50 subrequests per reques
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
+ node --require './server/tracing.js' server/miniflare

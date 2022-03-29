@@ -9,36 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/v1/traces', (req, res) => {
-  console.log('made it to the server 3000 from traces!');
-  console.log(`this is our req.body`, req.body);
-  for (let prop in req.body.resourceSpans[0].resource) {
-    console.log(
-      `this is the resource`,
-      prop,
-      ':',
-      req.body.resourceSpans[0].resource[prop]
-    );
-  }
-  for (
-    let i = 0;
-    i < req.body.resourceSpans[0].instrumentationLibrarySpans;
-    i++
-  ) {
-    console.log(`this is the instrumentationLibrarySpans`, prop);
-  }
-  res.json('hi from 3000!');
+// ROLE: processes trace post request from miniflare server and store sessions in database
+app.use('/v1/traces', metricsController.siftMetricsTel, metricsController.addMetrics, (req, res) => {
+  res.json('hello from 3000!');
 });
 
-// ROLE: processes fetch request from miniflare server and store sessions in db
-app.post(
-  '/allData',
-  metricsController.siftMetrics,
-  metricsController.addMetrics,
-  (req, res) => {
-    res.json('hello from server 3000!');
-  }
-);
 
 // ROLE: getting sessionNum when dev presses "start" adds 1 to the current max session num in database
 app.get('/sessionNum', metricsController.getSessionNum, (req, res) => {
