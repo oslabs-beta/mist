@@ -1,10 +1,14 @@
+# Notes
+
+In server, every time we run the mistMiniflare.startServer(), it install node modules.
+Running the tracer: node --require ‘./server/tracing.js’ server/miniflare
+
 # mist
 
 1. User Set-Up
 2. Interpreting metrics
 3. FAQ
 4. Future Wish-List + Contact Us
-
 
 ## PART 1 - User Set-Up
 
@@ -21,12 +25,12 @@ TODO: Make sure response_time_ms is converted to an integer
 
 1. Create a new postgres SQL database-- we recommend elephantSQL
 2. Copy the link for that database.
-3. Open up the ***mist*** directory in your terminal.
+3. Open up the **_mist_** directory in your terminal.
 4. Run the following command: `psql -d <url from elephantSQL> -f db_template.sql`
    Ensure that your url is a string.
 5. Run a query to ensure that the table is present.
 
-Run in terminal once in the ***mist*** directory:
+Run in terminal once in the **_mist_** directory:
 psql -d <url from elephantSQL> -f db_template.sql
 
 ### Code that goes in miniflare node modules to alter them
@@ -39,19 +43,19 @@ NEED SOME ERROR HANDLING FOR OUR FETCH THAT DOESN'T DISRUPT MINIFLARE WHEN NOT U
 const response = await fetch('http://localhost:3000/allData', {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     start,
     method,
     url,
     status,
-    responseTime
-  })
+    responseTime,
+  }),
 })
-.then(response => response.json())
-.then(data => console.log(data))
-.catch((error) => console.log('Error: ', error))
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.log('Error: ', error));
 ```
 
 ## PART 2 - Interpreting Metrics
@@ -59,6 +63,7 @@ const response = await fetch('http://localhost:3000/allData', {
 ### Servers:
 
 mist
+
 - localhost:8080 `npm run dev`
 - localhost:3000 `node server/server.js`
 
@@ -66,24 +71,23 @@ user's (your) worker-based application
 
 - localhost:8787 `npx miniflare`
 
-
-
 ## PART 3 - FAQ
 
 ### Metrics
-    
+
 ### Requests
-    
+
 ### Subrequests
+
 Like the real workers runtime, Miniflare limits you to 50 subrequests per request. Each call to fetch(), each URL in a redirect chain, and each call to a Cache API method (put()/match()/delete()) counts as a [subrequest](https://miniflare.dev/core/standards).
-    
+
 ### Logs
-    
+
 ### Status
-    
 
 ## Future Wish-List + Contact Us
 
 - Modularize server, routing, controllers for Flare
-- Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286) 
-- 
+- Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
+-
+ node --require './server/tracing.js' server/miniflare
