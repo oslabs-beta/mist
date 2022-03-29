@@ -1,8 +1,6 @@
 import Chart from 'chart.js/auto';
-//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
-  mockLogArray,
   labels,
   succs,
   errs,
@@ -13,12 +11,13 @@ import {
   sessNums,
 } from './store';
 
-// (couldn't figure out how to process scss in svelte/rollup)
+// chart grid color
 const grid = '#F6F6F6';
 
-///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
-export const createData = (/*logs, avgLogs*/) => {
-  /// dummy logs -> for testing purposes -> (coment out when live)
+///////////// logs/avgLogs params (COMMENT OUT FOR TESTING) -> (uncomment in when live) ////////////
+export const createData = (logs, avgLogs) => {
+  /*
+  /// dummy logs -> for testing purposes -> (comment out when live)
   const logs = [
     {
       _id: 193,
@@ -101,7 +100,7 @@ export const createData = (/*logs, avgLogs*/) => {
       worker: 'sample-worker-2',
     },
   ];
-  //// dummy avgLogs -> for testing purposes -> (coment out when live)
+  //// dummy avgLogs -> for testing purposes -> (comment out when live)
   const avgLogs = [
     { response_time_ms: 4.18, session_num: 26 },
     { response_time_ms: 0.68, session_num: 26 },
@@ -142,16 +141,14 @@ export const createData = (/*logs, avgLogs*/) => {
     { response_time_ms: 1.72, session_num: 30 },
     { response_time_ms: 1.63, session_num: 30 },
   ];
-
+*/
   // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
     succs.length = 0;
     errs.length = 0;
-    subReqs.length = 0;
     pieData.length = 0;
-    pieData.push(0);
     pieData.push(0);
     pieData.push(0);
     sessAvgs.length = 0;
@@ -159,48 +156,44 @@ export const createData = (/*logs, avgLogs*/) => {
     currentWorker.length = 0;
   }
   // GENERATES NEW CHARTING DATA
+  // sets which worker is being monitored
   currentWorker.push(logs[0].worker);
+  // following blocks create data for scatter chart and pie chart
+  // sets scatter chart x-axis length
   const duration = workerTimer.stop - workerTimer.start;
-  for (let i = 0; i < duration; i += 50) {
+  // creates ticks for scatter chart x-axis
+  for (let i = 50; i < duration; i += 50) {
     labels.push(i);
     if (i + 50 >= duration) {
       labels.push(i + 50);
     }
   }
-
+  // plots points for scatter chart and total success/errors for pie chart
   for (let i = 0; i < logs.length; i++) {
-    if (logs[i].status < 300 && logs[i].status !== 204) {
+    if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
-    }
-    // Cloudflare's highest error status is 530
-    if (logs[i].status > 299 && logs[i].status <= 530) {
+    } else {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
     }
-    if (logs[i].status === 204) {
-      pieData[2] += 1;
-      subReqs.push({
-        x: logs[i].start - workerTimer.start,
-        y: logs[i].response_time_ms,
-      });
-    }
   }
-
+  // following block create data for bar graph
   console.log(`labels ${labels}`);
-
+  // curSess indexes sessions array
   let curSess = 0;
-  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = []; // DELETE -> (imported from store)
+  // for loop pushes response times into indexed sessions sub-array
   for (let i = 0; i < avgLogs.length; i++) {
+    console.log(`Session number: ${sessNums}`);
     if (i === 0) sessNums.push(avgLogs[i].session_num);
+    // when session_num increases, curSess increments to push into next sessions sub-array
     if (avgLogs[i].session_num !== sessNums[curSess]) {
       ++curSess;
       sessNums.push(avgLogs[i].session_num);
@@ -208,6 +201,7 @@ export const createData = (/*logs, avgLogs*/) => {
     sessions[curSess].push(avgLogs[i].response_time_ms);
   }
   console.log(sessions);
+  // reduces each sessions sub-array to average response time in ms
   sessions.forEach((session) => {
     let total = 0;
     for (let i = 0; i < session.length; i++) {
@@ -218,6 +212,8 @@ export const createData = (/*logs, avgLogs*/) => {
   console.log(`Session number: ${sessNums}`);
   console.log(`Session Averages: ${sessAvgs}`);
 };
+
+// attaches Scatter Chart to ScatterChart.svelte
 export const createScatterChart = () => {
   const data = {
     labels: labels,
@@ -236,15 +232,6 @@ export const createScatterChart = () => {
         backgroundColor: '#FF9E01', //orange
         borderColor: '#FF9E01',
         data: errs,
-        showLine: false,
-        pointRadius: 5,
-      },
-
-      {
-        label: 'Sub-Requests',
-        backgroundColor: '#D0EAFF', //lighter blue
-        borderColor: '#D0EAFF',
-        data: subReqs,
         showLine: false,
         pointRadius: 5,
       },
@@ -301,13 +288,13 @@ export const createScatterChart = () => {
 
 // attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
-  const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
+  const pieLabels = ['Success', 'Errors'];
   const data = {
     labels: pieLabels,
     datasets: [
       {
         label: 'Worker Activity',
-        backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
+        backgroundColor: ['#6194BC', '#FF9E01'],
         data: pieData,
       },
     ],

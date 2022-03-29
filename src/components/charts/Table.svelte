@@ -1,12 +1,8 @@
 <script>
   import { mockLogArray } from '../../store';
-  console.log(`table component mockLogArray: ${$mockLogArray}`);
-  for (let i = 0; i < $mockLogArray.length; i++) {
-    console.log($mockLogArray[i]);
-  }
+  // creates table displaying recorded session log
 </script>
 
-<!-- Styled version -->
 <table class="styled-table">
   <thead>
     <tr>
@@ -36,8 +32,6 @@
 </table>
 
 <style>
-  /* UPDATED STYLING */
-
   .styled-table {
     border-collapse: collapse;
     margin: auto;
