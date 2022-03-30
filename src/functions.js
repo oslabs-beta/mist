@@ -14,10 +14,10 @@ import {
 // chart grid color
 const grid = '#F6F6F6';
 
-///////////// logs/avgLogs params (COMMENT OUT FOR TESTING) -> (uncomment in when live) ////////////
+///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
 export const createData = (logs, avgLogs) => {
   /*
-  /// dummy logs -> for testing purposes -> (comment out when live)
+  /// dummy logs -> for testing purposes -> (coment out when live)
   const logs = [
     {
       _id: 193,
@@ -161,22 +161,26 @@ export const createData = (logs, avgLogs) => {
   // following blocks create data for scatter chart and pie chart
   // sets scatter chart x-axis length
   const duration = workerTimer.stop - workerTimer.start;
-  // creates ticks for scatter chart x-axis
-  for (let i = 50; i < duration; i += 50) {
+  console.log(`duration: ${duration}`);
+  for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
-    if (i + 50 >= duration) {
-      labels.push(i + 50);
+    if (i + 1000 >= duration) {
+      labels.push(i + 1000);
     }
   }
   // plots points for scatter chart and total success/errors for pie chart
   for (let i = 0; i < logs.length; i++) {
+    console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
+    // generates success data for charts
     if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
-    } else {
+    }
+    // Cloudflare's highest error status is 530
+    else {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
@@ -259,7 +263,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Time in Milliseconds',
+            text: 'Time in ms',
           },
           grid: {
             color: grid,
@@ -270,7 +274,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Duration of Requests in Milliseconds',
+            text: 'Duration of Requests in ms',
           },
           grid: {
             color: grid,

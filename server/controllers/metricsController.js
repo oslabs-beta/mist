@@ -1,4 +1,9 @@
 const db = require('../models/metrics_model');
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const workerName = process.env.WORKER_NAME;
 
 const metricsController = {
   sessionNum: 1,
@@ -40,29 +45,43 @@ metricsController.getSessionLogs = (req, res, next) => {
 };
 
 // ROLE: adding requests from dev app to the *metrics* table in database
-metricsController.siftMetrics = async (req, res, next) => {
+metricsController.siftMetrics = (req, res, next) => {
   try {
-    const { method, url, status, responseTime, workerName } = req.body;
+    const method =
+      req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
+        .attributes[3].value.stringValue;
+    const status =
+      req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
+        .attributes[12].value.intValue;
+    const start = Math.round(
+      req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
+        .startTimeUnixNano / 1000000
+    );
+    const url =
+      req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
+        .attributes[4].value.stringValue;
+    const responseTime =
+      req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
+        .endTimeUnixNano /
+        1000000 -
+      start;
     // ROLE: save those data points in our own object in the correct format
     const metrics = {
       method,
-      url,
       status,
-      workerName,
+      start,
+      url,
+      responseTime,
     };
-    // ROLE: convert response time to a float w/o ms
-    metrics.responseTime = Number(responseTime.replace(/[A-Za-z]/g, ''));
-
+    // ROLE: get our worker name
+    metrics.workerName = workerName;
     //ROLE: get our session number
     metrics.sessionNum = metricsController.sessionNum;
-
-    //ROLE: get our 'start' time
-    metrics.start = Date.now();
+    console.log(`these are our metrics`, metrics);
     res.locals.metrics = metrics;
     return next();
-
-    // ROLE: error handling
   } catch (err) {
+    // ROLE: error handling
     return next({
       log: `Cannot sift metrics. ERROR: ${err}`,
       message: { err: 'Error occurred in metricsController.siftMetrics' },
