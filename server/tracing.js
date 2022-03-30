@@ -18,7 +18,4 @@ const sdk = new opentelemetry.NodeSDK({
   instrumentations: [getNodeAutoInstrumentations()],
 });
 
-sdk.CreateTracerProviderBuilder()
-.SetResourceBuilder(BackendServiceResource)
-
 sdk.start();

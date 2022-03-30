@@ -5,7 +5,6 @@ receivers:
 
 processors:
   batch:
-  batch/2:
     timeout: 10s
     send_batch_size: 10000
     send_batch_max_size: 11000
@@ -16,9 +15,6 @@ exporters:
 service:
   pipelines:
     traces:
-      receivers: 
-        - otlp
-      processors: 
-        - batch/2
-      exporters: 
-        - otlphttp
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
