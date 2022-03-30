@@ -1,8 +1,8 @@
-<!-- <script> /////////////////////////////// NO LONGER REQUIRED
+<script>
   import { user } from '../store.js';
   import Worker from './Worker.svelte';
   import { workers, chartFlag } from '../store.js';
-  import BarChart from './charts/BarChart.svelte';
+  import BarChart from './charts/BarGraph.svelte';
 
   let showWorker = false;
   // let currentWorker;
@@ -17,32 +17,32 @@
   };
 </script>
 
- html goes here 
+<!-- html goes here -->
 
 {#if !showWorker}
   <h1>Worker Summary</h1>
-   <h3>Email: {user.email} API Key: {user.apiKey}</h3> 
-   <h3>Here are your App level metrics</h3> 
-   <div class="barChart">
+  <!-- <h3>Email: {user.email} API Key: {user.apiKey}</h3> -->
+  <!-- <h3>Here are your App level metrics</h3> -->
+  <div class="barChart">
     <BarChart />
-  </div> 
+  </div>
 
-   {#each workers as worker (worker.id)} 
+  <!-- {#each workers as worker (worker.id)} -->
   <div>
-     <h1>{worker.name}</h1> 
-     <h1>Worker</h1> 
-     <button on:click={() => toggleWorker(worker.id)}>Show Worker</button> 
+    <!-- <h1>{worker.name}</h1> -->
+    <!-- <h1>Worker</h1> -->
+    <!-- <button on:click={() => toggleWorker(worker.id)}>Show Worker</button> -->
     <button on:click={() => toggleWorker()}>Show Worker</button>
   </div>
-   {/each} 
+  <!-- {/each} -->
 {/if}
 
 {#if showWorker}
   <Worker on:click={() => exitWorker()}>
-     <h1>{currentWorker.name}</h1> 
+    <!-- <h1>{currentWorker.name}</h1> -->
     <h1>Worker</h1>
   </Worker>
-   bar chart here 
+  <!-- bar chart here -->
 {/if}
 
 <style lang="scss">
@@ -63,4 +63,4 @@
     font-size: 2em;
     font-weight: 100;
   }
-</style> -->
+</style>

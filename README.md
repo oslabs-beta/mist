@@ -36,10 +36,11 @@ psql -d <url from elephantSQL> -f db_template.sql
 ### Code that goes in miniflare node modules to alter them
 
 `node_modules/@miniflare/core/(dist/src)/index.js`
-ADDED ON LINE 979:
+ADDED ON LINE 974:
 NEED SOME ERROR HANDLING FOR OUR FETCH THAT DOESN'T DISRUPT MINIFLARE WHEN NOT USING MIST
 
 ```js
+const workerName = 'sample-worker-2';
 const response = await fetch('http://localhost:3000/allData', {
   method: 'POST',
   headers: {
@@ -51,6 +52,10 @@ const response = await fetch('http://localhost:3000/allData', {
     url,
     status,
     responseTime,
+<<<<<<< HEAD
+=======
+    workerName,
+>>>>>>> main
   }),
 })
   .then((response) => response.json())
@@ -90,4 +95,7 @@ Like the real workers runtime, Miniflare limits you to 50 subrequests per reques
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
+<<<<<<< HEAD
  node --require './server/tracing.js' server/miniflare
+=======
+>>>>>>> main

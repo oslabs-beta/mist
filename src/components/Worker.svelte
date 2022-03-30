@@ -22,6 +22,7 @@
   $: console.log(`here's the chart flag: ${chartFlag}`);
   $: console.log(mockLogArray);
 
+  // uniqueKey is used to remount charts after data is reset
   let uniqueKey = {};
 
   // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
@@ -34,7 +35,6 @@
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
   // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
@@ -47,14 +47,10 @@
     })
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         $workerName = data[0].worker;
-        // const logs = data;
-        // console.log(logs);
         for (let i = 0; i < data.length; i++) {
-          // if (logs[i].session_num === $sessionNum) {
           $mockLogArray.push(data[i]);
-          // }
         }
       });
     await fetch(`http://localhost:3000/averageData/${$workerName}`, {
@@ -63,12 +59,14 @@
     })
       .then((data) => data.json())
       .then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          $mockAvgsArray.push(data[i]);
+        const sortedData = data.sort((a, b) => a.session_num - b.session_num);
+        for (let i = 0; i < sortedData.length; i++) {
+          $mockAvgsArray.push(sortedData[i]);
         }
       });
-    console.log(`Your worker is ${$workerName}`);
-    console.log(`Mock Log Array: ${$mockLogArray}`);
+    // console.log(`workerName: ${$workerName}`);
+    // console.log(`mockLogArray: ${$mockLogArray}`);
+    // console.log(`mockAvgsArray: ${$mockAvgsArray}`);
   };
 
   // chart() generates metrics data from fetched session logs and initiates charting functions
@@ -76,10 +74,10 @@
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       ///////////////// COMMENTED OUT FOR TESTING //////////////////
-      // createData($mockLogArray, $mockAvgsArray);
-      // LIVE createData() ⤴️
+      createData($mockLogArray, $mockAvgsArray);
+      // LIVE createData(logs, avgLogs) ⤴️
       // TEST createData() ⤵️
-      createData();
+      // createData();
       $chartFlag = true;
       setTimeout(() => {
         createScatterChart();
@@ -87,8 +85,6 @@
         createBarGraph();
       }, 2000);
     }
-    console.log($mockAvgsArray);
-    console.log($mockLogArray);
   };
 
   // resetChart() resets the graph components (via uniqueKey) as well as the store, readying the app for the next recording session
@@ -96,14 +92,13 @@
     uniqueKey = {};
     mockLogArray.set([]);
     mockAvgsArray.set([]);
-    // TO INCREMENT SESSION NUMBER...
     $sessionNum++;
     $chartFlag = false;
-    console.log($mockLogArray);
+    // console.log(`mockLogArray: ${$mockLogArray}`);
+    // console.log(`mockAvgsArray: ${$mockAvgsArray}`);
+    // console.log(`sessionNum: ${$sessionNum}`);
   };
 </script>
-
-<!-- html goes here -->
 
 <div class="backdrop">
   <slot />
