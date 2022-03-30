@@ -1,7 +1,6 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
-  "private": true,
+  "name": "mist-analytics",
+  "version": "1.0.1",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
