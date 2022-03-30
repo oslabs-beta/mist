@@ -1,17 +1,25 @@
 # Notes
 
 In server, every time we run the mistMiniflare.startServer(), it install node modules.
-Running the tracer: node --require ‘./server/tracing.js’ server/miniflare
+Running the tracer: node --require './server/tracing.js' server/miniflare
 
 # mist
 
-1. User Set-Up
-2. Interpreting metrics
-3. FAQ
-4. Future Wish-List + Contact Us
+1. About mist
+2. User Set-Up
+3. Interpreting metrics
+4. FAQ
+5. Future Wish-List + Contact Us
 
-## PART 1 - User Set-Up
+## PART 1 - About mist
 
+
+## PART 2 - User Set-Up
+
+### Option A - Using the npm package mist-analytics
+
+
+### Option B - Using the GitHub repository
 Add steps here for downloading and setting up miniflare
 
 - install miniflare as a dev dependancy by running 'npm install -D miniflare' in your CLI
@@ -58,7 +66,7 @@ const response = await fetch('http://localhost:3000/allData', {
   .catch((error) => console.log('Error: ', error));
 ```
 
-## PART 2 - Interpreting Metrics
+## PART 3 - Interpreting Metrics
 
 ### Servers:
 
@@ -71,7 +79,8 @@ user's (your) worker-based application
 
 - localhost:8787 `npx miniflare`
 
-## PART 3 - FAQ
+
+## PART 4 - FAQ
 
 ### Metrics
 
@@ -91,3 +100,6 @@ Like the real workers runtime, Miniflare limits you to 50 subrequests per reques
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
  node --require './server/tracing.js' server/miniflare
+
+
+ ## PART 5 - Future Wish-List + Contact Us
