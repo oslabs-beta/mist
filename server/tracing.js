@@ -13,7 +13,6 @@ const exporter = new OTLPTraceExporter({
 });
 
 const sdk = new opentelemetry.NodeSDK({
-  // traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),
   traceExporter: exporter,
   instrumentations: [getNodeAutoInstrumentations()],
 });

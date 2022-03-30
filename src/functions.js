@@ -17,7 +17,8 @@ import {
 const grid = '#F6F6F6';
 
 ///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
-export const createData = (/*logs, avgLogs*/) => {
+export const createData = (logs, avgLogs) => {
+  /*
   /// dummy logs -> for testing purposes -> (coment out when live)
   const logs = [
     {
@@ -142,7 +143,7 @@ export const createData = (/*logs, avgLogs*/) => {
     { response_time_ms: 1.72, session_num: 30 },
     { response_time_ms: 1.63, session_num: 30 },
   ];
-
+*/
   // RESETS CHARTING DATA
   if (labels.length > 1) {
     labels.length = 0;
@@ -161,7 +162,8 @@ export const createData = (/*logs, avgLogs*/) => {
   // GENERATES NEW CHARTING DATA
   currentWorker.push(logs[0].worker);
   const duration = workerTimer.stop - workerTimer.start;
-  for (let i = 0; i < duration; i += 50) {
+  console.log(`duration: ${duration}`);
+  for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
     if (i + 50 >= duration) {
       labels.push(i + 50);
@@ -169,7 +171,9 @@ export const createData = (/*logs, avgLogs*/) => {
   }
 
   for (let i = 0; i < logs.length; i++) {
-    if (logs[i].status < 300 && logs[i].status !== 204) {
+    console.log(`log${i}: ${logs[i].start - workerTimer.start}`)
+    // generates success data for charts
+    if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,

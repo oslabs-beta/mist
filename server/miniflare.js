@@ -2,13 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const { Miniflare, Log, LogLevel } = require('miniflare');
 const path = require('path');
-const { workerName } = require('./constantsTemp.js');
+const dotenv = require('dotenv')
+dotenv.config();
 
 
-
-// const workerName = 'sample-worker-2'
-// const workerName = process.env.MY_WORKER;
-console.log('worker name in miniflare', workerName);
+const workerName = process.env.WORKER_NAME;
 
 const mistMiniflare = new Miniflare({
   scriptPath: path.resolve(__dirname, `../../${workerName}/index.js`),
