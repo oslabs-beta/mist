@@ -45,7 +45,7 @@ metricsController.getSessionLogs = (req, res, next) => {
 };
 
 // ROLE: adding requests from dev app to the *metrics* table in database
-metricsController.siftMetrics = async (req, res, next) => {
+metricsController.siftMetrics = (req, res, next) => {
   try {
     const method =
       req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0]
@@ -68,6 +68,8 @@ metricsController.siftMetrics = async (req, res, next) => {
     // ROLE: save those data points in our own object in the correct format
     const metrics = {
       method,
+      status,
+      start,
       url,
       responseTime,
     };
