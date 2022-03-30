@@ -47,7 +47,6 @@ metricsController.getSessionLogs = (req, res, next) => {
 // ROLE: adding requests from dev app to the *metrics* table in database
 metricsController.siftMetricsTel = (req, res, next) => {
   try {
-    // requestCounter++
     console.log(`Are we happening right away?`)
     const method = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[3].value.stringValue;
     const status = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[12].value.intValue;
@@ -102,7 +101,6 @@ metricsController.addMetrics = (req, res, next) => {
     workerName,
   ])
     .then((res) => {
-      // requestCounter--;
       return next();
     })
     //NOTE: potentially build out error handling message

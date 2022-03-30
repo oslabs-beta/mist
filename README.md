@@ -1,8 +1,3 @@
-# Notes
-
-In server, every time we run the mistMiniflare.startServer(), it install node modules.
-Running the tracer: node --require './server/tracing.js' server/miniflare
-
 # mist
 
 1. About mist
@@ -76,19 +71,16 @@ When you fire off a worker, data from the last 5 sessions in which you tested th
 **A:** While this feature is still in development, you can access this data from your postgreSQL database by running the following command:
     `SELECT * FROM "public"."metrics" WHERE worker = <your-worker-name>`
     
-    
+
 **Q: I fired off my Worker severeal times but I am not seeing all of that data reflected in the logs. What happened?**
 
 **A:** What most likely happened here is that the tracer did not have time to process your request to the Worker and store it in the database. Try waiting approximately 5 seconds between invocations of the Worker to ensure that all data is collected without interference.
 
 
 
-## Future Wish-List + Contact Us
+## PART 5 - Future Wish-List + Contact Us
 
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
  node --require './server/tracing.js' server/miniflare
-
-
- ## PART 5 - Future Wish-List + Contact Us
