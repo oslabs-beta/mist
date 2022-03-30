@@ -261,7 +261,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Time in Milliseconds',
+            text: 'Time in ms',
           },
           grid: {
             color: grid,
@@ -272,7 +272,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Duration of Requests in Milliseconds',
+            text: 'Duration of Requests in ms',
           },
           grid: {
             color: grid,
@@ -290,7 +290,7 @@ export const createScatterChart = () => {
 
 // attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
-  const pieLabels = ['Success', 'Errors'];
+  const pieLabels = ['Successes', 'Errors'];
   const data = {
     labels: pieLabels,
     datasets: [

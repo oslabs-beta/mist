@@ -3,6 +3,8 @@ import { writable } from 'svelte/store';
 export let theme = writable('Misty');
 export let previousTheme = writable('Misty');
 export let chartFlag = writable(false);
+export let genMet = writable(false);
+export let loading = writable(false);
 // no worky
 export let sessionNum = writable(1);
 export let workerName = writable('Worker');
@@ -32,4 +34,3 @@ export const currentWorker = [];
 export const sessNums = [];
 export const sessAvgs = [];
 
-export const requestCounter = 0;

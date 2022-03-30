@@ -1,7 +1,8 @@
 receivers:
   otlp: 
-    http:
-      endpoint: 'http://localhost:3000/v1/traces'
+    protocols:
+      http:
+        endpoint: 'http://localhost:3000/v1/traces'
 
 processors:
   batch:
@@ -15,6 +16,14 @@ exporters:
 service:
   pipelines:
     traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
+    logs:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlphttp]

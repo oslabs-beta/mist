@@ -1,6 +1,7 @@
 const db = require('../models/metrics_model');
 const path = require('path')
 const { workerName } = require('../constantsTemp.js');
+const { isReady } = require('../')
 
 const metricsController = {
   sessionNum: 1,

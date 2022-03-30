@@ -16,6 +16,7 @@ app.use('/v1/traces', metricsController.siftMetricsTel, metricsController.addMet
 });
 
 
+
 // ROLE: getting sessionNum when dev presses "start" adds 1 to the current max session num in database
 app.get('/sessionNum', metricsController.getSessionNum, (req, res) => {
   res.json('sessionNum has been set!');
