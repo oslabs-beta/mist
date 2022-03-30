@@ -25,6 +25,7 @@
   $: console.log(`here's the chart flag: ${chartFlag}`);
   $: console.log(mockLogArray);
 
+  // uniqueKey is used to remount charts after data is reset
   let uniqueKey = {};
 
   // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
@@ -37,7 +38,6 @@
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
   // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
@@ -98,8 +98,6 @@
         $loading = !$loading;
       }, 2000);
     }
-    console.log($mockAvgsArray);
-    console.log($mockLogArray);
   };
 
   // resetChart() resets the graph components (via uniqueKey) as well as the store, readying the app for the next recording session
@@ -108,14 +106,13 @@
     uniqueKey = {};
     mockLogArray.set([]);
     mockAvgsArray.set([]);
-    // TO INCREMENT SESSION NUMBER...
     $sessionNum++;
     $chartFlag = false;
-    console.log($mockLogArray);
+    // console.log(`mockLogArray: ${$mockLogArray}`);
+    // console.log(`mockAvgsArray: ${$mockAvgsArray}`);
+    // console.log(`sessionNum: ${$sessionNum}`);
   };
 </script>
-
-<!-- html goes here -->
 
 <div class="backdrop">
   <slot />

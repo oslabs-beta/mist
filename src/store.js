@@ -18,8 +18,6 @@ export let workerName = writable('Worker');
 export const workerTimer = writable({
   start: 0,
   stop: 0,
-  requestStart: 0,
-  requestComplete: 0,
 });
 
 export const mockLogArray = writable([]);
@@ -29,7 +27,7 @@ export const labels = [0];
 export const succs = [];
 export const errs = [];
 export const subReqs = [];
-export const pieData = [0, 0, 0];
+export const pieData = [0, 0];
 
 export const currentWorker = [];
 export const sessNums = [];

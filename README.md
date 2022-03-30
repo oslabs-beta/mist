@@ -83,4 +83,3 @@ When you fire off a worker, data from the last 5 sessions in which you tested th
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
- node --require './server/tracing.js' server/miniflare

@@ -1,8 +1,6 @@
 import Chart from 'chart.js/auto';
-//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
-  mockLogArray,
   labels,
   succs,
   errs,
@@ -13,7 +11,7 @@ import {
   sessNums,
 } from './store';
 
-// (couldn't figure out how to process scss in svelte/rollup)
+// chart grid color
 const grid = '#F6F6F6';
 
 ///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
@@ -102,7 +100,7 @@ export const createData = (logs, avgLogs) => {
       worker: 'sample-worker-2',
     },
   ];
-  //// dummy avgLogs -> for testing purposes -> (coment out when live)
+  //// dummy avgLogs -> for testing purposes -> (comment out when live)
   const avgLogs = [
     { response_time_ms: 4.18, session_num: 26 },
     { response_time_ms: 0.68, session_num: 26 },
@@ -150,17 +148,18 @@ export const createData = (logs, avgLogs) => {
     labels.push(0);
     succs.length = 0;
     errs.length = 0;
-    subReqs.length = 0;
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
-
     sessAvgs.length = 0;
     sessNums.length = 0;
     currentWorker.length = 0;
   }
   // GENERATES NEW CHARTING DATA
+  // sets which worker is being monitored
   currentWorker.push(logs[0].worker);
+  // following blocks create data for scatter chart and pie chart
+  // sets scatter chart x-axis length
   const duration = workerTimer.stop - workerTimer.start;
   console.log(`duration: ${duration}`);
   for (let i = 1000; i < duration; i += 1000) {
@@ -169,7 +168,7 @@ export const createData = (logs, avgLogs) => {
       labels.push(i + 1000);
     }
   }
-
+  // plots points for scatter chart and total success/errors for pie chart
   for (let i = 0; i < logs.length; i++) {
     console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
     // generates success data for charts
@@ -189,15 +188,16 @@ export const createData = (logs, avgLogs) => {
       });
     }
   }
-
+  // following block create data for bar graph
   console.log(`labels ${labels}`);
-
+  // curSess indexes sessions array
   let curSess = 0;
-  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = []; // DELETE -> (imported from store)
+  // for loop pushes response times into indexed sessions sub-array
   for (let i = 0; i < avgLogs.length; i++) {
+    console.log(`Session number: ${sessNums}`);
     if (i === 0) sessNums.push(avgLogs[i].session_num);
+    // when session_num increases, curSess increments to push into next sessions sub-array
     if (avgLogs[i].session_num !== sessNums[curSess]) {
       ++curSess;
       sessNums.push(avgLogs[i].session_num);
@@ -205,6 +205,7 @@ export const createData = (logs, avgLogs) => {
     sessions[curSess].push(avgLogs[i].response_time_ms);
   }
   console.log(sessions);
+  // reduces each sessions sub-array to average response time in ms
   sessions.forEach((session) => {
     let total = 0;
     for (let i = 0; i < session.length; i++) {
@@ -215,6 +216,8 @@ export const createData = (logs, avgLogs) => {
   console.log(`Session number: ${sessNums}`);
   console.log(`Session Averages: ${sessAvgs}`);
 };
+
+// attaches Scatter Chart to ScatterChart.svelte
 export const createScatterChart = () => {
   const data = {
     labels: labels,
@@ -236,15 +239,6 @@ export const createScatterChart = () => {
         showLine: false,
         pointRadius: 5,
       },
-
-      // {
-      //   label: 'Sub-Requests',
-      //   backgroundColor: '#D0EAFF', //lighter blue
-      //   borderColor: '#D0EAFF',
-      //   data: subReqs,
-      //   showLine: false,
-      //   pointRadius: 5,
-      // },
     ],
   };
 
