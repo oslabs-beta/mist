@@ -1,6 +1,4 @@
 const db = require('../models/metrics_model');
-const path = require('path')
-const { workerName } = require('../constantsTemp.js');
 
 const metricsController = {
   sessionNum: 1,
@@ -42,38 +40,35 @@ metricsController.getSessionLogs = (req, res, next) => {
 };
 
 // ROLE: adding requests from dev app to the *metrics* table in database
-metricsController.siftMetricsTel = (req, res, next) => {
+metricsController.siftMetrics = async (req, res, next) => {
   try {
-    const method = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[3].value.stringValue;
-    const status = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[12].value.intValue;
-    const start = Math.round(req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].startTimeUnixNano / 1000);
-    const url  = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[4].value.stringValue;
-    const responseTime = ((req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].endTimeUnixNano / 1000) - start)/1000;
+    const { method, url, status, responseTime, workerName } = req.body;
     // ROLE: save those data points in our own object in the correct format
     const metrics = {
       method,
-      status,
-      start,
       url,
-      responseTime
-    }
-    // ROLE: get our worker name 
-    metrics.workerName = workerName;
+      status,
+      workerName,
+    };
+    // ROLE: convert response time to a float w/o ms
+    metrics.responseTime = Number(responseTime.replace(/[A-Za-z]/g, ''));
+
     //ROLE: get our session number
     metrics.sessionNum = metricsController.sessionNum;
-    console.log(`these are our metrics`, metrics)
+
+    //ROLE: get our 'start' time
+    metrics.start = Date.now();
     res.locals.metrics = metrics;
-    return next()
-  }
-  // ROLE: error handling
-   catch(err){
+    return next();
+
+    // ROLE: error handling
+  } catch (err) {
     return next({
       log: `Cannot sift metrics. ERROR: ${err}`,
       message: { err: 'Error occurred in metricsController.siftMetrics' },
     });
   }
-}
-
+};
 
 //ROLE: Add metrics into the database once they are in the proper format
 metricsController.addMetrics = (req, res, next) => {

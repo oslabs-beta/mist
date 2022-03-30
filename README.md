@@ -1,8 +1,3 @@
-# Notes
-
-In server, every time we run the mistMiniflare.startServer(), it install node modules.
-Running the tracer: node --require ‘./server/tracing.js’ server/miniflare
-
 # mist
 
 1. User Set-Up
@@ -52,10 +47,7 @@ const response = await fetch('http://localhost:3000/allData', {
     url,
     status,
     responseTime,
-<<<<<<< HEAD
-=======
     workerName,
->>>>>>> main
   }),
 })
   .then((response) => response.json())
@@ -95,7 +87,3 @@ Like the real workers runtime, Miniflare limits you to 50 subrequests per reques
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
 -
-<<<<<<< HEAD
- node --require './server/tracing.js' server/miniflare
-=======
->>>>>>> main
