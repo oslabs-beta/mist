@@ -154,7 +154,7 @@ export const createData = (logs, avgLogs) => {
     pieData.length = 0;
     pieData.push(0);
     pieData.push(0);
-    pieData.push(0);
+
     sessAvgs.length = 0;
     sessNums.length = 0;
     currentWorker.length = 0;
@@ -165,13 +165,13 @@ export const createData = (logs, avgLogs) => {
   console.log(`duration: ${duration}`);
   for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
-    if (i + 50 >= duration) {
-      labels.push(i + 50);
+    if (i + 1000 >= duration) {
+      labels.push(i + 1000);
     }
   }
 
   for (let i = 0; i < logs.length; i++) {
-    console.log(`log${i}: ${logs[i].start - workerTimer.start}`)
+    console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
     // generates success data for charts
     if (logs[i].status < 300) {
       pieData[0] += 1;
@@ -181,16 +181,9 @@ export const createData = (logs, avgLogs) => {
       });
     }
     // Cloudflare's highest error status is 530
-    if (logs[i].status > 299 && logs[i].status <= 530) {
+    else {
       pieData[1] += 1;
       errs.push({
-        x: logs[i].start - workerTimer.start,
-        y: logs[i].response_time_ms,
-      });
-    }
-    if (logs[i].status === 204) {
-      pieData[2] += 1;
-      subReqs.push({
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
@@ -244,14 +237,14 @@ export const createScatterChart = () => {
         pointRadius: 5,
       },
 
-      {
-        label: 'Sub-Requests',
-        backgroundColor: '#D0EAFF', //lighter blue
-        borderColor: '#D0EAFF',
-        data: subReqs,
-        showLine: false,
-        pointRadius: 5,
-      },
+      // {
+      //   label: 'Sub-Requests',
+      //   backgroundColor: '#D0EAFF', //lighter blue
+      //   borderColor: '#D0EAFF',
+      //   data: subReqs,
+      //   showLine: false,
+      //   pointRadius: 5,
+      // },
     ],
   };
 
@@ -276,7 +269,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Time in Milliseconds',
+            text: 'Time in ms',
           },
           grid: {
             color: grid,
@@ -287,7 +280,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Duration of Requests in Milliseconds',
+            text: 'Duration of Requests in ms',
           },
           grid: {
             color: grid,
@@ -305,13 +298,13 @@ export const createScatterChart = () => {
 
 // attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
-  const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
+  const pieLabels = ['Success', 'Errors'];
   const data = {
     labels: pieLabels,
     datasets: [
       {
         label: 'Worker Activity',
-        backgroundColor: ['#6194BC', '#FF9E01', '#D0EAFF'],
+        backgroundColor: ['#6194BC', '#FF9E01'],
         data: pieData,
       },
     ],
