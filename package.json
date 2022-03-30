@@ -11,6 +11,7 @@
     "@cloudflare/wrangler": "^1.19.8",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "axios": "^0.26.0",
     "chart.js": "^3.7.1",
     "cors": "^2.8.5",
@@ -30,8 +31,17 @@
     "svelte-preprocess": "^4.10.4"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.0.4",
+    "@opentelemetry/auto-instrumentations-node": "^0.28.0",
+    "@opentelemetry/exporter-jaeger": "^1.1.1",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.27.0",
+    "@opentelemetry/sdk-node": "^0.27.0",
+    "@opentelemetry/tracing": "^0.24.0",
+    "@snowpack/plugin-dotenv": "^2.2.0",
     "axios": "^0.26.0",
+    "dd-trace": "^2.4.0",
     "dotenv": "^16.0.0",
+    "miniflare": "^2.3.0",
     "sirv-cli": "^2.0.0",
     "websocket": "^1.0.34",
     "ws": "^8.5.0"
