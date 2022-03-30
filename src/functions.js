@@ -161,18 +161,15 @@ export const createData = (/*logs, avgLogs*/) => {
   // GENERATES NEW CHARTING DATA
   currentWorker.push(logs[0].worker);
   const duration = workerTimer.stop - workerTimer.start;
-  console.log(`duration: ${duration}`);
-  for (let i = 1000; i < duration; i += 1000) {
+  for (let i = 0; i < duration; i += 50) {
     labels.push(i);
-    if (i + 1000 >= duration) {
-      labels.push(i + 1000);
+    if (i + 50 >= duration) {
+      labels.push(i + 50);
     }
   }
 
   for (let i = 0; i < logs.length; i++) {
-    console.log(`log${i}: ${logs[i].start - workerTimer.start}`)
-    // generates success data for charts
-    if (logs[i].status < 300) {
+    if (logs[i].status < 300 && logs[i].status !== 204) {
       pieData[0] += 1;
       succs.push({
         x: logs[i].start - workerTimer.start,
@@ -275,7 +272,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Time in ms',
+            text: 'Time in Milliseconds',
           },
           grid: {
             color: grid,
@@ -286,7 +283,7 @@ export const createScatterChart = () => {
           title: {
             display: true,
             align: 'center',
-            text: 'Duration of Requests in ms',
+            text: 'Duration of Requests in Milliseconds',
           },
           grid: {
             color: grid,
@@ -304,7 +301,7 @@ export const createScatterChart = () => {
 
 // attaches Pie Chart to PieChart.svelte
 export const createPieChart = () => {
-  const pieLabels = ['Successes', 'Errors'];
+  const pieLabels = ['Success', 'Errors', 'Sub-Requests'];
   const data = {
     labels: pieLabels,
     datasets: [
