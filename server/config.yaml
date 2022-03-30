@@ -1,0 +1,24 @@
+receivers:
+  otlp: 
+    http:
+      endpoint: 'http://localhost:3000/v1/traces'
+
+processors:
+  batch:
+  batch/2:
+    timeout: 10s
+    send_batch_size: 10000
+    send_batch_max_size: 11000
+
+exporters:
+  otlp:
+
+service:
+  pipelines:
+    traces:
+      receivers: 
+        - otlp
+      processors: 
+        - batch/2
+      exporters: 
+        - otlphttp

@@ -161,14 +161,15 @@ export const createData = (logs, avgLogs) => {
   // creates x-axis for scatter chart (duration of recording session, x-ticks every 50ms)
   const duration = workerTimer.stop - workerTimer.start;
   console.log(`duration: ${duration}`);
-  for (let i = 0; i < duration; i += 50) {
+  for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
-    if (i + 50 >= duration) {
-      labels.push(i + 50);
+    if (i + 1000 >= duration) {
+      labels.push(i + 1000);
     }
   }
   // generates plot points for scatter chart successes and errors
   for (let i = 0; i < logs.length; i++) {
+    console.log(`log${i}: ${logs[i].start - workerTimer.start}`)
     // generates success data for charts
     if (logs[i].status < 300) {
       pieData[0] += 1;

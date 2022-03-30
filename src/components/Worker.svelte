@@ -62,8 +62,9 @@
     })
       .then((data) => data.json())
       .then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          $mockAvgsArray.push(data[i]);
+        const sortedData = data.sort((a, b) => a.session_num - b.session_num)
+        for (let i = 0; i < sortedData.length; i++) {
+          $mockAvgsArray.push(sortedData[i]);
         }
       });
     console.log(`Your worker is ${$workerName}`);

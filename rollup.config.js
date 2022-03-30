@@ -5,10 +5,9 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
-import { config as configDotenv} from 'dotenv';
+// import { config as configDotenv} from 'dotenv';
 import replace from '@rollup/plugin-replace';
-
-configDotenv();
+// configDotenv();
 
 const production = !process.env.ROLLUP_WATCH;
 
