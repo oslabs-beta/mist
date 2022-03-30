@@ -5,9 +5,10 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
-// import { config as configDotenv} from 'dotenv';
+// import dotenv from 'dotenv';
 import replace from '@rollup/plugin-replace';
-// configDotenv();
+
+// dotenv.config();
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -50,8 +51,7 @@ export default {
       // 2 level deep object should be stringify
       process: JSON.stringify({
         env: {
-          MY_WORKER: '"sample-worker-2"',
-          MY_URI: '"postgres://mowjiius:ZP2R2gX5BXNqh7CWJJQRWs_Gs4s_Vr2M@salt.db.elephantsql.com/mowjiius"', 
+          MY_WORKER: 'sample-worker-2',
         }
       }),
     }),

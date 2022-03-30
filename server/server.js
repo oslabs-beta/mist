@@ -11,10 +11,8 @@ app.use(cors());
 
 // ROLE: processes trace post request from miniflare server and store sessions in database
 app.use('/v1/traces', metricsController.siftMetricsTel, metricsController.addMetrics, (req, res) => {
-  // counterRequest--;
   res.json('hello from 3000!');
 });
-
 
 
 // ROLE: getting sessionNum when dev presses "start" adds 1 to the current max session num in database

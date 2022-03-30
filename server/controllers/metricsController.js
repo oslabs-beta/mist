@@ -1,7 +1,6 @@
 const db = require('../models/metrics_model');
 const path = require('path')
 const { workerName } = require('../constantsTemp.js');
-const { isReady } = require('../')
 
 const metricsController = {
   sessionNum: 1,
@@ -45,16 +44,12 @@ metricsController.getSessionLogs = (req, res, next) => {
 // ROLE: adding requests from dev app to the *metrics* table in database
 metricsController.siftMetricsTel = (req, res, next) => {
   try {
-    // requestCounter++
-    console.log(`Are we happening right away?`)
     const method = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[3].value.stringValue;
     const status = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[12].value.intValue;
-    const start = Math.trunc(req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].startTimeUnixNano / 1000000);
+    const start = Math.round(req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].startTimeUnixNano / 1000);
     const url  = req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].attributes[4].value.stringValue;
-    const responseTime = ((req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].endTimeUnixNano / 1000000) - (start));
+    const responseTime = ((req.body.resourceSpans[0].instrumentationLibrarySpans[0].spans[0].endTimeUnixNano / 1000) - start)/1000;
     // ROLE: save those data points in our own object in the correct format
-    console.log(`start: `, start)
-    console.log(`responseTime: `, responseTime)
     const metrics = {
       method,
       status,
@@ -100,7 +95,6 @@ metricsController.addMetrics = (req, res, next) => {
     workerName,
   ])
     .then((res) => {
-      // requestCounter--;
       return next();
     })
     //NOTE: potentially build out error handling message
