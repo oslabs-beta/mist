@@ -42,7 +42,8 @@ Running the tracer: node --require './server/tracing.js' server/miniflare
 1. Once all servers are running and your worker function is ready to be tested, navigate to `localhost:8080`. Here, to initiate the metric recording session click the `Start` button.
 2. Next, navigate to `localhost:8787` and fire off your worker function that is being tested and allow for 5 seconds to elapse for data collection, prior to firing off the function again. Repeat this the number of times you would like to gather data for that worker function firing.
 3. Once you have fired off all function invocations for that session, navigate back to `localhost:8080` and click the `Stop` button to end the session. 
-4. 
+4. In order to then display your session data, click the `Generate Metrics` button and the charts will display your metrics!
+5. After you are finished analyzing this session data, click the `Reset Metrics`. 
 Check out our Medium article for more information.
 - Once your app is running and you 
 
