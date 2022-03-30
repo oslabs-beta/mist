@@ -1,6 +1,9 @@
 const db = require('../models/metrics_model');
 const path = require('path')
-const { workerName } = require('../constantsTemp.js');
+const dotenv = require('dotenv')
+dotenv.config();
+
+const workerName = process.env.WORKER_NAME;
 
 const metricsController = {
   sessionNum: 1,

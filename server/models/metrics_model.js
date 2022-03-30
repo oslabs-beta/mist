@@ -1,10 +1,6 @@
 const { Pool } = require('pg');
-// require env from 'process';
 const dotenv = require('dotenv')
 dotenv.config();
-
-// const env = require('process')
-
 
 const myURI = process.env.MY_URI;
 

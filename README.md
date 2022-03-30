@@ -6,93 +6,56 @@ Running the tracer: node --require './server/tracing.js' server/miniflare
 # mist
 
 1. About mist
-2. User Set-Up
-3. Interpreting metrics
+2. mist Set-Up
+3. mist Usage
 4. FAQ
 5. Future Wish-List + Contact Us
 
 ## PART 1 - About mist
 
 
-## PART 2 - User Set-Up
+## PART 2 - mist Set-Up
 
 ### Option A - Using the npm package mist-analytics
 
 
 ### Option B - Using the GitHub repository
-Add steps here for downloading and setting up miniflare
 
-- install miniflare as a dev dependancy by running 'npm install -D miniflare' in your CLI
-- run `npx miniflare` to start your localhost:8787
-- make a .env file and store your postgress link to a variable called 'MY_URI'. Then in the metrics_model file reference it by using 'process.env.MY_URI'.
+1. Clone this repo into your local machine in the same directory where the worker you want to test is located. `git clone https://github.com/oslabs-beta/mist.git`
+2. Install the dependencies `npm install`
+3. Create an ENV file in the same level as models folder
+    - Then create a constant called MY_URI in ENV and set its value equal to your postgresSQL database link (see next step).
+    - in metrics_model.js you must require dotenv and then invoke it.
+      - Ex: const dotenv = require('dotenv') dotenv.config();
+    - After invoking dotenv.config you will be able to set constant myURI equal to the env constant MY_URI.
+4. Set up a postgreSQL database-- we recommend using elephantSQL-- and link it to the SQL schema
+    - Copy the link to your empty database
+    - Paste that link into the ENV file and save it as myURI
+    - Open up the ***mist*** directory in your terminal
+    - Run the following command: `psql -d <url from elephantSQL> -f db_template.sql`
+5. Run the following scripts to start up the app:
+    - `npm run dev` to start the GUI on localhost:8080
+    - `node server/server.js` to start the server listening on your worker
+    - `node --require './server/tracing.js' server/miniflare` to start your worker
 
-### Database
-
-TODO: Make sure status is converted to an integer before sending to database
-TODO: Make sure response_time_ms is converted to an integer
-
-1. Create a new postgres SQL database-- we recommend elephantSQL
-2. Copy the link for that database.
-3. Open up the **_mist_** directory in your terminal.
-4. Run the following command: `psql -d <url from elephantSQL> -f db_template.sql`
-   Ensure that your url is a string.
-5. Run a query to ensure that the table is present.
-
-Run in terminal once in the **_mist_** directory:
-psql -d <url from elephantSQL> -f db_template.sql
-
-### Code that goes in miniflare node modules to alter them
-
-`node_modules/@miniflare/core/(dist/src)/index.js`
-ADDED ON LINE 979:
-NEED SOME ERROR HANDLING FOR OUR FETCH THAT DOESN'T DISRUPT MINIFLARE WHEN NOT USING MIST
-
-```js
-const response = await fetch('http://localhost:3000/allData', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    start,
-    method,
-    url,
-    status,
-    responseTime,
-  }),
-})
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.log('Error: ', error));
-```
-
-## PART 3 - Interpreting Metrics
-
-### Servers:
-
-mist
-
-- localhost:8080 `npm run dev`
-- localhost:3000 `node server/server.js`
-
-user's (your) worker-based application
-
-- localhost:8787 `npx miniflare`
-
-
-## PART 4 - FAQ
+## PART 3 - mist Usage
+1. Once all servers are running and your worker function is ready to be tested, navigate to `localhost:8080`. Here, to initiate the metric recording session click the `Start` button.
+2. Next, navigate to `localhost:8787` and fire off your worker function that is being tested and allow for 5 seconds to elapse for data collection, prior to firing off the function again. Repeat this the number of times you would like to gather data for that worker function firing.
+3. Once you have fired off all function invocations for that session, navigate back to `localhost:8080` and click the `Stop` button to end the session. 
+4. 
+Check out our Medium article for more information.
+- Once your app is running and you 
 
 ### Metrics
 
 ### Requests
 
-### Subrequests
-
-Like the real workers runtime, Miniflare limits you to 50 subrequests per request. Each call to fetch(), each URL in a redirect chain, and each call to a Cache API method (put()/match()/delete()) counts as a [subrequest](https://miniflare.dev/core/standards).
-
 ### Logs
 
 ### Status
+
+
+## PART 4 - FAQ
 
 ## Future Wish-List + Contact Us
 
