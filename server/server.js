@@ -9,11 +9,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// ROLE: processes trace post request from miniflare server and store sessions in database
-app.use('/v1/traces', metricsController.siftMetricsTel, metricsController.addMetrics, (req, res) => {
-  res.json('hello from 3000!');
-});
-
+// ROLE: processes fetch request from miniflare server and store sessions in db
+app.post(
+  '/allData',
+  metricsController.siftMetrics,
+  metricsController.addMetrics,
+  (req, res) => {
+    res.json('hello from server 3000!');
+  }
+);
 
 // ROLE: getting sessionNum when dev presses "start" adds 1 to the current max session num in database
 app.get('/sessionNum', metricsController.getSessionNum, (req, res) => {
