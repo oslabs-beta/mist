@@ -5,6 +5,9 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import sveltePreprocess from 'svelte-preprocess';
+import { config as configDotenv } from 'dotenv';
+
+configDotenv();
 // import dotenv from 'dotenv';
 // import replace from '@rollup/plugin-replace';
 
@@ -46,14 +49,14 @@ export default {
     file: 'public/build/bundle.js',
   },
   plugins: [
-    // replace({
-    //   // 2 level deep object should be stringify
-    //   process: JSON.stringify({
-    //     env: {
-    //       MY_WORKER: 'sample-worker-2',
-    //     },
-    //   }),
-    // }),
+    replace({
+      // 2 level deep object should be stringify
+      process: JSON.stringify({
+        env: {
+          MY_WORKER: 'sample-worker-2',
+        },
+      }),
+    }),
     svelte({
       preprocess: sveltePreprocess(),
       compilerOptions: {
