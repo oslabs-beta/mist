@@ -31,5 +31,3 @@ export const pieData = [0, 0, 0];
 export const currentWorker = [];
 export const sessNums = [];
 export const sessAvgs = [];
-
-export const requestCounter = 0;

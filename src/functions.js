@@ -165,8 +165,8 @@ export const createData = (logs, avgLogs) => {
   console.log(`duration: ${duration}`);
   for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
-    if (i + 1000 >= duration) {
-      labels.push(i + 1000);
+    if (i + 50 >= duration) {
+      labels.push(i + 50);
     }
   }
 
