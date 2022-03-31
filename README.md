@@ -95,5 +95,3 @@ Mist is an ever evolving open source product. If you’d like to contribute, ple
 =======
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
--
->>>>>>> main
