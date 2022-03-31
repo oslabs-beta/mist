@@ -10,14 +10,13 @@ import {
   sessAvgs,
   sessNums,
 } from './store';
-
 // chart grid color
 const grid = '#F6F6F6';
 
-///////////// logs/avgLogs COMMENTED OUT FOR TESTING -> (uncomment when live) ////////////
+// <--------------- logs/avgLogs COMMENT OUT FOR TESTING ----------------> //
 export const createData = (logs, avgLogs) => {
   /*
-  /// dummy logs -> for testing purposes -> (coment out when live)
+  /// dummy logs -> for testing purposes -> (comment in for testing)
   const logs = [
     {
       _id: 193,
