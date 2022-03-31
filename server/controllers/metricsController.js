@@ -77,7 +77,7 @@ metricsController.siftMetrics = (req, res, next) => {
     metrics.workerName = workerName;
     //ROLE: get our session number
     metrics.sessionNum = metricsController.sessionNum;
-    console.log(`these are our metrics`, metrics);
+    // console.log(`these are our metrics`, metrics);
     res.locals.metrics = metrics;
     return next();
   } catch (err) {
@@ -91,14 +91,12 @@ metricsController.siftMetrics = (req, res, next) => {
 
 //ROLE: Add metrics into the database once they are in the proper format
 metricsController.addMetrics = (req, res, next) => {
-  console.log('in add metrics controller');
   //destructure res.locals.metrics to get our metrics data
   const { method, url, status, responseTime, sessionNum, start, workerName } =
     res.locals.metrics;
   //set up a SQL query to our db that adds all of these data points! Use those $
   const query = `INSERT INTO metrics (method, url, status, response_time_ms, session_num, start, worker) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
   //call db.query(queryName, [array of metrics in order])
-  console.log(`these are our metrics`, res.locals.metrics);
   db.query(query, [
     method,
     url,
