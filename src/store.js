@@ -8,11 +8,6 @@ export let loading = writable(false);
 
 export let sessionNum = writable(1);
 export let workerName = writable('Worker');
-// export const workers = [
-//   { id: 1, name: 'Worker 1' },
-//   { id: 2, name: 'Worker 2' },
-//   { id: 3, name: 'Worker 3' },
-// ];
 
 export const workerTimer = writable({
   start: 0,

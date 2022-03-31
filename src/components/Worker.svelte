@@ -84,7 +84,7 @@
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
       $loading = !$loading;
-      ///////////////// COMMENTED OUT FOR TESTING //////////////////
+      ///////////////// COMMENT IN FOR TESTING //////////////////
       createData($mockLogArray, $mockAvgsArray);
       // LIVE createData() ⤴️
       // TEST createData() ⤵️
@@ -108,9 +108,6 @@
     mockAvgsArray.set([]);
     $sessionNum++;
     $chartFlag = false;
-    // console.log(`mockLogArray: ${$mockLogArray}`);
-    // console.log(`mockAvgsArray: ${$mockAvgsArray}`);
-    // console.log(`sessionNum: ${$sessionNum}`);
   };
 </script>
 
