@@ -28,7 +28,7 @@
   // uniqueKey is used to remount charts after data is reset
   let uniqueKey = {};
 
-  // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
+  // ROLE: start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
   const start = async () => {
     workerTimer.start = Date.now();
     // console.log(`Session Number: ${$sessionNum}`);
@@ -40,7 +40,7 @@
     });
   };
 
-  // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
+  // ROLE: stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB
   const stop = async () => {
     workerTimer.stop = Date.now();
     $loading = !$loading;
@@ -75,7 +75,7 @@
     }, 5000);
   };
 
-  // chart() generates metrics data from fetched session logs and initiates charting functions
+  // ROLE: chart() generates metrics data from fetched session logs and initiates charting functions
   const chart = () => {
     if ($chartFlag) alert('Please reset metrics before generating new ones');
     if (!$chartFlag) {
@@ -96,7 +96,7 @@
     }
   };
 
-  // resetChart() resets the graph components (via uniqueKey) as well as the store, readying the app for the next recording session
+  // ROLE: resetChart() resets the graph components (via uniqueKey) as well as the store, readying the app for the next recording session
   const resetChart = () => {
     $genMet = !$genMet;
     uniqueKey = {};

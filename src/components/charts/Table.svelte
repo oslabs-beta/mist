@@ -1,6 +1,6 @@
 <script>
   import { mockLogArray } from '../../store';
-  // creates table displaying recorded session log
+  // ROLE: creates table displaying recorded session log
 </script>
 
 <table class="styled-table">

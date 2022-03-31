@@ -1,3 +1,4 @@
+// ROLE: our application's core reactive variables, and visualization data variables are declared and held. Please see the appSetup file inside of the docs directory for additional info
 import { writable } from 'svelte/store';
 
 export let theme = writable('Misty');

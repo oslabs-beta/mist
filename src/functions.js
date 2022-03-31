@@ -13,6 +13,7 @@ import {
 // chart grid color
 const grid = '#F6F6F6';
 
+// ROLE: take in the analytics data received from fetch requests, and create the plot points, along with labels for x and y axes needed to populate our charts. 
 // <--------------- logs/avgLogs COMMENT OUT FOR TESTING ----------------> //
 export const createData = (logs, avgLogs) => {
   /*
@@ -141,7 +142,7 @@ export const createData = (logs, avgLogs) => {
     { response_time_ms: 1.63, session_num: 30 },
   ];
 */
-  // RESETS CHARTING DATA
+  // ROLE: Resets charting data
   if (labels.length > 1) {
     labels.length = 0;
     labels.push(0);
@@ -154,8 +155,8 @@ export const createData = (logs, avgLogs) => {
     sessNums.length = 0;
     currentWorker.length = 0;
   }
-  // GENERATES NEW CHARTING DATA
-  // sets which worker is being monitored
+  // ROLE: generates new charting data
+    // ROLE: sets which worker is being monitored
   currentWorker.push(logs[0].worker);
   // following blocks create data for scatter chart and pie chart
   // sets scatter chart x-axis length
@@ -167,10 +168,10 @@ export const createData = (logs, avgLogs) => {
       labels.push(i + 1000);
     }
   }
-  // plots points for scatter chart and total success/errors for pie chart
+  // ROLE: plots points for scatter chart and total success/errors for pie chart
   for (let i = 0; i < logs.length; i++) {
     // console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
-    // generates success data for charts
+    // ROLE: generates success data for charts
     if (logs[i].status < 300) {
       pieData[0] += 1;
       succs.push({
@@ -186,8 +187,8 @@ export const createData = (logs, avgLogs) => {
     }
   }
   // console.log(`labels ${labels}`);
-  // following block create data for bar graph
-  // curSess indexes sessions array
+  // ROLE: creates data for bar graph
+    // curSess indexes sessions array
   let curSess = 0;
   const sessions = [[], [], [], [], []];
   // for loop pushes response times into indexed sessions sub-array
@@ -214,7 +215,7 @@ export const createData = (logs, avgLogs) => {
   // console.log(`Session Averages: ${sessAvgs}`);
 };
 
-// attaches Scatter Chart to ScatterChart.svelte
+// ROLE: specifies configuration of Scatter Chart, and attaches it to ScatterChart.svelte. Configured in accordance with Chart.js documentation guidelines
 export const createScatterChart = () => {
   const data = {
     labels: labels,
@@ -287,7 +288,7 @@ export const createScatterChart = () => {
   );
 };
 
-// attaches Pie Chart to PieChart.svelte
+// ROLE: specifies configuration of Pie Chart, and attaches it to PieChart.svelte
 export const createPieChart = () => {
   const pieLabels = ['Success', 'Errors'];
   const data = {
@@ -322,7 +323,7 @@ export const createPieChart = () => {
   );
 };
 
-// attaches Bar Graph to BarChart.svelte
+// // ROLE: specifies configuration of Bar Chart, and attaches it to BarChart.svelte
 export const createBarGraph = () => {
   const data = {
     labels: [

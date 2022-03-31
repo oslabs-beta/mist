@@ -4,9 +4,9 @@
 
 Our port is set to localhost:3000.
 
-## `app.post('/allData', metricsController.siftMetrics,metricsController.addMetrics,)`
+## `app.use('/v1/traces', metricsController.siftMetrics, metricsController.addMetrics)`
 
-After editing the **_Miniflare_** npm file, data from any requests sent to the **_Miniflare_** server will be sent in the body of a POST request to this route on the **_mist_** server. The request is directed to the metricsController where the siftMetrics method converts the data into the proper format for the database, and the addMetrics method posts the data to the user's SQL database.
+When the tracing on ***Miniflare*** is complete, the data is exported to the server. It is routed through the metricsController.siftMetrics middleware and then the metricsController.addMetrics middleware to access the needed parts of the trace and post the data to the postgreSQL database, respectively.
 
 ## `app.get('/sessionNum', metricsController.getSessionNum)`
 
