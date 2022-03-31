@@ -9,18 +9,43 @@ const server = 'http://localhost:3000';
 // expect: ('Content-Type', /json/)
 // error handling
 
+const mockReq = {
+    body: {
+        resourceSpans: [{
+            instrumentationLibrarySpans: [{
+                spans: [{
+                    attributes: [0, 1, 2, {
+                        value: {
+                            stringValue: 'GET'
+                        }},
+                        4, 5, 6, 7, 8, 9, 10, 11, {
+                            value: {
+                                intValue: 200
+                            }
+                        }
+                    ],
+                    startTimeUnixNano: 1648566066671458000000,
+                    endTimeUnixNano: 1648566066671469000000
+                }]
+            }]
+        }]
+    }
+}
+
 
 describe('Route integration', () => {
     //To test, set up a mock response from tracer
-    xdescribe('/v1/traces', () => {
+    describe('/v1/traces', () => {
         describe('POST', () => {
             it('responds with a "hello from 3000!" message', () => {
                 return request(server)
                     .post('/v1/traces')
-                    .expect('Content-Type', /application\/json/)
+                    .send(mockReq)
+                    .expect('Content-Type', /text\/html/)
             });
         });
     });
+
 
     // /sessionNum
     // expect: ('Content-Type', /json/)
@@ -33,6 +58,7 @@ describe('Route integration', () => {
                 return request(server)
                     .get('/sessionNum')
                     .expect('Content-Type', /application\/json/)
+                    .expect('"sessionNum has been set!"')
             });
         });
     });
@@ -41,7 +67,7 @@ describe('Route integration', () => {
     //  expect: ('Content-Type', /json/)
     //  expect: logs from most recent session
     //  error handling
-    xdescribe('/sessionLogs', () => {
+    describe('/sessionLogs', () => {
         describe('GET', () => {
             it('responds with logs from the most recent session', () => {
                 return request(server)
@@ -54,7 +80,7 @@ describe('Route integration', () => {
     // /averageData/:workerName
     // expect: ('Content-Type', /json/)
     // average data of the last 5 sessions
-    xdescribe('averageData/:workerName', () => {
+    describe('averageData/:workerName', () => {
         describe('GET', () => {
             it('responds with the data from the previous 5 sessions for that worker', () => {
                 return request(server)
