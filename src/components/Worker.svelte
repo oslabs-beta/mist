@@ -31,7 +31,7 @@
   // start() sets beginning point in time for worker requests to get plotted against and retrieves recording session number
   const start = async () => {
     workerTimer.start = Date.now();
-    console.log(`Session Number: ${$sessionNum}`);
+    // console.log(`Session Number: ${$sessionNum}`);
 
     // FETCH TO ROUTE WHERE WE RETRIEVE THE MAX SESSION NUMBER
     await fetch('http://localhost:3000/sessionNum', {
@@ -51,14 +51,10 @@
       })
         .then((data) => data.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           $workerName = data[0].worker;
-          // const logs = data;
-          // console.log(logs);
           for (let i = 0; i < data.length; i++) {
-            // if (logs[i].session_num === $sessionNum) {
             $mockLogArray.push(data[i]);
-            // }
           }
         });
       await fetch(`http://localhost:3000/averageData/${$workerName}`, {
@@ -74,8 +70,8 @@
         });
       $genMet = !$genMet;
       $loading = !$loading;
-      console.log(`Your worker is ${$workerName}`);
-      console.log(`Mock Log Array: ${$mockLogArray}`);
+      // console.log(`Your worker is ${$workerName}`);
+      // console.log(`Mock Log Array: ${$mockLogArray}`);
     }, 5000);
   };
 

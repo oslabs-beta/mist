@@ -42,9 +42,8 @@ Mist is an APM development tool for gathering metrics on unpublished CloudFlare 
 3. Once you have fired off all Worker invocations for that session, navigate back to `localhost:8080` and click the `Stop` button to end the session.
 4. In order to then display your session data, click the `Generate Metrics` button and the charts will display your metrics!
 5. After you are finished analyzing this session data, click the `Reset Metrics`.
-   Check out our Medium article for more information.
-
-Check us out at [mistanalytics](https://mistanalytics.com/) for documentation and further instructions on usage. 
+      - Check out our [Medium article](https://medium.com/@lrinkedewit/what-is-mist-3902e46f037c) for more information.
+      - Visit our [website](https://mistanalytics.com/) for documentation and further instructions on usage. 
 
 ### Logs
 

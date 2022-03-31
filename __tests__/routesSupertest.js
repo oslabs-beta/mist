@@ -12,7 +12,7 @@ const server = 'http://localhost:3000';
 
 describe('Route integration', () => {
     //To test, set up a mock response from tracer
-    xdescribe('/v1/traces', () => {
+    describe('/v1/traces', () => {
         describe('POST', () => {
             it('responds with a "hello from 3000!" message', () => {
                 return request(server)
@@ -41,7 +41,7 @@ describe('Route integration', () => {
     //  expect: ('Content-Type', /json/)
     //  expect: logs from most recent session
     //  error handling
-    xdescribe('/sessionLogs', () => {
+    describe('/sessionLogs', () => {
         describe('GET', () => {
             it('responds with logs from the most recent session', () => {
                 return request(server)
