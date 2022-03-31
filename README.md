@@ -22,11 +22,9 @@ Mist is an APM development tool for gathering matrics on unpublished CloudFlare 
 
 1. Clone this repo into your local machine in the same directory where the worker you want to test is located. `git clone https://github.com/oslabs-beta/mist.git`
 2. Install the dependencies `npm install`
-3. Create an ENV file in the same level as models folder
-   - Then create a constant called `MY_URI` in ENV and set its value equal to your postgresSQL database link (see next step).
-   - in metrics_model.js you must require dotenv and then invoke it.
-     - Ex: `const dotenv = require('dotenv') dotenv.config();`
-   - After invoking dotenv.config you will be able to set constant myURI equal to the env constant `MY_URI`.
+3. Create a .env file in the root of the ***mist*** directory
+   - Set `WORKER_NAME` equal to the exact name of your worker.
+   - Set`MY_URI` equal to your postgresSQL database link (see next step).
 4. Set up a postgreSQL database-- we recommend using elephantSQL-- and link it to the SQL schema
    - Copy the link to your empty database
    - Paste that link into the ENV file and save it as myURI
