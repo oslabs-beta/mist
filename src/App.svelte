@@ -17,7 +17,6 @@
   }
 </script>
 
-// ROLE: the header and core page layout are defined
 
 <p>{$theme}</p>
 <DarkButton on:click={() => toggle()} />
