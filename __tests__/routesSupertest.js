@@ -10,6 +10,7 @@ const server = 'http://localhost:3000';
 // error handling
 
 
+<<<<<<< HEAD
 describe('Route integration', () => {
     //To test, set up a mock response from tracer
     describe('/v1/traces', () => {
@@ -36,6 +37,34 @@ describe('Route integration', () => {
             });
         });
     });
+=======
+ describe('Route integration', () => {
+     //NOT GOING TO WORK UNTIL WE SET UP A MOCK RESPONSE FROM THE TRACER!!
+     xdescribe('/v1/traces', () => {
+         describe('POST', () => {
+             it('responds with a "hello from 3000!" message', () => {
+                 return request(server)
+                    .post('/v1/traces')
+                    .expect('Content-Type', /application\/json/)
+             });
+         });
+     });
+
+// /sessionNum
+// expect: ('Content-Type', /json/)
+// error handling
+
+     
+     describe('/sessionNum', () => {
+         describe('GET', () => {
+             it('responds with "sessionNum has been set!" message', () => {
+                 return request(server)
+                    .get('/sessionNum')
+                    .expect('Content-Type', /application\/json/)
+             });
+         });
+     });
+>>>>>>> 38180f45d3a4ee18ad4260cb14b543eb08c72589
 
     //  /sessionLogs
     //  expect: ('Content-Type', /json/)
