@@ -21,9 +21,9 @@
     createBarGraph,
   } from '../functions.js';
 
-  $: console.log(workerTimer);
-  $: console.log(`here's the chart flag: ${chartFlag}`);
-  $: console.log(mockLogArray);
+  // $: console.log(workerTimer);
+  // $: console.log(`here's the chart flag: ${chartFlag}`);
+  // $: console.log(mockLogArray);
 
   let uniqueKey = {};
 
@@ -37,7 +37,6 @@
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    // ADD STORAGE OF SESSION NUMBER BELOW
   };
 
   // stop() sets end point of recording session and initiates fetch requests to retrieve session logs from DB

@@ -1,8 +1,6 @@
 import Chart from 'chart.js/auto';
-//import { CLOSE_REASON_NORMAL } from 'websocket/lib/WebSocketConnection'; -> (no idea what this is or where it came from, but it breaks the app)
 import {
   workerTimer,
-  mockLogArray,
   labels,
   succs,
   errs,
@@ -179,9 +177,7 @@ export const createData = (logs, avgLogs) => {
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
-    }
-    // Cloudflare's highest error status is 530
-    else {
+    } else {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
@@ -193,9 +189,7 @@ export const createData = (logs, avgLogs) => {
   console.log(`labels ${labels}`);
 
   let curSess = 0;
-  // const sessNums = []; // DELETE -> (imported from store)
   const sessions = [[], [], [], [], []];
-  // const sessAvgs = []; // DELETE -> (imported from store)
   for (let i = 0; i < avgLogs.length; i++) {
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     if (avgLogs[i].session_num !== sessNums[curSess]) {
@@ -212,8 +206,8 @@ export const createData = (logs, avgLogs) => {
     }
     sessAvgs.push(total / session.length);
   });
-  console.log(`Session number: ${sessNums}`);
-  console.log(`Session Averages: ${sessAvgs}`);
+  // console.log(`Session number: ${sessNums}`);
+  // console.log(`Session Averages: ${sessAvgs}`);
 };
 export const createScatterChart = () => {
   const data = {
@@ -236,15 +230,6 @@ export const createScatterChart = () => {
         showLine: false,
         pointRadius: 5,
       },
-
-      // {
-      //   label: 'Sub-Requests',
-      //   backgroundColor: '#D0EAFF', //lighter blue
-      //   borderColor: '#D0EAFF',
-      //   data: subReqs,
-      //   showLine: false,
-      //   pointRadius: 5,
-      // },
     ],
   };
 

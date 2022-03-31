@@ -7,7 +7,6 @@ const {
 } = require('@opentelemetry/exporter-trace-otlp-http');
 const { SimpleSpanProcessor } = require('@opentelemetry/tracing');
 
-
 const exporter = new OTLPTraceExporter({
   url: 'http://localhost:3000/v1/traces',
 });

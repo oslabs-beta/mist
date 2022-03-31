@@ -3,7 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const workerName = 'sample-worker-2'; /*process.env.WORKER_NAME*/
+const workerName = process.env.WORKER_NAME;
 
 const metricsController = {
   sessionNum: 1,

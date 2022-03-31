@@ -6,7 +6,6 @@ export let chartFlag = writable(false);
 export let genMet = writable(false);
 export let loading = writable(false);
 
-// no worky
 export let sessionNum = writable(1);
 export let workerName = writable('Worker');
 // export const workers = [
@@ -29,7 +28,7 @@ export const labels = [0];
 export const succs = [];
 export const errs = [];
 export const subReqs = [];
-export const pieData = [0, 0, 0];
+export const pieData = [0, 0];
 
 export const currentWorker = [];
 export const sessNums = [];
