@@ -1,18 +1,18 @@
 [![Bintray](https://img.shields.io/npm/v/mist-analytics)](https://img.shields.io/npm/v/mist-analytics)
 
-# mist
+# Mist
 
-1. About mist
-2. mist Set-Up
-3. mist Usage
+1. About Mist
+2. Mist Set-Up
+3. Mist Usage
 4. FAQ
 5. Future Wish-List + Contact Us
 
-## PART 1 - About mist
+## PART 1 - About Mist
 
-Mist is an APM development tool for gathering matrics on unpublished CloudFlare "Workers" also known as serverless functions. With Mist, developers gain access to request and response data visualizations for their CloudFlare workers whilst running them in a local dev environment. Utilizing a smart system of interconnected local ports, the application "records" a session of requests which are then displayed across several visual mediums. This helps provide the developer with insight into the performance of their CloudFlare worker, opening the door for meaningful comparison and code optimization prior to deployment. Mist is currently in beta and under development.
+Mist is an APM development tool for gathering metrics on unpublished CloudFlare workers (also known as serverless functions). With Mist, developers gain access to request and response data visualizations for their CloudFlare workers whilst running them in a local dev environment. Utilizing a smart system of interconnected local ports, the application "records" a session of requests which are then displayed across several visual mediums. This helps provide the developer with insight into the performance of their CloudFlare worker, opening the door for meaningful comparison and code optimization prior to deployment. Mist is currently in beta and under development.
 
-## PART 2 - mist Set-Up
+## PART 2 - Mist Set-Up
 
 ### Option A - Using the npm package mist-analytics
 
@@ -44,7 +44,7 @@ Mist is an APM development tool for gathering matrics on unpublished CloudFlare 
 5. After you are finished analyzing this session data, click the `Reset Metrics`.
    Check out our Medium article for more information.
 
-[Medium](https://mistanalytics.com/)
+Check us out at [mistanalytics](https://mistanalytics.com/) for documentation and further instructions on usage. 
 
 ### Logs
 
@@ -72,7 +72,7 @@ When you fire off a worker, data from the last 5 sessions in which you tested th
 
 **Q: I ran a session but still am not seeing any data appear.**
 
-**A:** Make sure you hit the `Generate Metrics` button to render your data. If **_mist_** is showing metrics from a previous session, make sure you hit `Reset Metrics` and then run a new session by pressing the `Start` button.
+**A:** Make sure you hit the `Generate Metrics` button to render your data. If **_Mist_** is showing metrics from a previous session, make sure you hit `Reset Metrics` and then run a new session by pressing the `Start` button.
 
 **Q: I want to see a record of all logs from a specific worker. How can I access this data?**
 
@@ -87,9 +87,18 @@ When you fire off a worker, data from the last 5 sessions in which you tested th
 
 Mist is an ever evolving open source product. If you’d like to contribute, please reach out to a member of the team with your proposal so we can incorporate you into the development process.
 
+**Future development goals**
+
 - Optimize OpenTelemetry controller by adding a batchprocessor in tracing.js. Current tracing operation takes around 3 seconds per HTTP request.
 - Store user's worker file in a variable and run from the command line. Currently, worker is accessed in miniflare.js through `path.resolve`.
 - More worker-specific metrics (CPU median time, subrequests, performance, etc.)
 - Support for multiple workers running at once
 - Modularize server, routing, controllers for Flare
 - Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
+
+### Team
+- Anthony Marin [@anthonymarinated](https://github.com/anthonymarinated) | [Linkedin](https://www.linkedin.com/in/anthmari/)
+- Eric Lemay [@StygianLiege](https://github.com/StygianLiege) | [Linkedin](https://www.linkedin.com/in/eric-lemay-379659231/)
+- Kristen Althoff [@KristenWAlthoff](https://github.com/KristenWAlthoff) | [Linkedin](https://www.linkedin.com/in/kristen-althoff-3a4765b9/)
+- Leo Rinke De Wit [@lrinkedewit](https://github.com/lrinkedewit) | [Linkedin](https://www.linkedin.com/in/leonoorrinkedewit/)
+- Stewart Elmore [@selmore7](https://github.com/selmore7) | [Linkedin](https://www.linkedin.com/in/stewart-elmore/)
