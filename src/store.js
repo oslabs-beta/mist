@@ -6,7 +6,6 @@ export let chartFlag = writable(false);
 export let genMet = writable(false);
 export let loading = writable(false);
 
-// no worky
 export let sessionNum = writable(1);
 export let workerName = writable('Worker');
 // export const workers = [

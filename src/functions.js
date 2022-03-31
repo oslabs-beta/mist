@@ -178,9 +178,7 @@ export const createData = (logs, avgLogs) => {
         x: logs[i].start - workerTimer.start,
         y: logs[i].response_time_ms,
       });
-    }
-    // Cloudflare's highest error status is 530
-    else {
+    } else {
       pieData[1] += 1;
       errs.push({
         x: logs[i].start - workerTimer.start,
@@ -213,8 +211,8 @@ export const createData = (logs, avgLogs) => {
     }
     sessAvgs.push(total / session.length);
   });
-  console.log(`Session number: ${sessNums}`);
-  console.log(`Session Averages: ${sessAvgs}`);
+  // console.log(`Session number: ${sessNums}`);
+  // console.log(`Session Averages: ${sessAvgs}`);
 };
 
 // attaches Scatter Chart to ScatterChart.svelte

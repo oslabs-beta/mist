@@ -21,9 +21,9 @@
     createBarGraph,
   } from '../functions.js';
 
-  $: console.log(workerTimer);
-  $: console.log(`here's the chart flag: ${chartFlag}`);
-  $: console.log(mockLogArray);
+  // $: console.log(workerTimer);
+  // $: console.log(`here's the chart flag: ${chartFlag}`);
+  // $: console.log(mockLogArray);
 
   // uniqueKey is used to remount charts after data is reset
   let uniqueKey = {};
