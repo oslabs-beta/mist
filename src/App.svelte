@@ -5,7 +5,7 @@
 
   $: console.log($theme, $previousTheme);
 
-  // toggle() triggers light/dark mode
+  // ROLE: toggle() triggers light/dark mode
   function toggle() {
     $previousTheme = $theme;
     window.document.body.classList.toggle('dark-mode');
@@ -16,6 +16,8 @@
     }
   }
 </script>
+
+// ROLE: the header and core page layout are defined
 
 <p>{$theme}</p>
 <DarkButton on:click={() => toggle()} />

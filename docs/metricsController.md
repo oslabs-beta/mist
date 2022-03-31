@@ -14,7 +14,7 @@ This middleware is invoked when a dev presses "start" on the front-end. Our **da
 
 This middleware is invoked when a dev presses "stop" on the front-end of **_mist_**. A query is sent to the database that selects all logs from the current session. This data is saved in an array of objects on res.locals.logs.
 
-## `siftMetricsTel`
+## `siftMetrics`
 
 This middleware destructures the method, URL, status, and response time data from the object that is sent over via an OPTL tracer. These data points are saved in a 'metrics' object; response time is converted into a unit-less number before being saved. This controller also captures the current session number and the time that the request hits the controller and saves both data points in the metrics object.
 
