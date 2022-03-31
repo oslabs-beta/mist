@@ -160,7 +160,7 @@ export const createData = (logs, avgLogs) => {
   // following blocks create data for scatter chart and pie chart
   // sets scatter chart x-axis length
   const duration = workerTimer.stop - workerTimer.start;
-  console.log(`duration: ${duration}`);
+  // console.log(`duration: ${duration}`);
   for (let i = 1000; i < duration; i += 1000) {
     labels.push(i);
     if (i + 1000 >= duration) {
@@ -169,7 +169,7 @@ export const createData = (logs, avgLogs) => {
   }
   // plots points for scatter chart and total success/errors for pie chart
   for (let i = 0; i < logs.length; i++) {
-    console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
+    // console.log(`log${i}: ${logs[i].start - workerTimer.start}`);
     // generates success data for charts
     if (logs[i].status < 300) {
       pieData[0] += 1;
@@ -185,14 +185,14 @@ export const createData = (logs, avgLogs) => {
       });
     }
   }
+  // console.log(`labels ${labels}`);
   // following block create data for bar graph
-  console.log(`labels ${labels}`);
   // curSess indexes sessions array
   let curSess = 0;
   const sessions = [[], [], [], [], []];
   // for loop pushes response times into indexed sessions sub-array
   for (let i = 0; i < avgLogs.length; i++) {
-    console.log(`Session number: ${sessNums}`);
+    // console.log(`Session number: ${sessNums}`);
     if (i === 0) sessNums.push(avgLogs[i].session_num);
     // when session_num increases, curSess increments to push into next sessions sub-array
     if (avgLogs[i].session_num !== sessNums[curSess]) {
@@ -201,7 +201,7 @@ export const createData = (logs, avgLogs) => {
     }
     sessions[curSess].push(avgLogs[i].response_time_ms);
   }
-  console.log(sessions);
+  // console.log(sessions);
   // reduces each sessions sub-array to average response time in ms
   sessions.forEach((session) => {
     let total = 0;
