@@ -87,9 +87,15 @@ When you fire off a worker, data from the last 5 sessions in which you tested th
 
 ## PART 5 - Future Wish-List + Contact Us
 
+<<<<<<< HEAD
 Mist is an ever evolving open source product. If you’d like to contribute, please reach out to a member of the team with your proposal so we can incorporate you into the development process.
 
 - Optimize OpenTelemetry controller by adding a batchprocessor in tracing.js. Current tracing operation takes around 3 seconds per HTTP request.
 - Store user's worker file in a variable and run from the command line. Currently, worker is accessed in miniflare.js through `path.resolve`.
 - More worker-specific metrics (CPU median time, subrequests, performance, etc.)
 - Support for multiple workers running at once
+=======
+- Modularize server, routing, controllers for Flare
+- Update .env file with [secrets](https://towardsdatascience.com/keep-your-code-secure-by-using-environment-variables-and-env-files-4688a70ea286)
+-
+>>>>>>> main

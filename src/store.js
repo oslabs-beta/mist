@@ -17,8 +17,6 @@ export let workerName = writable('Worker');
 export const workerTimer = writable({
   start: 0,
   stop: 0,
-  requestStart: 0,
-  requestComplete: 0,
 });
 
 export const mockLogArray = writable([]);

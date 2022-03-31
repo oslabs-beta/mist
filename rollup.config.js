@@ -50,14 +50,6 @@ export default {
     file: 'public/build/bundle.js',
   },
   plugins: [
-    // replace({
-    //   // 2 level deep object should be stringify
-    //   process: JSON.stringify({
-    //     env: {
-    //       MY_WORKER: 'sample-worker-2',
-    //     },
-    //   }),
-    // }),
     svelte({
       preprocess: sveltePreprocess(),
       compilerOptions: {

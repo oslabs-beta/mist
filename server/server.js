@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // ROLE: processes trace post request from miniflare server and store sessions in database
-app.use('/v1/traces', metricsController.siftMetricsTel, metricsController.addMetrics, (req, res) => {
+app.use('/v1/traces', metricsController.siftMetrics, metricsController.addMetrics, (req, res) => {
   res.json('hello from 3000!');
 });
 
